@@ -88,6 +88,8 @@ jobs:
   docker:
     needs: "unit-test"
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: checkout version
         if: ${{ github.ref == 'refs/heads/main' }}
