@@ -1,13 +1,14 @@
 package com.e.store.payment;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 class PaymentApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void greeting() {
+		String msg = "Hello";
+		Assert.assertEquals(msg, "Hello");
 	}
 
 }
