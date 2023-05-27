@@ -64,6 +64,7 @@ jobs:
   Unit-Tests:
     needs: security
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions
