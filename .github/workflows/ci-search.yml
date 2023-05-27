@@ -90,6 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       actions: write
+      packages: write
     steps:
       - name: checkout version
         if: ${{ github.ref == 'refs/heads/main' }}
