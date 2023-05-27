@@ -113,4 +113,4 @@ jobs:
         with:
           context: ./order
           push: true
-          tags: ghcr.io/e-store/estore-order:latest
+          tags: ghcr.io/tanhaok/estore-order:latest

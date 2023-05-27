@@ -113,4 +113,4 @@ jobs:
         with:
           context: ./email
           push: true
-          tags: ghcr.io/e-store/estore-email:latest
+          tags: ghcr.io/tanhaok/estore-email:latest

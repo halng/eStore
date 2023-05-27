@@ -112,4 +112,4 @@ jobs:
         with:
           context: ./product
           push: true
-          tags: ghcr.io/e-store/estore-product:latest
+          tags: ghcr.io/tanhaok/estore-product:latest

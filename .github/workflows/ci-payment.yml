@@ -113,4 +113,4 @@ jobs:
         with:
           context: ./payment
           push: true
-          tags: ghcr.io/e-store/estore-payment:latest
+          tags: ghcr.io/tanhaok/estore-payment:latest
