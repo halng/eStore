@@ -89,7 +89,7 @@ jobs:
     needs: "unit-test"
     runs-on: ubuntu-latest
     permissions:
-      packages: write
+      packages: write-all
     steps:
       - name: checkout version
         if: ${{ github.ref == 'refs/heads/main' }}
