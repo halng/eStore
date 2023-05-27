@@ -13,7 +13,6 @@ on:
       - "product/**"
       - ".github/workflows/actions/action.yaml"
       - ".github/workflows/ci-product.yml"
-
   workflow_dispatch:
 
 jobs:
