@@ -21,7 +21,7 @@ jobs:
       - name: Analyze with sonar cloud
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.ref == 'refs/heads/main' }}
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_PRODUCT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -f product
 
