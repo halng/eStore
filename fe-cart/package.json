@@ -15,6 +15,8 @@
     "component:headless": "cypress run --component"
   },
   "dependencies": {
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.2",
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
@@ -26,6 +28,8 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.10.6",
+    "babel-plugin-istanbul": "^6.1.1",
     "cypress": "^12.13.0",
     "start-server-and-test": "^2.0.0"
   }
