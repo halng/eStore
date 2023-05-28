@@ -1,0 +1,130 @@
+name: front-end Cart Section CI
+
+on:
+  pull_request:
+    branches: ["main", "dev"]
+    paths:
+      - fe-cart/**
+      - ".github/workflows/ci-fe-cart.yml"
+  push:
+    branches: "main"
+    paths:
+      - fe-cart/**
+      - ".github/workflows/ci-fe-cart.yml"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+        working-directory: fe-cart
+      - run: npm run build
+        working-directory: fe-cart
+      - run: npm run lint
+        working-directory: fe-cart
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: fe-cart
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  security:
+    needs: "analyze"
+    runs-on: "ubuntu-latest"
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["javascript"]
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+        # Use only 'java' to analyze code written in Java, Kotlin or both
+        # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
+        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+        working-directory: fe-cart
+      - run: npm run build
+        working-directory: fe-cart
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
+
+  unit-test:
+    needs: security
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cypress run test e2e
+        uses: cypress-io/github-action@v5
+        with:
+          headed: true
+          project: fe-cart
+          browser: chrome
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cypress run test component
+        uses: cypress-io/github-action@v5
+        with:
+          install: false
+          component: true
+          headed: true
+          project: fe-cart
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    needs: "unit-test"
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout version
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: set up env
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: build code
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: npm ci && npm run build
+        working-directory: fe-cart
+      - name: Log in to the Container registry
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.TOKEN_MASTER }}
+      - name: Build and push Docker images
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: docker/build-push-action@v3
+        with:
+          context: ./fe-cart
+          push: true
+          tags: ghcr.io/tanhaok/estore-fe-cart:latest
