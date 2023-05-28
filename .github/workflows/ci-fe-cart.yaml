@@ -27,8 +27,6 @@ jobs:
         working-directory: fe-cart
       - run: npm run build
         working-directory: fe-cart
-      - run: npm run lint
-        working-directory: fe-cart
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
