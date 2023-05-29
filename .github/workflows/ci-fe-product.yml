@@ -31,14 +31,6 @@ jobs:
         working-directory: fe-product
       - run: npm run lint && npm run format:check
         working-directory: fe-product
-      - name: Analyze with sonar cloud
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.ref == 'refs/heads/main' }}
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: fe-product
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   security:
     needs: "analyze"
@@ -96,13 +88,21 @@ jobs:
         working-directory: fe-product
       - run: npm run test:cover
         working-directory: fe-product
+      - name: Analyze with sonar cloud
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.ref == 'refs/heads/main' }}
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: fe-product
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Unit Test Results
         uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: Unit-Test-Results
-          path: "fe-product/**/surefire-reports/*.xml"
-          reporter: java-junit
+            name: JEST Tests            # Name of the check run which will be created
+            path: reports/jest-*.xml    # Path to test results
+            reporter: jest-junit   
 
   docker:
     needs: "unit-test"
