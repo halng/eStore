@@ -4,6 +4,6 @@ describe('Test welcome tab title', () => {
   it('Test get title', () => {
     const msg = 'Create Next App';
 
-    expect("Create Next App").toEqual(msg);
+    expect('Create Next App').toEqual(msg);
   });
 });
