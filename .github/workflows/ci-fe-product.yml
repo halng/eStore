@@ -86,7 +86,7 @@ jobs:
         working-directory: fe-product
       - run: npm run build
         working-directory: fe-product
-      - run: npm run test:cover
+      - run: npm run junit-test
         working-directory: fe-product
       - name: Analyze with sonar cloud
         if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.ref == 'refs/heads/main' }}
@@ -101,7 +101,7 @@ jobs:
         if: always()
         with:
             name: JEST Tests            # Name of the check run which will be created
-            path: fe-product/coverage/clover.xml    # Path to test results
+            path: fe-product/reports/jest-junit.xml    # Path to test results
             reporter: jest-junit   
 
   docker:
