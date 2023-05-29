@@ -94,6 +94,8 @@ jobs:
         working-directory: fe-product
       - run: npm run build
         working-directory: fe-product
+      - run: npm run test:cover
+        working-directory: fe-product
       - name: Unit Test Results
         uses: dorny/test-reporter@v1
         if: always()
@@ -118,7 +120,7 @@ jobs:
         with:
           node-version: 18
       - name: install deplendency
-        if: ${{ github.ref == 'refs/heads/main' }}  
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: npm ci && npm run build
         working-directory: fe-product
       - name: Log in to the Container registry
