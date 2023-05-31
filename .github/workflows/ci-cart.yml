@@ -35,10 +35,6 @@ jobs:
           name: Unit-Test-Results
           path: "cart/**/surefire-reports/*.xml"
           reporter: java-junit
-      - name: PR comment with file
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          filePath: "/cart/target/surefire-reports/com.e.store.cart.CartApplicationTests.txt"
       - name: Verify test coverage
         run: mvn clean verify -f cart
       - name: Analyze with sonar cloud
