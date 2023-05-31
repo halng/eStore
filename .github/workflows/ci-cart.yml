@@ -35,6 +35,10 @@ jobs:
           name: Unit-Test-Results
           path: "cart/**/surefire-reports/*.xml"
           reporter: java-junit
+      - name: PR comment with file
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          filePath: /cart/**/surefire-reports/*.txt
       - name: Verify test coverage
         run: mvn clean verify -f cart
       - name: Analyze with sonar cloud
@@ -43,20 +47,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -f cart
-
-  Comment:
-    needs: analyze
-    runs-on: "ubuntu-latest"
-    permissions:
-      actions: read
-      contents: read
-    steps:
-      - name: Post result as comment
-        uses: machine-learning-apps/pr-comment@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          path: "./cart/**/surefire-reports/com.e.store.cart.CartApplicationTests.txt"
 
   security:
     needs: "analyze"
