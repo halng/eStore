@@ -6,6 +6,6 @@ runs:
       with:
         node-version: 18
     - run: npm ci
-      working-directory: { { steps.get-folder.outputs.folder } }
+      working-directory: ${{ steps.get-folder.outputs.folder }}
     - run: npm run build
-      working-directory: { { steps.get-folder.outputs.folder } }
+      working-directory: ${{ steps.get-folder.outputs.folder }}
