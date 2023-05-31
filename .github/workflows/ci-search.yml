@@ -5,13 +5,13 @@ on:
     branches: ["main"]
     paths:
       - "search/**"
-      - ".github/workflows/ci-be-action.yaml"
+      - ".github/workflows/action-be/**"
       - ".github/workflows/ci-search.yml"
   pull_request:
     branches: ["main", "dev"]
     paths:
       - "search/**"
-      - ".github/workflows/ci-be-action.yaml"
+      - ".github/workflows/action-be/**"
       - ".github/workflows/ci-search.yml"
 
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      - uses: ./.github/workflows/ci-be-action.yaml
+      - uses: ./.github/workflows/actions-be
       - name: Run Maven Build Command
         run: mvn clean install -DskipTests -f search
       - name: Analyze with sonar cloud
@@ -59,7 +59,7 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
-      - uses: ./.github/workflows/ci-be-action.yaml
+      - uses: ./.github/workflows/actions-be
       - name: Run Maven Build Command
         run: mvn clean install -DskipTests -f search
 
@@ -74,7 +74,7 @@ jobs:
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/ci-be-action.yaml
+      - uses: ./.github/workflows/actions-be
       - name: Run Maven Test
         run: mvn test -f search
       - name: Unit Test Results
@@ -99,7 +99,7 @@ jobs:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: set up env
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: ./.github/workflows/ci-be-action.yaml
+        uses: ./.github/workflows/actions-be
       - name: Run Maven Build Command
         if: ${{ github.ref == 'refs/heads/main' }}
         run: mvn clean install -DskipTests -f search
