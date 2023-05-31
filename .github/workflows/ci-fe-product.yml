@@ -20,6 +20,9 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Generate folder name
         id: get-folder
         run: echo "folder=fe-product" >> $GITHUB_OUTPUT
@@ -46,6 +49,9 @@ jobs:
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - uses: ./.github/workflows/actions-fe
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
@@ -61,6 +67,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - uses: ./.github/workflows/actions-fe
       - run: npm run junit-test && npm run test:cover
         working-directory: fe-product
@@ -86,6 +95,11 @@ jobs:
     permissions: write-all
     steps:
       - name: checkout version
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Setup env
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: ./.github/workflows/actions-fe
       - name: Log in to the Container registry
