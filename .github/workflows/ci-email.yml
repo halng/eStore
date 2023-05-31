@@ -5,13 +5,13 @@ on:
     branches: ["main"]
     paths:
       - "email/**"
-      - ".github/workflows/actions/action.yaml"
+      - ".github/workflows/ci-be-action.yaml"
       - ".github/workflows/ci-email.yml"
   pull_request:
     branches: ["main", "dev"]
     paths:
       - "email/**"
-      - ".github/workflows/actions/action.yaml"
+      - ".github/workflows/ci-be-action.yaml"
       - ".github/workflows/ci-email.yml"
 
   workflow_dispatch:
