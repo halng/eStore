@@ -40,7 +40,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: "cart/**/surefire-reports/com.e.store.cart.CartApplicationTests.txt"
+          path: "./cart/**/surefire-reports/com.e.store.cart.CartApplicationTests.txt"
       - name: Verify test coverage
         run: mvn clean verify -f cart
       - name: Analyze with sonar cloud
