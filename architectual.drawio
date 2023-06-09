@@ -1,0 +1,75 @@
+<mxfile host="65bd71144e">
+    <diagram id="0y5TyTM63pMypGJoK41a" name="Page-1">
+        <mxGraphModel dx="1007" dy="830" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4" value="" style="edgeStyle=none;html=1;strokeColor=#000;" edge="1" parent="1" source="2" target="3">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="Client/user" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="349" y="28" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="edgeStyle=none;html=1;strokeColor=#000;" edge="1" parent="1" source="3" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" style="edgeStyle=none;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;strokeColor=#000;" edge="1" parent="1" source="3">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="439" y="91" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="36" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#000;" edge="1" parent="1" source="3" target="9">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="API Gateway" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="349" y="168" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" style="edgeStyle=none;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#000;" edge="1" parent="1" source="5" target="3">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Auth Server" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="549" y="168" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#670FFF;fillColor=#fff;strokeWidth=1;strokeColor=#000;dashed=1;" vertex="1" parent="1">
+                    <mxGeometry x="10" y="355" width="803" height="192" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="Product" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="18" y="377" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Cart" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="154" y="377" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="Email" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="559" y="454" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="Order" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="290.5" y="375" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Payment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="429" y="375" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="Shipping" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="18" y="457" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="Chat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="561" y="375" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="Rating" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="157" y="454" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="Campaign" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="294" y="454" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="Recommend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="454" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="Logging" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="687" y="377" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Search" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0033FF;" vertex="1" parent="1">
+                    <mxGeometry x="685" y="454" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
