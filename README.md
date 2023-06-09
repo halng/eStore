@@ -7,7 +7,6 @@
 
 ---
 This use Github action for CI and CD. and also use Aws for deployment
-  
 ---
 # CI Status
 |Service|Status|
