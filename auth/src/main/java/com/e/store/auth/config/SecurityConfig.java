@@ -20,7 +20,9 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/actuator/prometheus","/swagger-ui", "/swagger-ui/**", "/error", "/v3/api-docs/**", "/v1/auth/**");
+        return web -> web.ignoring()
+            .requestMatchers("/actuator/prometheus", "/swagger-ui", "/swagger-ui/**", "/error", "/v3/api-docs/**",
+                "/v1/auth/**");
     }
 
     @Bean

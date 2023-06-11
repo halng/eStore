@@ -14,8 +14,8 @@ public class AccountInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auto_id")
-    private Long autoId;
+    @Column(name = "id")
+    private Long id;
 
     @OneToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")

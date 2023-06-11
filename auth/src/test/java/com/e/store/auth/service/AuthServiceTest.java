@@ -10,9 +10,13 @@ import com.e.store.auth.constant.AccountRole;
 import com.e.store.auth.entity.Account;
 import com.e.store.auth.entity.Role;
 import com.e.store.auth.exception.BadRequestException;
+import com.e.store.auth.repositories.AccountInfoRepository;
 import com.e.store.auth.repositories.AuthRepository;
+import com.e.store.auth.repositories.RefreshTokenRepository;
 import com.e.store.auth.repositories.RoleRepository;
+import com.e.store.auth.services.RefreshTokenService;
 import com.e.store.auth.services.impl.AuthServiceImpl;
+import com.e.store.auth.services.impl.RefreshTokenServiceImpl;
 import com.e.store.auth.viewmodel.req.SignUpVm;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -30,6 +34,9 @@ public class AuthServiceTest {
     Account account;
     Role role;
     PasswordEncoder passwordEncoder;
+    AccountInfoRepository accountInfoRepository;
+    RefreshTokenRepository refreshTokenRepository;
+    RefreshTokenService refreshTokenService;
 
     @BeforeEach
     void setUp(){
@@ -37,7 +44,11 @@ public class AuthServiceTest {
         authRepository = mock(AuthRepository.class);
         account = mock(Account.class);
         passwordEncoder = mock(PasswordEncoder.class);
-        authService = new AuthServiceImpl(authRepository, roleRepository, passwordEncoder);
+        accountInfoRepository = mock(AccountInfoRepository.class);
+        refreshTokenRepository = mock(RefreshTokenRepository.class);
+        refreshTokenService = new RefreshTokenServiceImpl(refreshTokenRepository);
+        authService = new AuthServiceImpl(authRepository, roleRepository, passwordEncoder,
+            accountInfoRepository, refreshTokenService);
         role = new Role();
     }
 

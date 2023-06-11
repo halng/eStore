@@ -38,4 +38,7 @@ public class Account {
 
     @OneToOne(mappedBy = "account")
     private AccountPayment accountPayment;
+
+    @OneToOne(mappedBy = "account")
+    private RefreshToken refreshToken;
 }
