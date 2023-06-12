@@ -16,15 +16,20 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/sign-up")
+    @PostMapping("/register")
     public ResponseEntity<HttpStatus> signUp(@Valid @RequestBody SignUpVm signUpData) {
         return authService.signUp(signUpData);
     }
-//
-//    @PostMapping("/sign-in")
-//    public ResponseEntity<?> signIn(@RequestBody SignInVm signInData) {
-//        return authService.signIn(signInData);
-//    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> signIn(@RequestBody SignInVm signInData) {
+        return authService.signIn(signInData);
+    }
+
+    @GetMapping("/grant")
+    public String hello(){
+        return "hello world";
+    }
 //
 //    @PutMapping("/{accountId}/deactive")
 //    public ResponseEntity<?> deActiveAccount(@PathVariable String accountId) {

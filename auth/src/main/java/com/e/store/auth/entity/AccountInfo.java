@@ -10,7 +10,7 @@ import lombok.*;
 @Table(name = "account_info")
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountInfo {
+public class AccountInfo extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

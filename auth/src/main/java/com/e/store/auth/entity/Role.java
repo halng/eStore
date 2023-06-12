@@ -1,14 +1,24 @@
 package com.e.store.auth.entity;
 
+import java.util.Set;
+
 import com.e.store.auth.constant.AccountRole;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -29,4 +39,7 @@ public class Role {
     @JsonIgnore
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Account> accounts;
+
+    public Role (AccountRole roleName) {
+    }
 }

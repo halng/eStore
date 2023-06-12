@@ -1,5 +1,13 @@
 package com.e.store.auth.entity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.e.store.auth.constant.AccountStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +19,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "account")
-public class Account {
+public class Account extends AuditEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -38,4 +46,34 @@ public class Account {
 
     @OneToOne(mappedBy = "account")
     private AccountPayment accountPayment;
+
+    @OneToOne(mappedBy = "account")
+    private RefreshToken refreshToken;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities () {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(this.role.getRole().toString()));
+        return grantedAuthorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired () {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked () {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired () {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled () {
+        return true;
+    }
 }
