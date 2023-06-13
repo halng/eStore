@@ -170,6 +170,8 @@
 								<exclude>**/constant/**</exclude>
 								<exclude>**/exception/**</exclude>
 								<exclude>**/repositories/**</exclude>
+								<exclude>**/controller/**</exclude>
+								<exclude>com/**/auth/AuthApplication.java</exclude>
 							</excludes>
 							<rules>
 								<rule>
@@ -178,7 +180,7 @@
 										<limit>
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.50</minimum>
+											<minimum>0.80</minimum>
 										</limit>
 									</limits>
 								</rule>
