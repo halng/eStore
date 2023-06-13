@@ -47,7 +47,7 @@ public class AuthServiceTest {
         passwordEncoder = mock(PasswordEncoder.class);
         jwtUtilities = mock(JwtUtilities.class);
         authenticationManager = mock(AuthenticationManager.class);
-        refreshTokenService = mock(refreshTokenService);
+        refreshTokenService = mock(IRefreshTokenService.class);
         authService = new AuthServiceImpl(authRepository, roleRepository, passwordEncoder, authenticationManager,
                                           jwtUtilities,
                                           refreshTokenService
