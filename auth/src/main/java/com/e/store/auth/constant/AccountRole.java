@@ -4,5 +4,6 @@ public enum AccountRole {
     BUYER,
     SELLER,
     STAFF,
-    ADMIN
+    ADMIN,
+    SUPERADMIN
 }

@@ -1,9 +1,9 @@
 package com.e.store.auth.entity;
 
-import jakarta.persistence.CascadeType;
+import java.time.Instant;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,29 +20,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Table(name = "account_info")
+@Table(name = "refresh_token")
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountInfo extends AuditEntity {
+public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auto_id")
-    private Long autoId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(nullable = false, name = "expire_date")
+    private Instant expiryDate;
+
+    @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "photo_url")
-    private String photoUrl;
 }
