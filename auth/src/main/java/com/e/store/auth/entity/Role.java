@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import net.minidev.json.annotate.JsonIgnore;
 @Table(name = "role")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
@@ -34,12 +36,10 @@ public class Role {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private AccountRole role;
+    private AccountRole roleName;
 
     @JsonIgnore
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Account> accounts;
 
-    public Role (AccountRole roleName) {
-    }
 }

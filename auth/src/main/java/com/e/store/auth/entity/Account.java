@@ -53,7 +53,7 @@ public class Account extends AuditEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities () {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(this.role.getRole().toString()));
+        grantedAuthorities.add(new SimpleGrantedAuthority(this.role.getRoleName().toString()));
         return grantedAuthorities;
     }
 

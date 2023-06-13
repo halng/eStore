@@ -96,7 +96,7 @@ public class AuthServiceTest {
     void signUp_ShouldReturnCreated_WhenDataValid () {
         SignUpVm signUpVm = new SignUpVm("test", "test_pass", "test_pass", 1L, "test@gmail.com");
         role.setId(1L);
-        role.setRole(AccountRole.BUYER);
+        role.setRoleName(AccountRole.BUYER);
 
         when(authRepository.existsByEmail(anyString())).thenReturn(false);
         when(roleRepository.findById(anyLong())).thenReturn(Optional.of(role));

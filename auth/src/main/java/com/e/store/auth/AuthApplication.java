@@ -24,11 +24,11 @@ public class AuthApplication {
     @Bean
     CommandLineRunner run (IRoleRepository roleRepository, IAuthRepository authRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            roleRepository.save(new Role(AccountRole.BUYER));
-            roleRepository.save(new Role(AccountRole.SELLER));
-            roleRepository.save(new Role(AccountRole.STAFF));
-            Role adminRole = roleRepository.save(new Role(AccountRole.ADMIN));
-            Role superRole = roleRepository.save(new Role(AccountRole.SUPERADMIN));
+            roleRepository.save(new Role().builder().roleName(AccountRole.BUYER).build());
+            roleRepository.save(new Role().builder().roleName(AccountRole.SELLER).build());
+            roleRepository.save(new Role().builder().roleName(AccountRole.STAFF).build());
+            Role adminRole = roleRepository.save(new Role().builder().roleName(AccountRole.ADMIN).build());
+            Role superRole = roleRepository.save(new Role().builder().roleName(AccountRole.SUPERADMIN).build());
 
             Account adminAccount = Account.builder().status(AccountStatus.ACTIVE).email("admin@estore.com").username(
                 "admin").password(passwordEncoder.encode("admin")).role(adminRole).build();

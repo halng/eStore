@@ -97,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
         Account account = getAccountByUsername(authentication.getName());
 
         String accessToken = jwtUtilities.generateAccessToken(
-            account.getUsername(), account.getRole().getRole().toString());
+            account.getUsername(), account.getRole().getRoleName().toString());
         String refreshToken = refreshTokenService.generateRefreshToken(account);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

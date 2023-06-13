@@ -7,7 +7,7 @@ public record AuthResVm(String accessToken, String refreshToken, String accountI
     public static AuthResVm fromAccount (String accessToken, String refreshToken, Account account) {
         return new AuthResVm(
             accessToken, refreshToken, account.getId(), account.getEmail(), account.getUsername(),
-            account.getRole().getRole().toString()
+            account.getRole().getRoleName().toString()
         );
     }
 }

@@ -34,7 +34,7 @@ public class JwtUtilities {
     }
 
     public Claims extractAllClaims (String accessToken) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJwt(accessToken).getBody();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(accessToken).getBody();
     }
 
     public String getUsernameFromAccessToken (String accessToken) {
@@ -62,7 +62,7 @@ public class JwtUtilities {
     }
 
     public String getAccessToken (HttpServletRequest httpServletRequest) {
-        final String bearerAccessToken = httpServletRequest.getHeader("Authorization");
+        final String bearerAccessToken = httpServletRequest.getHeader("authorization");
         if ( StringUtils.hasText(bearerAccessToken) && bearerAccessToken.startsWith("Bearer ") ) {
             return bearerAccessToken.substring(7);
         }
@@ -71,7 +71,7 @@ public class JwtUtilities {
 
     public boolean validateAccessToken (String accessToken) {
         try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJwt(accessToken);
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(accessToken);
             return true;
         }
         catch (SignatureException e) {
