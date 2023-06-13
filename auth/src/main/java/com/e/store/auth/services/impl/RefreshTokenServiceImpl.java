@@ -26,7 +26,7 @@ public class RefreshTokenServiceImpl implements IRefreshTokenService {
 
     @Override
     public String generateRefreshToken (Account account) {
-        RefreshToken refreshToken      = RefreshToken.builder().account(account).expiryDate(
+        RefreshToken refreshToken = RefreshToken.builder().account(account).expiryDate(
             Instant.now().plusMillis(refreshTokenExpiration)).build();
         RefreshToken savedRefreshToken = iRefreshTokenRepository.save(refreshToken);
         return savedRefreshToken.getId();

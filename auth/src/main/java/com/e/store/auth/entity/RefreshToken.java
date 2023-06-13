@@ -23,7 +23,7 @@ import lombok.Setter;
 @Table(name = "refresh_token")
 @AllArgsConstructor
 @NoArgsConstructor
-public class RefreshToken{
+public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

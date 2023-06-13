@@ -2,7 +2,6 @@ package com.e.store.auth.config.jwt;
 
 import java.io.IOException;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,12 +28,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     throws ServletException, IOException {
         String accessToken = jwtUtilities.getAccessToken(request);
 
-        if(accessToken != null && jwtUtilities.validateAccessToken(accessToken)) {
-            String username = jwtUtilities.getUsernameFromAccessToken(accessToken);
+        if ( accessToken != null && jwtUtilities.validateAccessToken(accessToken) ) {
+            String      username    = jwtUtilities.getUsernameFromAccessToken(accessToken);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if(userDetails != null && jwtUtilities.validateAccessToken(accessToken, userDetails)){
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+            if ( userDetails != null && jwtUtilities.validateAccessToken(accessToken, userDetails) ) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    userDetails.getUsername(), null, userDetails.getAuthorities());
                 log.info("User %s authenticated.".formatted(username));
 
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);

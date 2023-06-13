@@ -22,7 +22,8 @@ public class AuthApplication {
     }
 
     @Bean
-    CommandLineRunner run (IRoleRepository roleRepository, IAuthRepository authRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner run (IRoleRepository roleRepository, IAuthRepository authRepository,
+                           PasswordEncoder passwordEncoder) {
         return args -> {
             roleRepository.save(Role.builder().roleName(AccountRole.BUYER).build());
             roleRepository.save(Role.builder().roleName(AccountRole.SELLER).build());
@@ -35,13 +36,13 @@ public class AuthApplication {
             adminAccount.setCreateBy(StringConst.DEFAULT_USER);
             adminAccount.setUpdateBy(StringConst.DEFAULT_USER);
 
-			Account superAccount = Account.builder().status(AccountStatus.ACTIVE).email("super@estore.com").username(
-				"super").password(passwordEncoder.encode("super")).role(superRole).build();
+            Account superAccount = Account.builder().status(AccountStatus.ACTIVE).email("super@estore.com").username(
+                "super").password(passwordEncoder.encode("super")).role(superRole).build();
             superAccount.setCreateBy(StringConst.DEFAULT_USER);
             superAccount.setUpdateBy(StringConst.DEFAULT_USER);
 
-			authRepository.save(adminAccount);
-			authRepository.save(superAccount);
+            authRepository.save(adminAccount);
+            authRepository.save(superAccount);
         };
     }
 
