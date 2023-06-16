@@ -19,14 +19,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ NotFoundException.class, UsernameNotFoundException.class })
-    protected ResponseEntity<ErrorVm> handleNotFoundException (BadRequestException exception, WebRequest webRequest) {
+    protected ResponseEntity<ErrorVm> handleNotFoundException (RuntimeException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "RESOURCE NOT FOUND", HttpStatus.NOT_FOUND.toString());
         return ResponseEntity.status(404).body(errorVm);
     }
 
     @ExceptionHandler({ TokenException.class })
-    protected ResponseEntity<ErrorVm> handleTokenException (BadRequestException exception, WebRequest webRequest) {
-        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "INVALID TOKEN", HttpStatus.FORBIDDEN.toString());
+    protected ResponseEntity<ErrorVm> handleTokenException (TokenException exception, WebRequest webRequest) {
+        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED", HttpStatus.UNAUTHORIZED.toString());
+        return ResponseEntity.status(401).body(errorVm);
+    }
+
+    @ExceptionHandler({ ForbiddenException.class })
+    protected ResponseEntity<ErrorVm> handleTokenException (ForbiddenException exception, WebRequest webRequest) {
+        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED", HttpStatus.FORBIDDEN.toString());
         return ResponseEntity.status(403).body(errorVm);
     }
 
