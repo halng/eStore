@@ -2,6 +2,7 @@ package com.e.store.auth.services.impl;
 
 import com.e.store.auth.constant.Const;
 import com.e.store.auth.entity.VerifyAccount;
+import com.e.store.auth.exception.ForbiddenException;
 import com.e.store.auth.exception.InternalErrorException;
 import com.e.store.auth.repositories.IVerifyAccountRepository;
 import com.e.store.auth.services.IMessageProducer;
@@ -112,6 +113,10 @@ public class AuthServiceImpl implements AuthService {
             new UsernamePasswordAuthenticationToken(signInData.username(), signInData.password()));
 
         Account account = getAccountByUsername(authentication.getName());
+
+        if (!account.getStatus().equals(AccountStatus.ACTIVE)){
+            throw new ForbiddenException("Account Not Active");
+        }
 
         String accessToken = jwtUtilities.generateAccessToken(account.getUsername(),
             account.getRole().getRoleName().toString());

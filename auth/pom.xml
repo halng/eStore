@@ -128,6 +128,12 @@
 			<artifactId>kafka-clients</artifactId>
 			<version>3.4.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.passay/passay -->
+		<dependency>
+			<groupId>org.passay</groupId>
+			<artifactId>passay</artifactId>
+			<version>1.6.3</version>
+		</dependency>
 
 	</dependencies>
 
@@ -164,6 +170,7 @@
 								<exclude>**/exception/**</exclude>
 								<exclude>**/repositories/**</exclude>
 								<exclude>**/controller/**</exclude>
+								<exclude>**/annotation/**</exclude>
 								<exclude>com/**/auth/AuthApplication.java</exclude>
 							</excludes>
 							<rules>
