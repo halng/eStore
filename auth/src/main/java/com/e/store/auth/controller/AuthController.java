@@ -21,29 +21,24 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     private final AuthService authService;
-    @Autowired
-    private       KafkaTemplate<String, String> kafkaTemplate;
-
 
     @Autowired
-    public AuthController (AuthService authService) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     @PostMapping("register")
-    public ResponseEntity<HttpStatus> register (@Valid @RequestBody SignUpVm signUpData) {
+    public ResponseEntity<HttpStatus> register(@Valid @RequestBody SignUpVm signUpData) {
         return authService.signUp(signUpData);
     }
 
     @PostMapping("login")
-    public ResponseEntity<AuthResVm> login (@RequestBody SignInVm signInData) {
-        kafkaTemplate.send(
-            "user-register", "%s %s are logging in ".formatted(signInData.username(), signInData.password()));
+    public ResponseEntity<AuthResVm> login(@RequestBody SignInVm signInData) {
         return authService.signIn(signInData);
     }
 
     @GetMapping("grant")
-    public String hello () {
+    public String hello() {
         return "hello world";
     }
     //

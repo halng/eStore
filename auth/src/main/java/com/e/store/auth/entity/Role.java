@@ -1,5 +1,6 @@
 package com.e.store.auth.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Set;
 
 import com.e.store.auth.constant.AccountRole;
@@ -19,7 +20,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table(name = "role")

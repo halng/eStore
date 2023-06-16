@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.e.store.auth.constant.AccountRole;
 import com.e.store.auth.constant.AccountStatus;
-import com.e.store.auth.constant.StringConst;
+import com.e.store.auth.constant.Const;
 import com.e.store.auth.entity.Account;
 import com.e.store.auth.entity.Role;
 import com.e.store.auth.repositories.IAuthRepository;
@@ -32,13 +32,13 @@ public class AuthApplication {
 
             Account adminAccount = Account.builder().status(AccountStatus.ACTIVE).email("admin@estore.com").username(
                 "admin").password(passwordEncoder.encode("admin")).role(adminRole).build();
-            adminAccount.setCreateBy(StringConst.DEFAULT_USER);
-            adminAccount.setUpdateBy(StringConst.DEFAULT_USER);
+            adminAccount.setCreateBy(Const.DEFAULT_USER);
+            adminAccount.setUpdateBy(Const.DEFAULT_USER);
 
             Account superAccount = Account.builder().status(AccountStatus.ACTIVE).email("super@estore.com").username(
                 "super").password(passwordEncoder.encode("super")).role(superRole).build();
-            superAccount.setCreateBy(StringConst.DEFAULT_USER);
-            superAccount.setUpdateBy(StringConst.DEFAULT_USER);
+            superAccount.setCreateBy(Const.DEFAULT_USER);
+            superAccount.setUpdateBy(Const.DEFAULT_USER);
 
             authRepository.save(adminAccount);
             authRepository.save(superAccount);
