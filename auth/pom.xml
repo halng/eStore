@@ -170,6 +170,7 @@
 								<exclude>**/exception/**</exclude>
 								<exclude>**/repositories/**</exclude>
 								<exclude>**/controller/**</exclude>
+								<exclude>**/annotation/**</exclude>
 								<exclude>com/**/auth/AuthApplication.java</exclude>
 							</excludes>
 							<rules>

@@ -4,8 +4,6 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.passay.CharacterCharacteristicsRule;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.LengthRule;
@@ -16,6 +14,11 @@ import org.passay.WhitespaceRule;
 
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
 
+    /**
+     *  waiting for solve this.
+     *  now it's not working
+     * @param args0 password needed to validate
+     */
     @Override
     public void initialize(ValidPassword args0) {
     }
