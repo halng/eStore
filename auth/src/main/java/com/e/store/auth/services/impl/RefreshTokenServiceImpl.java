@@ -20,12 +20,12 @@ public class RefreshTokenServiceImpl implements IRefreshTokenService {
     private Long refreshTokenExpiration;
 
     @Autowired
-    public RefreshTokenServiceImpl (IRefreshTokenRepository iRefreshTokenRepository) {
+    public RefreshTokenServiceImpl(IRefreshTokenRepository iRefreshTokenRepository) {
         this.iRefreshTokenRepository = iRefreshTokenRepository;
     }
 
     @Override
-    public String generateRefreshToken (Account account) {
+    public String generateRefreshToken(Account account) {
         RefreshToken refreshToken = RefreshToken.builder().account(account).expiryDate(
             Instant.now().plusMillis(refreshTokenExpiration)).build();
         RefreshToken savedRefreshToken = iRefreshTokenRepository.save(refreshToken);

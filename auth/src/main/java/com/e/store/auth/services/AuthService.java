@@ -11,18 +11,10 @@ import com.e.store.auth.viewmodel.res.AuthResVm;
 
 @Service
 public interface AuthService {
-    ResponseEntity<HttpStatus> signUp (SignUpVm signUpData);
 
-    Account loadAccountByUsername (String username);
+    ResponseEntity<HttpStatus> signUp(SignUpVm signUpData);
 
-    ResponseEntity<AuthResVm> signIn (SignInVm signInData);
+    Account loadAccountByUsername(String username);
 
-    //    ResponseEntity<HttpStatus> deActiveAccount(String accountId);
-    //
-    //    ResponseEntity<HttpStatus> activeAccount(String accountId);
-    //
-    //    ResponseEntity<HttpStatus> refreshToken();
-    //
-    //    ResponseEntity<HttpStatus> updateAccount();
-
+    ResponseEntity<AuthResVm> signIn(SignInVm signInData);
 }

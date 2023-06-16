@@ -29,4 +29,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "INVALID TOKEN", HttpStatus.FORBIDDEN.toString());
         return ResponseEntity.status(403).body(errorVm);
     }
+
+    @ExceptionHandler({ InternalErrorException.class })
+    protected ResponseEntity<ErrorVm> handleInternalErrorException (InternalErrorException exception, WebRequest webRequest) {
+        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "INTERNAL ERROR", HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        return ResponseEntity.status(501).body(errorVm);
+    }
 }

@@ -64,6 +64,9 @@ public class Account extends AuditEntity implements UserDetails {
     @OneToOne(mappedBy = "account")
     private RefreshToken refreshToken;
 
+    @OneToOne(mappedBy = "account")
+    private VerifyAccount verifyAccount;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities () {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
