@@ -17,7 +17,10 @@ import org.springframework.messaging.handler.annotation.Payload;
 @Target({FIELD, ANNOTATION_TYPE, RECORD_COMPONENT, CONSTRUCTOR})
 @Constraint(validatedBy = PasswordConstraintValidator.class)
 public @interface ValidPassword {
+
     String message() default "Invalid Password";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

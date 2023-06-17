@@ -40,8 +40,8 @@ import jakarta.persistence.EntityNotFoundException;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    final private IAuthRepository authRepository;
-    final private IRoleRepository roleRepository;
+    private final IAuthRepository authRepository;
+    private final IRoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtilities jwtUtilities;

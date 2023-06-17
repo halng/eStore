@@ -14,14 +14,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
-public class RefreshTokenServiceTest {
+class RefreshTokenServiceTest {
+
     RefreshTokenServiceImpl refreshTokenService;
     IRefreshTokenRepository iRefreshTokenRepository;
     Account account;
     Long refreshTokenExpiration = 864000L;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         iRefreshTokenRepository = mock(IRefreshTokenRepository.class);
         account = mock(Account.class);
         refreshTokenService = new RefreshTokenServiceImpl(iRefreshTokenRepository);
@@ -30,11 +31,11 @@ public class RefreshTokenServiceTest {
 
     @Test
     void generateRefreshTokenTest() {
-        RefreshToken refreshToken = RefreshToken.builder().id("abc-xyz").account(account).expiryDate(
-            Instant.now().plusMillis(refreshTokenExpiration)).build();
+        RefreshToken refreshToken = RefreshToken.builder().id("abc-xyz").account(account)
+            .expiryDate(Instant.now().plusMillis(refreshTokenExpiration)).build();
         when(iRefreshTokenRepository.save(any())).thenReturn(refreshToken);
         String token = refreshTokenService.generateRefreshToken(account);
-        assertEquals(token, "abc-xyz");
+        assertEquals("abc-xyz", token);
     }
 
 }
