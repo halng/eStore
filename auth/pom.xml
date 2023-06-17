@@ -134,7 +134,6 @@
 			<artifactId>passay</artifactId>
 			<version>1.6.3</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -171,7 +170,7 @@
 								<exclude>**/repositories/**</exclude>
 								<exclude>**/controller/**</exclude>
 								<exclude>**/annotation/**</exclude>
-								<exclude>com/**/auth/AuthApplication.java</exclude>
+								<exclude>**/*AuthApplication.*</exclude>
 							</excludes>
 							<rules>
 								<rule>
@@ -180,7 +179,7 @@
 										<limit>
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.00</minimum>
+											<minimum>0.80</minimum>
 										</limit>
 									</limits>
 								</rule>

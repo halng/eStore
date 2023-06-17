@@ -2,6 +2,7 @@ package com.e.store.auth.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -10,11 +11,14 @@ import static org.mockito.Mockito.when;
 
 import com.e.store.auth.constant.Const;
 import com.e.store.auth.entity.VerifyAccount;
+import com.e.store.auth.exception.ForbiddenException;
 import com.e.store.auth.exception.InternalErrorException;
 import com.e.store.auth.repositories.IVerifyAccountRepository;
 import com.e.store.auth.services.AuthService;
 import com.e.store.auth.services.IMessageProducer;
+import com.e.store.auth.viewmodel.res.AuthResVm;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +27,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -39,9 +46,9 @@ import com.e.store.auth.services.IRefreshTokenService;
 import com.e.store.auth.services.impl.AuthServiceImpl;
 import com.e.store.auth.viewmodel.req.SignInVm;
 import com.e.store.auth.viewmodel.req.SignUpVm;
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.test.util.ReflectionTestUtils;
 
-public class AuthServiceTest {
+class AuthServiceTest {
 
     AuthService authService;
     IRoleRepository roleRepository;
@@ -69,13 +76,14 @@ public class AuthServiceTest {
         iMessageProducer = mock(IMessageProducer.class);
         iVerifyAccountRepository = mock(IVerifyAccountRepository.class);
         authService = new AuthServiceImpl(authRepository, roleRepository, passwordEncoder, authenticationManager,
-            jwtUtilities, refreshTokenService, iMessageProducer, iVerifyAccountRepository
-        );
+            jwtUtilities, refreshTokenService, iMessageProducer, iVerifyAccountRepository);
 
         role = Role.builder().roleName(AccountRole.ADMIN).build();
         account = Account.builder().id("111-222").status(AccountStatus.ACTIVE).email("admin@estore.com")
             .username("admin").password(passwordEncoder.encode("admin")).role(role).build();
 
+        ReflectionTestUtils.setField(jwtUtilities, "jwtExpiration", 36000L);
+        ReflectionTestUtils.setField(jwtUtilities, "secret", "hello_world");
     }
 
     @Test
@@ -109,8 +117,8 @@ public class AuthServiceTest {
     @Test
     void signUp_ShouldReturnCreated_WhenDataValid() {
         SignUpVm signUpVm = new SignUpVm("test", "test_pass", "test_pass", 1L, "test@gmail.com");
-        VerifyAccount verifyAccount = VerifyAccount.builder().token("token").account(account).expiryDate(Instant.now().plusSeconds(
-            Const.DEFAULT_TIME_EXPIRY_CONFIRM_ACCOUNT)).build();
+        VerifyAccount verifyAccount = VerifyAccount.builder().token("token").account(account)
+            .expiryDate(Instant.now().plusSeconds(Const.DEFAULT_TIME_EXPIRY_CONFIRM_ACCOUNT)).build();
         role.setId(1L);
         role.setRoleName(AccountRole.BUYER);
 
@@ -142,12 +150,11 @@ public class AuthServiceTest {
 
         });
 
-        assertEquals(exception.getMessage(),"Server can't create account correctly. Try again!");
+        assertEquals("Server can't create account correctly. Try again!", exception.getMessage());
     }
 
     @Test
     void getAccountByUsername_ShouldReturnError_whenUsernameNotFound() {
-        SignInVm signInVm = new SignInVm("hello", "NoPass");
         UsernameNotFoundException usernameNotFoundException = Assertions.assertThrows(UsernameNotFoundException.class,
             () -> {
                 authService.loadAccountByUsername("any");
@@ -159,7 +166,169 @@ public class AuthServiceTest {
     @Test
     void getAccountByUsername_ShouldReturnError_whenDataValid() {
         when(authRepository.findByUsername(anyString())).thenReturn(Optional.of(account));
-        assertEquals("admin", account.getUsername());
-        assertEquals("admin@estore.com", account.getEmail());
+
+        Account expected = authService.loadAccountByUsername("username");
+
+        assertEquals(expected.getUsername(), account.getUsername());
+        assertEquals(expected.getEmail(), account.getEmail());
     }
+
+    @Test
+    void loadAccountByUsername_ShouldReturnError_whenUsernameNotFound() {
+        UsernameNotFoundException usernameNotFoundException = Assertions.assertThrows(UsernameNotFoundException.class,
+            () -> {
+                authService.loadAccountByUsername("any");
+            });
+
+        assertEquals("Username not found", usernameNotFoundException.getMessage());
+    }
+
+    @Test
+    void signIn_shouldReturnForbiddenException_whenAccountNotActive() {
+        SignInVm signInVm = new SignInVm("hello", "NoPass");
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(signInVm.username(),
+            signInVm.password());
+        Authentication authentication1 = new Authentication() {
+            @Override
+            public boolean equals(Object another) {
+                return false;
+            }
+
+            @Override
+            public String toString() {
+                return null;
+            }
+
+            @Override
+            public int hashCode() {
+                return 0;
+            }
+
+            @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                return null;
+            }
+
+            @Override
+            public Object getCredentials() {
+                return null;
+            }
+
+            @Override
+            public Object getDetails() {
+                return null;
+            }
+
+            @Override
+            public Object getPrincipal() {
+                return null;
+            }
+
+            @Override
+            public boolean isAuthenticated() {
+                return true;
+            }
+
+            @Override
+            public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+
+            }
+        };
+
+        account.setStatus(AccountStatus.INACTIVE);
+        when(authenticationManager.authenticate(token)).thenReturn(authentication1);
+        when(authRepository.findByUsername(any())).thenReturn(Optional.of(account));
+
+        ForbiddenException forbiddenException = Assertions.assertThrows(ForbiddenException.class, () -> {
+            authService.signIn(signInVm);
+        });
+
+        assertEquals(forbiddenException.getMessage(), "Account Not Active");
+
+    }
+
+    @Test
+    void signIn_shouldReturn200_whenDataValid() {
+        SignInVm signInVm = new SignInVm("hello", "NoPass");
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(signInVm.username(),
+            signInVm.password());
+        Authentication authentication1 = new Authentication() {
+            @Override
+            public boolean equals(Object another) {
+                return false;
+            }
+
+            @Override
+            public String toString() {
+                return null;
+            }
+
+            @Override
+            public int hashCode() {
+                return 0;
+            }
+
+            @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                return account.getAuthorities();
+            }
+
+            @Override
+            public Object getCredentials() {
+                return null;
+            }
+
+            @Override
+            public Object getDetails() {
+                return null;
+            }
+
+            @Override
+            public Object getPrincipal() {
+                return null;
+            }
+
+            @Override
+            public boolean isAuthenticated() {
+                return true;
+            }
+
+            @Override
+            public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+
+            }
+        };
+
+        when(authenticationManager.authenticate(token)).thenReturn(authentication1);
+        when(authRepository.findByUsername(any())).thenReturn(Optional.of(account));
+        when(jwtUtilities.generateAccessToken(any(), any())).thenReturn("abc-xyz");
+        when(refreshTokenService.generateRefreshToken(any())).thenReturn("123");
+
+        ResponseEntity<AuthResVm> authResExpected = authService.signIn(signInVm);
+
+        Authentication expectedAuthenticate = SecurityContextHolder.getContext().getAuthentication();
+        assertTrue(expectedAuthenticate.isAuthenticated());
+        assertEquals(expectedAuthenticate.getAuthorities().toString(), "[ADMIN]");
+
+        assertEquals(authResExpected.getStatusCode().toString(), "200 OK");
+        AuthResVm resBody = authResExpected.getBody();
+
+        assertNotNull(resBody);
+        assertEquals(resBody.accessToken(), "abc-xyz");
+        assertEquals(resBody.refreshToken(), "123");
+        assertEquals(resBody.accountId(), account.getId());
+        assertEquals(resBody.email(), account.getEmail());
+        assertEquals(resBody.role(), account.getRole().getRoleName().toString());
+    }
+
 }

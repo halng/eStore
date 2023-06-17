@@ -3,7 +3,6 @@ package com.e.store.auth.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,25 +40,5 @@ public class AuthController {
     public String hello() {
         return "hello world";
     }
-    //
-    //    @PutMapping("/{accountId}/deactive")
-    //    public ResponseEntity<?> deActiveAccount(@PathVariable String accountId) {
-    //        return authService.deActiveAccount(accountId);
-    //    }
-    //
-    //    @PutMapping("/{accountId}/active")
-    //    public ResponseEntity<?> activeAccount(@PathVariable(name = "accountId") String accountId) {
-    //        return authService.activeAccount(accountId);
-    //    }
-    //
-    //    @PutMapping("/{accountId}/update")
-    //    public ResponseEntity<?> updateAccount(@PathVariable(name = "accountId") String accountId) {
-    //        return authService.updateAccount();
-    //    }
-    //
-    //    @PostMapping("/refresh-token")
-    //    public ResponseEntity<?> refreshToken(){
-    //        return authService.refreshToken();
-    //    }
 
 }

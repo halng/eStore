@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class UserDetailsServiceTest {
+class UserDetailsServiceTest {
 
     UserDetailsServiceImpl userDetailsService;
     IAuthRepository authRepository;
@@ -35,7 +35,7 @@ public class UserDetailsServiceTest {
                 userDetailsService.loadUserByUsername("username");
             });
 
-        assertEquals(usernameNotFoundException.getMessage(), "Username not found");
+        assertEquals("Username not found", usernameNotFoundException.getMessage());
     }
 
     @Test

@@ -14,10 +14,13 @@ import org.springframework.messaging.handler.annotation.Payload;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({FIELD,ANNOTATION_TYPE, RECORD_COMPONENT, CONSTRUCTOR})
+@Target({FIELD, ANNOTATION_TYPE, RECORD_COMPONENT, CONSTRUCTOR})
 @Constraint(validatedBy = RePassConstraintValidator.class)
 public @interface RePassword {
+
     String message() default "Password And Repeat Password Not Identical";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }
