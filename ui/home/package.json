@@ -1,5 +1,5 @@
 {
-  "name": "common",
+  "name": "home",
   "version": "1.0.0",
   "scripts": {
     "build": "webpack --mode production",
@@ -9,6 +9,10 @@
     "start:live": "webpack serve --open --mode development --live-reload --hot"
   },
   "license": "MIT",
+  "author": {
+    "name": "Jack Herrington",
+    "email": "jherr@pobox.com"
+  },
   "devDependencies": {
     "@babel/core": "^7.15.8",
     "@babel/plugin-transform-runtime": "^7.15.8",
@@ -31,10 +35,8 @@
     "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.13.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.13.0"
   }
 }
