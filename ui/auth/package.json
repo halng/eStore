@@ -32,14 +32,11 @@
     "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.1.1",
-    "@mui/material": "^5.13.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.3",
+    "react-router-dom": "^6.13.0",
     "yup": "^1.2.0"
   }
 }

@@ -47,7 +47,7 @@ module.exports = (_, argv) => ({
       exposes: {
         "./login": "./src/pages/Login",
         "./register": "./src/pages/Register",
-        "./forgotPassword": "./src/pages/ForgotPassword",
+        "./forgot-password": "./src/pages/ForgotPassword",
       },
       shared: {
         ...deps,

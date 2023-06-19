@@ -8,7 +8,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 
 const App = () => (
   <div className="mt-10 text-3xl mx-auto max-w-6xl">
-    <ForgotPassword />
+    <Register />
   </div>
 );
 ReactDOM.render(<App />, document.getElementById("app"));
+  

@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { UserLogin } from "@model";
+import { Link } from "react-router-dom";
 
 const LogIn = () => {
   const { register, handleSubmit } = useForm<UserLogin>();
@@ -69,13 +70,22 @@ const LogIn = () => {
                 Login
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                Forgot password?{" "}
+                <Link
+                  to="/auth/forgot-password"
+                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >
+                  Click here
+                </Link>
+              </p>
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Not have an account?{" "}
-                <a
-                  href="#"
+                <Link
+                  to="/auth/register"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Register here
-                </a>
+                </Link>
               </p>
             </form>
           </div>

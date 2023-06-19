@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { UserRegister } from "@model";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Link } from "react-router-dom";
 
 const validatorSchema: yup.ObjectSchema<UserRegister> = yup
   .object({
@@ -176,12 +177,12 @@ const Register = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
-                <a
-                  href="#"
+                <Link
+                  to="/auth/login"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Login here
-                </a>
+                </Link>
               </p>
             </form>
           </div>
