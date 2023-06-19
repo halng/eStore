@@ -1,10 +1,10 @@
 {
-  "name": "common",
+  "name": "auth",
   "version": "1.0.0",
   "scripts": {
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
-    "build:start": "cd dist && PORT=3000 npx serve",
+    "build:start": "cd dist && PORT=3004 npx serve",
     "start": "webpack serve --open --mode development",
     "start:live": "webpack serve --open --mode development --live-reload --hot"
   },
@@ -21,20 +21,22 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^6.3.0",
     "html-webpack-plugin": "^5.3.2",
+    "jest": "^29.5.0",
     "postcss": "^8.2.1",
     "postcss-loader": "^4.1.0",
     "style-loader": "^3.3.0",
     "tailwindcss": "^2.0.2",
-    "typescript": "^4.5.2",
+    "typescript": "^4.9.5",
     "webpack": "^5.57.1",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.13.5",
+    "@hookform/resolvers": "^3.1.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.3",
+    "react-router-dom": "^6.13.0",
+    "yup": "^1.2.0"
   }
 }
