@@ -8,12 +8,10 @@ import com.e.store.auth.repositories.IVerifyAccountRepository;
 import com.e.store.auth.services.IMessageProducer;
 import com.e.store.auth.viewmodel.res.AuthMessageVm;
 import java.time.Instant;
-import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -68,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
         AuthMessageVm authMessageVm = new AuthMessageVm(account.getEmail(), account.getUsername(),
             createdVerifyAccount.getToken(), createdVerifyAccount.getExpiryDate());
 
-        logger.info(authMessageVm + "Send message for IMessageProducer");
+        logger.info("Send message for IMessageProducer");
         iMessageProducer.sendMessage(authMessageVm);
 
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();

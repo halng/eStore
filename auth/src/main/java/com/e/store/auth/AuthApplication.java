@@ -22,11 +22,6 @@ public class AuthApplication {
     private static final Logger logger  = LoggerFactory.getLogger(AuthApplication.class);
     public static void main (String[] args) {
         logger.info("Starting app ...");
-        logger.trace("Starting app ...");
-        logger.warn("Starting app ...");
-        logger.error("Starting app ...");
-        logger.debug("Starting app ...");
-
         SpringApplication.run(AuthApplication.class, args);
     }
 
