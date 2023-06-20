@@ -1,5 +1,7 @@
 package com.e.store.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,13 +18,22 @@ import com.e.store.auth.repositories.IRoleRepository;
 
 @SpringBootApplication
 public class AuthApplication {
+
+    private static final Logger logger  = LoggerFactory.getLogger(AuthApplication.class);
     public static void main (String[] args) {
+        logger.info("Starting app ...");
+        logger.trace("Starting app ...");
+        logger.warn("Starting app ...");
+        logger.error("Starting app ...");
+        logger.debug("Starting app ...");
+
         SpringApplication.run(AuthApplication.class, args);
     }
 
     @Bean
     CommandLineRunner run (IRoleRepository roleRepository, IAuthRepository authRepository,
                            PasswordEncoder passwordEncoder) {
+        logger.info("create account and role into table");
         return args -> {
             roleRepository.save(Role.builder().roleName(AccountRole.BUYER).build());
             roleRepository.save(Role.builder().roleName(AccountRole.SELLER).build());

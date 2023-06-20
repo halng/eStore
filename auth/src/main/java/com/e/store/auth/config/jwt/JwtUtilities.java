@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -20,13 +22,14 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class JwtUtilities {
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.access.expiration}")
     private Long   jwtExpiration;
+
+    private static final Logger log = LoggerFactory.getLogger(JwtUtilities.class);
 
     public <T> T extractClaim (String accessToken, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(accessToken);
