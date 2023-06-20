@@ -8,10 +8,10 @@ import com.e.store.auth.repositories.IVerifyAccountRepository;
 import com.e.store.auth.services.IMessageProducer;
 import com.e.store.auth.viewmodel.res.AuthMessageVm;
 import java.time.Instant;
-import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +40,7 @@ import jakarta.persistence.EntityNotFoundException;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
     private final IAuthRepository authRepository;
     private final IRoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -51,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
 
     public ResponseEntity<HttpStatus> sendMessageActiveAccount(Account account) {
         if (account.getId() == null) {
+            logger.error("Server can't create account correctly for user");
             throw new InternalErrorException("Server can't create account correctly. Try again!");
         }
 
@@ -64,7 +66,9 @@ public class AuthServiceImpl implements AuthService {
         AuthMessageVm authMessageVm = new AuthMessageVm(account.getEmail(), account.getUsername(),
             createdVerifyAccount.getToken(), createdVerifyAccount.getExpiryDate());
 
+        logger.info("Send message for IMessageProducer");
         iMessageProducer.sendMessage(authMessageVm);
+
         return ResponseEntity.status(HttpStatus.CREATED.value()).build();
     }
 

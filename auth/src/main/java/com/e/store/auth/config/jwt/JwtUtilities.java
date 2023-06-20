@@ -5,6 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -18,15 +20,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class JwtUtilities {
     @Value("${jwt.secret}")
     private String secret;
     @Value("${jwt.access.expiration}")
     private Long   jwtExpiration;
+
+    private static final Logger log = LoggerFactory.getLogger(JwtUtilities.class);
 
     public <T> T extractClaim (String accessToken, Function<Claims, T> claimResolver) {
         final Claims claims = extractAllClaims(accessToken);
@@ -76,23 +78,23 @@ public class JwtUtilities {
         }
         catch (SignatureException e) {
             log.info("Invalid JWT signature.");
-            log.trace("Invalid JWT signature trace: {}", e);
+            log.trace("Invalid JWT signature trace: {0}", e);
         }
         catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
-            log.trace("Invalid JWT token trace: {}", e);
+            log.trace("Invalid JWT token trace: {0}", e);
         }
         catch (ExpiredJwtException e) {
             log.info("Expired JWT token.");
-            log.trace("Expired JWT token trace: {}", e);
+            log.trace("Expired JWT token trace: {0}", e);
         }
         catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
-            log.trace("Unsupported JWT token trace: {}", e);
+            log.trace("Unsupported JWT token trace: {0}", e);
         }
         catch (IllegalArgumentException e) {
             log.info("JWT token compact of handler are invalid.");
-            log.trace("JWT token compact of handler are invalid trace: {}", e);
+            log.trace("JWT token compact of handler are invalid trace: {0}", e);
         }
         return false;
 

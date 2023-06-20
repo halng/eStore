@@ -1,5 +1,7 @@
 package com.e.store.auth.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,33 +14,41 @@ import com.e.store.auth.viewmodel.res.ErrorVm;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler({ BadRequestException.class })
     protected ResponseEntity<ErrorVm> handleBadRequestException (BadRequestException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "BAD REQUEST", HttpStatus.BAD_REQUEST.toString());
+        log.error("Bad request");
         return ResponseEntity.badRequest().body(errorVm);
     }
 
     @ExceptionHandler({ NotFoundException.class, UsernameNotFoundException.class })
     protected ResponseEntity<ErrorVm> handleNotFoundException (RuntimeException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "RESOURCE NOT FOUND", HttpStatus.NOT_FOUND.toString());
+        log.error("Not found: resource not found.");
         return ResponseEntity.status(404).body(errorVm);
     }
 
     @ExceptionHandler({ TokenException.class })
     protected ResponseEntity<ErrorVm> handleTokenException (TokenException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED", HttpStatus.UNAUTHORIZED.toString());
+        log.error("Token exception: authentication failed. Try again!");
         return ResponseEntity.status(401).body(errorVm);
     }
 
     @ExceptionHandler({ ForbiddenException.class })
     protected ResponseEntity<ErrorVm> handleTokenException (ForbiddenException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED", HttpStatus.FORBIDDEN.toString());
+        log.error("ForbiddenException: authentication failed. Try to check credential, please!");
         return ResponseEntity.status(403).body(errorVm);
     }
 
     @ExceptionHandler({ InternalErrorException.class })
     protected ResponseEntity<ErrorVm> handleInternalErrorException (InternalErrorException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "INTERNAL ERROR", HttpStatus.INTERNAL_SERVER_ERROR.toString());
+        log.error("InternalErrorException: internal error");
         return ResponseEntity.status(501).body(errorVm);
     }
 }
