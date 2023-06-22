@@ -41,4 +41,9 @@ public class AuthController {
         return "hello world";
     }
 
+    @GetMapping("hello")
+    public String helloOnly() {
+        return "hello";
+    }
+
 }
