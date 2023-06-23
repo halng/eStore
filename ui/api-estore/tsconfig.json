@@ -69,7 +69,7 @@
   },
   "include": [
     "src/**/*.ts", "test/**/*.ts"
-, "src/index.js"  ],
+, "test/auth.test.js"  ],
   "exclude": [
     "node_modules"
   ]
