@@ -1,0 +1,131 @@
+name: api e store ci
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "ui/api-estore/**"
+      - ".github/workflows/ci/ci-api-estore.yml"
+  pull_request:
+    branches: ["main", "dev"]
+    paths:
+      - "ui/api-estore/**"
+      - ".github/workflows/ci/ci-api-estore.yml"
+
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: set up env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+        working-directory: ui/api-estore
+      - run: npm run build
+        working-directory: ui/api-estore
+      - run: npm run lint && npm run format:check
+        working-directory: ui/api-estore
+
+  security:
+    needs: "analyze"
+    runs-on: "ubuntu-latest"
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ["javascript"]
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+        # Use only 'java' to analyze code written in Java, Kotlin or both
+        # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
+        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+      - name: set up env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+        working-directory: ui/api-estore
+      - run: npm run build
+        working-directory: ui/api-estore
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
+
+  unit-test:
+    needs: security
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+        working-directory: ui/api-estore
+      - run: npm run build
+        working-directory: ui/api-estore
+      - run: npm run junit-test && npm run test:cover
+        working-directory: ui/api-estore
+      - name: Analyze with sonar cloud
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.ref == 'refs/heads/main' }}
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: ui/api-estore
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Unit Test Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+            name: JEST Tests            # Name of the check run which will be created
+            path: ui/api-estore/reports/jest-junit.xml    # Path to test results
+            reporter: jest-junit   
+
+  published:
+    needs: unit-test
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: checkout version
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: set up env
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+      - name: install dependency
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: npm ci
+        working-directory: ui/api-estore
+      - name: Publish package
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: npm publish
+        working-directory: ui/api-estore
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 

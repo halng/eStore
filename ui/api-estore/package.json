@@ -10,8 +10,8 @@
     "test": "jest --watch",
     "test:cover": "jest --coverage",
     "junit-test": "jest --ci --reporters=default --reporters=jest-junit",
-    "format": "npx prettier src/ tests/ --write",
-    "format:check": "npx prettier src/ tests/ -c"
+    "format": "npx prettier src/ test/ --write",
+    "format:check": "npx prettier src/ test/ -c"
   },
   "jest-junit": {
     "outputDirectory": "reports",
@@ -23,6 +23,7 @@
     "titleTemplate": "{title}"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.22.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/jest": "^29.5.2",
@@ -31,6 +32,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.22.5",
     "axios": "^1.4.0",
     "jest-junit": "^16.0.0",
     "prettier": "^2.8.8"
