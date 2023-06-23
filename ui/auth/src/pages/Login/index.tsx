@@ -3,7 +3,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { UserLogin } from "@model";
 import { Link } from "react-router-dom";
 
-
 const LogIn = () => {
   const { register, handleSubmit } = useForm<UserLogin>();
 
