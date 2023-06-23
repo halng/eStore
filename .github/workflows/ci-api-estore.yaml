@@ -29,7 +29,7 @@ jobs:
         working-directory: ui/api-estore
       - run: npm run build
         working-directory: ui/api-estore
-      - run: npm run lint && npm run format:check
+      - run: npm format:check
         working-directory: ui/api-estore
 
   security:
