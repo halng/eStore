@@ -33,7 +33,7 @@ public class SecurityConfig {
                                                            "/swagger-ui.html", "/swagger-ui/**", "/api-docs/**",
                                                            "/error")
                                                        .permitAll()
-                                                       .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login")
+                                                       .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/hello")
                                                        .permitAll()
                                                        .requestMatchers("/api/v1/auth/grant").hasAuthority("ADMIN")
                                                        .anyRequest().authenticated());
