@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="0" errors="0" time="0.397">
-  <testsuite name="test/auth.test.js" errors="0" failures="0" skipped="0" timestamp="2023-06-23T02:37:02" time="0.369" tests="1">
-    <testcase classname="Test Auth API" name="Return Unauthenticated when password or username wrong" time="0.011">
-    </testcase>
-  </testsuite>
-</testsuites>
