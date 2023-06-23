@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
+    "api-estore": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.3",
