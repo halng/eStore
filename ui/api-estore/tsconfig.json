@@ -69,7 +69,7 @@
   },
   "include": [
     "src/**/*.ts", "test/**/*.ts"
-  ],
+, "src/index.js"  ],
   "exclude": [
     "node_modules"
   ]
