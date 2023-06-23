@@ -6,7 +6,6 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "lint": "next lint",
     "test": "jest --watch",
     "test:cover": "jest --coverage",
     "junit-test": "jest --ci --reporters=default --reporters=jest-junit",
