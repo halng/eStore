@@ -1,5 +1,5 @@
-"use strict"
+'use strict';
 
-import authAPI from "./auth";
+import authAPI from './auth';
 
-module.exports =  authAPI
+module.exports = authAPI;
