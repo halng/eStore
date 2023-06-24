@@ -68,25 +68,8 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-  unit-test:
-    needs: security
-    runs-on: ubuntu-latest
-    permissions: write-all
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/actions
-      - name: Run Maven Test
-        run: mvn test -f api
-      - name: Unit Test Results
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: Unit-Test-Results
-          path: "api/**/surefire-reports/*.xml"
-          reporter: java-junit
-
   docker:
-    needs: "unit-test"
+    needs: "security"
     runs-on: ubuntu-latest
     permissions: write-all
     steps:

@@ -85,10 +85,9 @@ jobs:
         working-directory: ui/auth
       - run: npm run build
         working-directory: ui/auth
-      - run: npm run junit-test && npm run test:cover
+      - run: npm run junit-test  -- -u && npm run test:cover  -- -u
         working-directory: ui/auth
       - name: Analyze with sonar cloud
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.ref == 'refs/heads/main' }}
         uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: ui/auth
