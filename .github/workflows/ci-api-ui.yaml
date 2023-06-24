@@ -118,7 +118,7 @@ jobs:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
       - name: install dependency
-        run: npm ci
+        run: npm ci && npm run build
         working-directory: ui/api-estore
       - name: Publish package
         run: npm publish
