@@ -109,22 +109,18 @@ jobs:
     permissions: write-all
     steps:
       - name: checkout version
-        if: ${{ github.ref == 'refs/heads/main' }}
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: set up env
-        if: ${{ github.ref == 'refs/heads/main' }}
         uses: actions/setup-node@v3
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
       - name: install dependency
-        if: ${{ github.ref == 'refs/heads/main' }}
         run: npm ci
         working-directory: ui/api-estore
       - name: Publish package
-        if: ${{ github.ref == 'refs/heads/main' }}
         run: npm publish
         working-directory: ui/api-estore
         env:
