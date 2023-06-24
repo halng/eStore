@@ -1,14 +1,15 @@
 package com.e.store.api;
 
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
 
-class ApiApplicationTests {
+import org.junit.Test;
+
+public class ApiApplicationTests {
 
 	@Test
-	void greeting() {
+	void greeting () {
 		String msg = "Hello";
-		Assert.assertEquals(msg, "Hello");
+		assertEquals("Hello", msg);
 	}
 
 }
