@@ -1,6 +1,6 @@
 export type UserRegister = {
   username: string;
   password: string;
-  repeatPassword: string;
+  rePassword: string;
   email: string;
 };

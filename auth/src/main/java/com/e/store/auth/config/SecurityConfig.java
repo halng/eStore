@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.e.store.auth.config.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity(debug = false)
@@ -49,6 +51,17 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer () {
         return web -> web.ignoring().requestMatchers(
             "/actuator/prometheus", "/swagger-ui", "/swagger-ui/**", "/error", "/v3/api-docs/**");
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedMethods("*").allowedOrigins("*")
+                    .allowedHeaders("*");
+            }
+        };
     }
 
     @Bean

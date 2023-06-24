@@ -116,3 +116,5 @@ dist
 .pnp.*
 
 .vscode
+tests/__snapshots__
+reports/
