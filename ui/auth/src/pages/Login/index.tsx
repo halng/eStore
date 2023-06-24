@@ -2,12 +2,15 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { UserLogin } from "@model";
 import { Link } from "react-router-dom";
-
+import { AuthAPI } from "api-estore/dist";
 
 const LogIn = () => {
   const { register, handleSubmit } = useForm<UserLogin>();
 
   const onSubmitHandler: SubmitHandler<UserLogin> = (data) => {
+    AuthAPI.login(data)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
     console.log(data);
   };
 

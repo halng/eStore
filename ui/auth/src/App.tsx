@@ -5,10 +5,7 @@ import "./index.scss";
 import Register from "./pages/Register";
 
 const App = () => (
-  <div className="mt-10 text-3xl mx-auto max-w-6xl">
-    {/* <Register /> */}
-  </div>
+  <div className="mt-10 text-3xl mx-auto max-w-6xl">{/* <Register /> */}</div>
 );
 
 ReactDOM.render(<App />, document.getElementById("app"));
-  

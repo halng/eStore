@@ -4,6 +4,7 @@ import { UserRegister } from "@model";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
+import { AuthAPI } from "api-estore/dist";
 
 const validatorSchema: yup.ObjectSchema<UserRegister> = yup
   .object({
@@ -15,7 +16,7 @@ const validatorSchema: yup.ObjectSchema<UserRegister> = yup
         "Minimum 8 and maximum 30 characters, at least one uppercase letter, one lowercase letter, one number and one special character"
       )
       .required("Password is required"),
-    repeatPassword: yup
+    rePassword: yup
       .string()
       .oneOf([yup.ref("password")], "repeat password doesn't match")
       .required("Repeat password is required"),
@@ -33,6 +34,16 @@ const Register = () => {
   } = useForm<UserRegister>({ resolver: yupResolver(validatorSchema) });
 
   const onSubmitHandler: SubmitHandler<UserRegister> = (data) => {
+    const body = {
+      username: data.username,
+      password: data.password,
+      rePassword: data.rePassword,
+      role: 1,
+      email: data.email,
+    };
+    AuthAPI.register(body)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
     console.log(data);
   };
 
@@ -128,14 +139,14 @@ const Register = () => {
                 </label>
                 <input
                   type="password"
-                  {...register("repeatPassword")}
+                  {...register("rePassword")}
                   id="confirm-password"
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
-                {errors.repeatPassword && (
+                {errors.rePassword && (
                   <p className="text-xs text-red-600 dark:text-white">
-                    {errors.repeatPassword.message}
+                    {errors.rePassword.message}
                   </p>
                 )}
               </div>
