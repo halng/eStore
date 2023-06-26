@@ -57,7 +57,7 @@ USER userreact
 
 COPY ./package.json /app
 COPY ./package-lock.json /app
-RUN npm install --ignore-scripts
+RUN npm ci
 
 COPY . .
 
