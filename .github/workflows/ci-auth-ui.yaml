@@ -108,28 +108,28 @@ jobs:
     permissions: write-all
     steps:
       - name: checkout version
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: set up env
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: install deplendency
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/main' }}
         run: npm ci && npm run build
         working-directory: ui/auth
       - name: Log in to the Container registry
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.TOKEN_MASTER }}
       - name: Build and push Docker images
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: docker/build-push-action@v3
         with:
           context: ./ui/auth
