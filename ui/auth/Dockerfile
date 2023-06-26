@@ -52,9 +52,15 @@
 FROM node:18-alpine
 WORKDIR /app
 
+RUN adduser --system --uid 1001 userreact
+USER userreact
+
 COPY ./package.json /app
 
-RUN npm i
+RUN npm install --ignore-scripts
 
 COPY . .
+
+EXPOSE 3004
+
 CMD [ "npm", "run", "start" ]
