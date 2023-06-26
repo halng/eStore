@@ -56,7 +56,7 @@ RUN adduser --system --uid 1001 userreact
 USER userreact
 
 COPY ./package.json /app
-
+COPY ./package-lock.json /app
 RUN npm install --ignore-scripts
 
 COPY . .
