@@ -52,8 +52,6 @@
 FROM node:18-alpine
 WORKDIR /app
 
-RUN adduser --system --uid 1001 userreact
-USER userreact
 
 COPY ./package.json /app
 COPY ./package-lock.json /app
