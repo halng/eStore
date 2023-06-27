@@ -48,7 +48,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ InternalErrorException.class })
     protected ResponseEntity<ErrorVm> handleInternalErrorException (InternalErrorException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "INTERNAL ERROR", HttpStatus.INTERNAL_SERVER_ERROR.toString());
-        log.error("InternalErrorException: internal error");
+        log.error("InternalErrorException: {}", exception.getMessage());
         return ResponseEntity.status(501).body(errorVm);
     }
 }

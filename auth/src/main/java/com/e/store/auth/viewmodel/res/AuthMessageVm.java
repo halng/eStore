@@ -1,7 +1,9 @@
 package com.e.store.auth.viewmodel.res;
 
-import java.time.Instant;
+import com.google.gson.Gson;
 
-public record AuthMessageVm(String email, String username, String activeToken, Instant expiryDate) {
-
+public record AuthMessageVm(String email, String username, String activeToken, Long expiryDate) {
+    public String toStringWithJsonFormat() {
+        return new Gson().toJson(this);
+    }
 }

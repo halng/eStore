@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         String token = UUID.randomUUID().toString();
-        Instant expiryDate = Instant.now().plusSeconds(Const.DEFAULT_TIME_EXPIRY_CONFIRM_ACCOUNT);
+        Long expiryDate = Instant.now().plusSeconds(Const.DEFAULT_TIME_EXPIRY_CONFIRM_ACCOUNT).getEpochSecond();
         VerifyAccount verifyAccount = VerifyAccount.builder().token(token).account(account).expiryDate(expiryDate)
             .build();
 
