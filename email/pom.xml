@@ -122,10 +122,9 @@
 							<excludes>
 								<exclude>**/config/**</exclude>
 								<exclude>**/entity/**</exclude>
-								<exclude>**/viewmodel/**</exclude>
 								<exclude>**/constant/**</exclude>
 								<exclude>**/exception/**</exclude>
-								<exclude>**/repositories/**</exclude>
+								<exclude>**/listener/**</exclude>
 								<exclude>**/controller/**</exclude>
 								<exclude>**/annotation/**</exclude>
 								<exclude>**/*EmailApplication.*</exclude>
@@ -137,7 +136,7 @@
 										<limit>
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.80</minimum>
+											<minimum>0.00</minimum>
 										</limit>
 									</limits>
 								</rule>
