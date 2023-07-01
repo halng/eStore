@@ -1,8 +1,7 @@
 package com.e.store.auth.services;
 
-import org.springframework.stereotype.Service;
-
 import com.e.store.auth.entity.Account;
+import org.springframework.stereotype.Service;
 
 @Service
 public interface IRefreshTokenService {

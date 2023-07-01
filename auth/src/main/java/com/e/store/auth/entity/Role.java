@@ -1,9 +1,7 @@
 package com.e.store.auth.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Set;
-
 import com.e.store.auth.constant.AccountRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

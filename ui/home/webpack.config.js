@@ -45,7 +45,7 @@ module.exports = (_, argv) => ({
       filename: "remoteEntry.js",
       remotes: {
         auth: "auth@http://localhost:3004/remoteEntry.js",
-        common: "common@http://localhost:3004/remoteEntry.js",
+        common: "common@http://localhost:3005/remoteEntry.js",
       },
       exposes: {},
       shared: {

@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailService {
         try {
             // prepare context
             Context context = new Context();
-            String url = "http://localhost:9091" + authMessageVm.getUrlConfirm();
+            String url = "http://localhost:3000/auth" + authMessageVm.getUrlConfirm();
             URI activeUrl = new URI(url);
             context.setVariable("username", authMessageVm.username());
             context.setVariable("activeUrl", activeUrl.toURL());

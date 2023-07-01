@@ -10,8 +10,8 @@
     "test": "jest --watch",
     "test:cover": "jest --coverage",
     "junit-test": "jest --ci --reporters=default --reporters=jest-junit",
-    "format": "npx prettier src/ tests/ --write",
-    "format:check": "npx prettier src/ tests/ -c"
+    "format": "npx prettier src/  --write",
+    "format:check": "npx prettier src/  -c"
   },
   "jest-junit": {
     "outputDirectory": "reports",
@@ -34,7 +34,7 @@
     "@types/jest": "^29.5.2",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.2",
-    "api-estore": "^1.0.4",
+    "api-estore": "^1.0.6",
     "autoprefixer": "^10.1.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^6.3.0",

@@ -1,5 +1,8 @@
 package com.e.store.auth.config;
 
+import com.e.store.auth.config.jwt.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,10 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.e.store.auth.config.jwt.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -35,7 +34,7 @@ public class SecurityConfig {
                                                            "/swagger-ui.html", "/swagger-ui/**", "/api-docs/**",
                                                            "/error")
                                                        .permitAll()
-                                                       .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/hello")
+                                                       .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/hello", "/api/v1/auth/active-account/**")
                                                        .permitAll()
                                                        .requestMatchers("/api/v1/auth/grant").hasAuthority("ADMIN")
                                                        .anyRequest().authenticated());
