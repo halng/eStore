@@ -118,7 +118,7 @@ class AuthServiceTest {
     void signUp_ShouldReturnCreated_WhenDataValid() {
         SignUpVm signUpVm = new SignUpVm("test", "test_pass", "test_pass", 1L, "test@gmail.com");
         VerifyAccount verifyAccount = VerifyAccount.builder().token("token").account(account)
-            .expiryDate(Instant.now().plusSeconds(Const.DEFAULT_TIME_EXPIRY_CONFIRM_ACCOUNT)).build();
+            .expiryDate(Instant.now().plusSeconds(Const.DEFAULT_TIME_EXPIRY_CONFIRM_ACCOUNT).getEpochSecond()).build();
         role.setId(1L);
         role.setRoleName(AccountRole.BUYER);
 

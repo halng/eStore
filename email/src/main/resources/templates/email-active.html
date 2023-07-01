@@ -23,7 +23,7 @@
     <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
       <p>Dear <b th:text="${username}"></b>,</p>
       <p>Sending Email using form eStore for activating your account. The link will expire after <b th:text="${expiredDate}"></b></p>
-      <p>Please click to this <a href="@{activeUrl}">link</a> to activate. </p>
+      <p>Please click to this <a th:href="@{${activeUrl}}">link</a> to activate. </p>
       <p>Thanks</p>
     </td>
   </tr>
