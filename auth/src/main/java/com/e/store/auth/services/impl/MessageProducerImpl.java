@@ -6,6 +6,8 @@ import com.e.store.auth.viewmodel.res.AuthMessageVm;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,16 +18,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MessageProducerImpl implements IMessageProducer {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(MessageProducerImpl.class);
     @Value("${kafka.topic}")
     private String topicName;
 
     @Autowired
-    private final KafkaTemplate<String, AuthMessageVm> kafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public void sendMessage(AuthMessageVm authMessageVm) {
-        CompletableFuture<SendResult<String, AuthMessageVm>> future = kafkaTemplate.send(topicName, authMessageVm);
+        LOGGER.info("Start send message to kafka topic to active account: {}", authMessageVm.username());
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName, authMessageVm.toStringWithJsonFormat());
 
         future.whenComplete((result, ex) -> {
             if (ex == null) {

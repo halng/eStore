@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +31,7 @@ public class VerifyAccount {
     private String token;
 
     @Column(name = "expiry_date")
-    private Instant expiryDate;
+    private Long expiryDate;
 
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")
