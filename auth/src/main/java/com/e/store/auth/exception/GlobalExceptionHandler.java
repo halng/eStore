@@ -1,5 +1,6 @@
 package com.e.store.auth.exception;
 
+import com.e.store.auth.viewmodel.res.ErrorVm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -10,44 +11,45 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.e.store.auth.viewmodel.res.ErrorVm;
-
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({ BadRequestException.class })
-    protected ResponseEntity<ErrorVm> handleBadRequestException (BadRequestException exception, WebRequest webRequest) {
+    @ExceptionHandler({BadRequestException.class})
+    protected ResponseEntity<ErrorVm> handleBadRequestException(BadRequestException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "BAD REQUEST", HttpStatus.BAD_REQUEST.toString());
-        log.error("Bad request");
+        log.error("Bad request: {}", exception.getMessage());
         return ResponseEntity.badRequest().body(errorVm);
     }
 
-    @ExceptionHandler({ NotFoundException.class, UsernameNotFoundException.class })
-    protected ResponseEntity<ErrorVm> handleNotFoundException (RuntimeException exception, WebRequest webRequest) {
+    @ExceptionHandler({NotFoundException.class, UsernameNotFoundException.class})
+    protected ResponseEntity<ErrorVm> handleNotFoundException(RuntimeException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "RESOURCE NOT FOUND", HttpStatus.NOT_FOUND.toString());
-        log.error("Not found: resource not found.");
+        log.error("Not found: {}", exception.getMessage());
         return ResponseEntity.status(404).body(errorVm);
     }
 
-    @ExceptionHandler({ TokenException.class })
-    protected ResponseEntity<ErrorVm> handleTokenException (TokenException exception, WebRequest webRequest) {
-        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED", HttpStatus.UNAUTHORIZED.toString());
-        log.error("Token exception: authentication failed. Try again!");
+    @ExceptionHandler({TokenException.class})
+    protected ResponseEntity<ErrorVm> handleTokenException(TokenException exception, WebRequest webRequest) {
+        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED",
+            HttpStatus.UNAUTHORIZED.toString());
+        log.error("Token exception: authentication failed. Try again!. Detail: {}", exception.getMessage() );
         return ResponseEntity.status(401).body(errorVm);
     }
 
-    @ExceptionHandler({ ForbiddenException.class })
-    protected ResponseEntity<ErrorVm> handleTokenException (ForbiddenException exception, WebRequest webRequest) {
+    @ExceptionHandler({ForbiddenException.class})
+    protected ResponseEntity<ErrorVm> handleTokenException(ForbiddenException exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED", HttpStatus.FORBIDDEN.toString());
-        log.error("ForbiddenException: authentication failed. Try to check credential, please!");
+        log.error("ForbiddenException: {}", exception.getMessage());
         return ResponseEntity.status(403).body(errorVm);
     }
 
-    @ExceptionHandler({ InternalErrorException.class })
-    protected ResponseEntity<ErrorVm> handleInternalErrorException (InternalErrorException exception, WebRequest webRequest) {
-        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "INTERNAL ERROR", HttpStatus.INTERNAL_SERVER_ERROR.toString());
+    @ExceptionHandler({InternalErrorException.class})
+    protected ResponseEntity<ErrorVm> handleInternalErrorException(InternalErrorException exception,
+        WebRequest webRequest) {
+        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "INTERNAL ERROR",
+            HttpStatus.INTERNAL_SERVER_ERROR.toString());
         log.error("InternalErrorException: {}", exception.getMessage());
         return ResponseEntity.status(501).body(errorVm);
     }

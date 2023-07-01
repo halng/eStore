@@ -1,12 +1,27 @@
 package com.e.store.auth.services.impl;
 
+import com.e.store.auth.config.jwt.JwtUtilities;
+import com.e.store.auth.constant.AccountStatus;
 import com.e.store.auth.constant.Const;
+import com.e.store.auth.entity.Account;
+import com.e.store.auth.entity.Role;
 import com.e.store.auth.entity.VerifyAccount;
+import com.e.store.auth.exception.BadRequestException;
 import com.e.store.auth.exception.ForbiddenException;
 import com.e.store.auth.exception.InternalErrorException;
+import com.e.store.auth.exception.NotFoundException;
+import com.e.store.auth.exception.TokenException;
+import com.e.store.auth.repositories.IAuthRepository;
+import com.e.store.auth.repositories.IRoleRepository;
 import com.e.store.auth.repositories.IVerifyAccountRepository;
+import com.e.store.auth.services.AuthService;
 import com.e.store.auth.services.IMessageProducer;
+import com.e.store.auth.services.IRefreshTokenService;
+import com.e.store.auth.viewmodel.req.SignInVm;
+import com.e.store.auth.viewmodel.req.SignUpVm;
 import com.e.store.auth.viewmodel.res.AuthMessageVm;
+import com.e.store.auth.viewmodel.res.AuthResVm;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -21,20 +36,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.e.store.auth.config.jwt.JwtUtilities;
-import com.e.store.auth.constant.AccountStatus;
-import com.e.store.auth.entity.Account;
-import com.e.store.auth.entity.Role;
-import com.e.store.auth.exception.BadRequestException;
-import com.e.store.auth.repositories.IAuthRepository;
-import com.e.store.auth.repositories.IRoleRepository;
-import com.e.store.auth.services.AuthService;
-import com.e.store.auth.services.IRefreshTokenService;
-import com.e.store.auth.viewmodel.req.SignInVm;
-import com.e.store.auth.viewmodel.req.SignUpVm;
-import com.e.store.auth.viewmodel.res.AuthResVm;
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -118,7 +119,7 @@ public class AuthServiceImpl implements AuthService {
 
         Account account = getAccountByUsername(authentication.getName());
 
-        if (!account.getStatus().equals(AccountStatus.ACTIVE)){
+        if (!account.getStatus().equals(AccountStatus.ACTIVE)) {
             throw new ForbiddenException("Account Not Active");
         }
 
@@ -129,5 +130,28 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return ResponseEntity.status(200).body(AuthResVm.fromAccount(accessToken, refreshToken, account));
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> activeAccount(String token, String email) {
+        logger.info("Receive request to active account from {}", email);
+
+        Account account = this.authRepository.findByEmail(email)
+            .orElseThrow(() -> new NotFoundException("Account with email: %s not found".formatted(email)));
+        if (!account.getStatus().equals(AccountStatus.INACTIVE)) {
+            throw new BadRequestException("Account already active");
+        }
+
+        VerifyAccount verifyAccount = iVerifyAccountRepository.findByToken(token)
+            .orElseThrow(() -> new NotFoundException("Token: %s not found".formatted(token)));
+        if (Instant.now().isAfter(Instant.ofEpochSecond(verifyAccount.getExpiryDate()))) {
+            throw new TokenException("Token expired");
+        }
+
+        account.setStatus(AccountStatus.ACTIVE);
+        authRepository.save(account);
+        iVerifyAccountRepository.delete(verifyAccount);
+
+        return ResponseEntity.status(200).build();
     }
 }

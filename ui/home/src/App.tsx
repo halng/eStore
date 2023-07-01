@@ -7,6 +7,7 @@ import { LandingPage } from "./pages";
 import Register from "auth/register";
 import Login from "auth/login";
 import ForgotPassword from "auth/forgot-password";
+import ActiveAccount from "auth/active-account";
 
 const App = () => (
   <div className="mt-10 text-3xl mx-auto max-w-6xl">
@@ -17,6 +18,7 @@ const App = () => (
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="active-account" element={<ActiveAccount />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -13,6 +13,8 @@ import com.e.store.auth.constant.Const;
 import com.e.store.auth.entity.VerifyAccount;
 import com.e.store.auth.exception.ForbiddenException;
 import com.e.store.auth.exception.InternalErrorException;
+import com.e.store.auth.exception.NotFoundException;
+import com.e.store.auth.exception.TokenException;
 import com.e.store.auth.repositories.IVerifyAccountRepository;
 import com.e.store.auth.services.AuthService;
 import com.e.store.auth.services.IMessageProducer;
@@ -331,4 +333,70 @@ class AuthServiceTest {
         assertEquals(resBody.role(), account.getRole().getRoleName().toString());
     }
 
+    @Test
+    void activeAccount_shouldThrowNotFoundException_whenEmailNotExits() {
+        when(authRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        NotFoundException notFoundException = Assertions.assertThrows(NotFoundException.class, () -> {
+            authService.activeAccount("token", "email@gmail");
+        });
+
+        assertEquals(notFoundException.getMessage(), "Account with email: %s not found".formatted("email@gmail"));
+    }
+
+    @Test
+    void activeAccount_shouldThrowBadRequestException_whenAccountAlreadyActive() {
+        when(authRepository.findByEmail(anyString())).thenReturn(Optional.of(account));
+
+        BadRequestException exception = Assertions.assertThrows(BadRequestException.class, () -> {
+            authService.activeAccount("token", "email@gmail");
+        });
+
+        assertEquals("Account already active", exception.getMessage());
+
+    }
+
+    @Test
+    void activeAccount_shouldThrowNotFoundException_whenTokenNotValid() {
+        account.setStatus(AccountStatus.INACTIVE);
+        when(authRepository.findByEmail(anyString())).thenReturn(Optional.of(account));
+        when(iVerifyAccountRepository.findByToken("123-323")).thenReturn(Optional.empty());
+
+        NotFoundException notFoundException = Assertions.assertThrows(NotFoundException.class, () -> {
+            authService.activeAccount("123-323", "email@gmail");
+        });
+
+        assertEquals(notFoundException.getMessage(),"Token: %s not found".formatted("123-323"));
+
+    }
+
+    @Test
+    void activeAccount_shouldThrowTokenException_whenTokenExpired() {
+        account.setStatus(AccountStatus.INACTIVE);
+        VerifyAccount verifyAccount = VerifyAccount.builder().expiryDate(Instant.now().getEpochSecond() - 1000).build();
+        when(authRepository.findByEmail(anyString())).thenReturn(Optional.of(account));
+        when(iVerifyAccountRepository.findByToken("123-323")).thenReturn(Optional.of(verifyAccount));
+
+        TokenException exception = Assertions.assertThrows(TokenException.class, () -> {
+            authService.activeAccount("123-323", "email@gmail");
+        });
+
+        assertEquals("Token expired", exception.getMessage());
+
+    }
+
+    @Test
+    void activeAccount_shouldThrowTokenException_whenDataValid() {
+        account.setStatus(AccountStatus.INACTIVE);
+        VerifyAccount verifyAccount = VerifyAccount.builder().expiryDate(Instant.now().getEpochSecond() + 1000).build();
+        when(authRepository.findByEmail(anyString())).thenReturn(Optional.of(account));
+        when(iVerifyAccountRepository.findByToken("123-323")).thenReturn(Optional.of(verifyAccount));
+        when(authRepository.save(account)).thenReturn(account);
+
+        ResponseEntity<HttpStatus> result =  authService.activeAccount("123-323", "email@gmail");
+
+
+        assertEquals("200 OK", result.getStatusCode().toString());
+
+    }
 }
