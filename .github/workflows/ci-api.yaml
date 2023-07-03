@@ -6,13 +6,13 @@ on:
     paths:
       - "api/**"
       - ".github/workflows/action-be/**"
-      - ".github/workflows/ci-api.yml"
+      - ".github/workflows/ci-api.yaml"
   pull_request:
     branches: ["main", "dev"]
     paths:
       - "api/**"
       - ".github/workflows/action-be/**"
-      - ".github/workflows/ci-api.yml"
+      - ".github/workflows/ci-api.yaml"
 
   workflow_dispatch:
 
