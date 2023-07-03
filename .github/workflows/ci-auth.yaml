@@ -110,4 +110,4 @@ jobs:
         with:
           context: ./auth
           push: true
-          tags: ghcr.io/tanhaoke/estore-auth:latest
+          tags: tanhaoke/estore-auth:latest
