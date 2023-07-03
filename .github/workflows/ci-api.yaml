@@ -6,13 +6,13 @@ on:
     paths:
       - "api/**"
       - ".github/workflows/action-be/**"
-      - ".github/workflows/ci-api.yml"
+      - ".github/workflows/ci-api.yaml"
   pull_request:
     branches: ["main", "dev"]
     paths:
       - "api/**"
       - ".github/workflows/action-be/**"
-      - ".github/workflows/ci-api.yml"
+      - ".github/workflows/ci-api.yaml"
 
   workflow_dispatch:
 
@@ -88,13 +88,12 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.TOKEN_MASTER }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and push Docker images
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: docker/build-push-action@v3
         with:
           context: ./api
           push: true
-          tags: ghcr.io/tanhaok/estore-api:latest
+          tags: tanhaoke/api-estore:latest
