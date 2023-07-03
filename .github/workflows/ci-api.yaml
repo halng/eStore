@@ -68,31 +68,32 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  docker:
+    needs: "security"
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
-      - name: Check out the repo
+      - name: checkout version
+        if: ${{ github.ref == 'refs/heads/main' }}
         uses: actions/checkout@v3
-      
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: set up env
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: ./.github/workflows/actions
+      - name: Run Maven Build Command
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: mvn clean install -DskipTests -f api
+      - name: Log in to the Container registry
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: tanhaoke/api-estore
-      
-      - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+      - name: Build and push Docker images
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: docker/build-push-action@v3
         with:
           context: ./api
-          file: ./Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: tanhaoke/api-estore:latest
