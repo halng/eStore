@@ -13,8 +13,8 @@
     "test": "jest --watch",
     "test:cover": "jest --coverage",
     "junit-test": "jest --ci --reporters=default --reporters=jest-junit",
-    "format": "npx prettier src/ test/ --write",
-    "format:check": "npx prettier src/ test/ -c"
+    "format": "npx prettier src/  --write",
+    "format:check": "npx prettier src/  -c"
   },
   "files": [
     "dist",
