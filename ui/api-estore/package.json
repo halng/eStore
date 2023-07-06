@@ -1,6 +1,6 @@
 {
   "name": "api-estore",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -13,8 +13,8 @@
     "test": "jest --watch",
     "test:cover": "jest --coverage",
     "junit-test": "jest --ci --reporters=default --reporters=jest-junit",
-    "format": "npx prettier src/ test/ --write",
-    "format:check": "npx prettier src/ test/ -c"
+    "format": "npx prettier src/  --write",
+    "format:check": "npx prettier src/  -c"
   },
   "files": [
     "dist",
