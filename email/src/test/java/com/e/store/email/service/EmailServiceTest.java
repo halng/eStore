@@ -31,7 +31,7 @@ public class EmailServiceTest {
     void setUp(){
 //        javaMailSender = mock(JavaMailSender.class);
         templateEngine = mock(TemplateEngine.class);
-        emailService = new EmailServiceImpl();
+        emailService = new EmailServiceImpl(javaMailSender, templateEngine);
         ReflectionTestUtils.setField(emailService, "sender", "me");
         authMessageVm = new AuthMessageVm("email", "username", "123-344", 10000L);
     }
