@@ -21,11 +21,16 @@ public class LoggingConfig implements GlobalFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        Set<URI> uris = exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR, Collections.emptySet());
-        String originalUri = (uris.isEmpty()) ? "Unknown" : uris.iterator().next().toString();
-        Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
-        URI routeUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
-        log.info("Incoming request {0} is routed to id: {1}, uri: {2}", originalUri, route.getId(), routeUri);
-        return chain.filter(exchange);
+        try{
+            Set<URI> uris = exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR, Collections.emptySet());
+            String originalUri = (uris.isEmpty()) ? "Unknown" : uris.iterator().next().toString();
+            Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
+            URI routeUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
+            log.info("Incoming request {0} is routed to id: {1}, uri: {2}", originalUri, route.getId(), routeUri);
+            return chain.filter(exchange);
+        }catch (NullPointerException e) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 }
