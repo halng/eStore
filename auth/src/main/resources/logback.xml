@@ -40,8 +40,13 @@
 
   <!-- LOG "com.e.store*" at TRACE level -->
   <logger name="com.e.store" level="trace" additivity="false">
-    <appender-ref ref="RollingFile" />
+    <appender-ref ref="RollingFile" />s
     <appender-ref ref="Console" />
+  </logger>
+
+  <!-- LOG for all incoming request -->
+  <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+    <level value="DEBUG" />
   </logger>
 
 </configuration>

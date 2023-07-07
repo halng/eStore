@@ -1,11 +1,9 @@
 package com.e.store.email.service;
 
-import com.e.store.email.exception.ActiveAccountException;
-import com.e.store.email.viewmodel.res.AuthMessageVm;
-import jakarta.mail.internet.MimeMessage;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import com.e.store.email.exception.ActiveAccountException;
+import com.e.store.email.viewmodel.res.AuthMessageVm;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl implements EmailService {

@@ -1,8 +1,9 @@
 package com.e.store.email.viewmodel.res;
 
+import java.time.Instant;
+
 import com.e.store.email.exception.ActiveAccountTimeOutException;
 import com.google.gson.JsonObject;
-import java.time.Instant;
 
 public record AuthMessageVm(String email, String username, String activeToken, Long expiryDate) {
 
