@@ -4,7 +4,7 @@ const isIgnore = (url: string | undefined) => {
   if (url === undefined || url === '') {
     return true;
   }
-  IGNORE_AUTH_URL.map((item) => {
+  IGNORE_AUTH_URL.forEach((item) => {
     if (item.indexOf(url) > 0) {
       return false;
     }
