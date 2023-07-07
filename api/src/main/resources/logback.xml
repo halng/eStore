@@ -44,9 +44,5 @@
     <appender-ref ref="Console" />
   </logger>
 
-  <!-- LOG for all incoming request -->
-  <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
-    <level value="DEBUG" />
-  </logger>
 
 </configuration>

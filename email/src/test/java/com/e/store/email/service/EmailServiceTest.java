@@ -7,8 +7,8 @@ import static org.mockito.Mockito.when;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -31,7 +31,7 @@ public class EmailServiceTest {
     void setUp(){
 //        javaMailSender = mock(JavaMailSender.class);
         templateEngine = mock(TemplateEngine.class);
-        emailService = new EmailServiceImpl();
+        emailService = new EmailServiceImpl(javaMailSender, templateEngine);
         ReflectionTestUtils.setField(emailService, "sender", "me");
         authMessageVm = new AuthMessageVm("email", "username", "123-344", 10000L);
     }

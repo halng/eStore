@@ -8,8 +8,13 @@ spring:
     active: "dev"
 
 logging:
-  pattern:
-    level: ""
+  level:
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
 
 ---
 spring:
