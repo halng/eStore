@@ -1,15 +1,22 @@
 {
   "name": "ui",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start-all": "concurrently \"npm run start-auth\" \"npm run start-home\" ",
-    "start-common": "cd common && npm install && npm run start",
-    "start-home": "cd home && npm install && npm run start",
-    "start-auth": "cd auth && npm install && npm run start",
-    "start-store": "cd store && npm install && npm run start"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "license": "MIT",
   "dependencies": {
-    "concurrently": "^8.2.0"
+    "@types/node": "20.4.1",
+    "@types/react": "18.2.14",
+    "@types/react-dom": "18.2.6",
+    "eslint": "8.44.0",
+    "eslint-config-next": "13.4.9",
+    "next": "13.4.9",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.1.6"
   }
 }
