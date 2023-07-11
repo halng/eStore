@@ -1,5 +1,5 @@
 {
-    "name": "ui-api",
+    "name": "api-caller",
     "version": "0.0.0",
     "description": "a package use to call api to backend",
     "main": "./dist/cjs/index.js",
