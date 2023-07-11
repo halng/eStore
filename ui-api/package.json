@@ -1,17 +1,17 @@
 {
     "name": "api-caller",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "a package use to call api to backend",
     "main": "./dist/cjs/index.js",
     "module": "./dist/esm/index.js",
     "types": "./dist/esm/index.d.ts",
     "files": [
-      "dist",
-      "LICENSE",
-      "README.md"
+        "dist",
+        "LICENSE",
+        "README.md"
     ],
     "peerDependencies": {
-      "react": ">=16"
+        "react": ">=16"
     },
     "scripts": {
         "build": "npm run build:esm && npm run build:cjs",
@@ -52,5 +52,8 @@
         "react-dom": "^18.2.0",
         "ts-jest": "^29.1.1",
         "typescript": "^5.1.6"
+    },
+    "dependencies": {
+        "axios": "^1.4.0"
     }
 }
