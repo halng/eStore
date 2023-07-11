@@ -1,2 +1,3 @@
-const addNumbers = (a: number, b: number): number => a + b;
-export default addNumbers;
+import Auth from './api/auth'
+
+export { Auth }
