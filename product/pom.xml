@@ -148,9 +148,9 @@
 									<exclude>**/constant/**</exclude>
 									<exclude>**/exception/**</exclude>
 									<exclude>**/repositories/**</exclude>
-									<exclude>**/controller/**</exclude>
+									<exclude>**/controllers/**</exclude>
 									<exclude>**/annotation/**</exclude>
-									<exclude>**/*AuthApplication.*</exclude>
+									<exclude>**/*ProductApplication.*</exclude>
 								</excludes>
 								<rules>
 									<rule>
