@@ -19,6 +19,7 @@
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.projectKey>tanhao111_eStore_Product</sonar.projectKey>
 		<sonar.coverage.jacoco.xmlReportPaths>**/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.coverage.exclusions>**/config/**,**/entity/**,**/viewmodel/**,**/constant/**,**/exception/**,**/repositories/**,**/controllers/**,**/annotation/**,**/*ProductApplication.*</sonar.coverage.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
