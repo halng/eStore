@@ -28,14 +28,9 @@ public class OpenAPIConfig {
         final String schemaName = "Bearer ";
         final String apiTitle = String.format("%s API", StringUtils.capitalize(this.moduleName));
 
-        return new OpenAPI()
-            .addSecurityItem(new SecurityRequirement().addList(schemaName))
-            .components(
-                new Components()
-                    .addSecuritySchemes(
-                        schemaName,
-                        new SecurityScheme().name(schemaName).type(SecurityScheme.Type.HTTP).scheme("bearer")
-                            .bearerFormat("JWT")))
-            .info(new Info().title(apiTitle).version(apiVersion));
+        return new OpenAPI().addSecurityItem(new SecurityRequirement().addList(schemaName)).components(
+            new Components().addSecuritySchemes(schemaName,
+                new SecurityScheme().name(schemaName).type(SecurityScheme.Type.HTTP).scheme("bearer")
+                    .bearerFormat("JWT"))).info(new Info().title(apiTitle).version(apiVersion));
     }
 }
