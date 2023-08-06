@@ -23,8 +23,4 @@ public class ProductController {
         return iProductService.createNewProduct(productReqVm);
     }
 
-    @GetMapping("get/{name}")
-    public ResponseEntity<String> testLogAndSecurity(@PathVariable String name){
-        return ResponseEntity.ok(name);
-    }
  }

@@ -14,6 +14,11 @@ public class EntityAuditorTest {
 
     @BeforeEach
     void setup(){
+        auditorAware = new EntityAuditorAware();
+    }
+
+    @Test
+    void getCurrentAuditorTest(){
         Authentication authentication = new Authentication() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -51,13 +56,15 @@ public class EntityAuditorTest {
             }
         };
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        auditorAware = new EntityAuditorAware();
+        Optional<String> user = auditorAware.getCurrentAuditor();
+        Assertions.assertEquals("USER", user.get());
     }
 
     @Test
-    void getCurrentAuditorTest(){
+    void getCurrentAuditorTest_whenChangedBySystem(){
+        SecurityContextHolder.getContext().setAuthentication(null);
         Optional<String> user = auditorAware.getCurrentAuditor();
-        Assertions.assertEquals("USER", user.get());
+        Assertions.assertEquals("SYSTEM", user.get());
     }
 
 }
