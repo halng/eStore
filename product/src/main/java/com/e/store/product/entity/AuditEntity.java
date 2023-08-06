@@ -2,8 +2,6 @@ package com.e.store.product.entity;
 
 import jakarta.persistence.MappedSuperclass;
 import java.time.Instant;
-import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

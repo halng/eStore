@@ -2,7 +2,8 @@ package com.e.store.product.viewmodel.req;
 
 import java.util.List;
 
-public record ProductReqVm(String name, Double price, List<String> imgUrl, int quantity, String description,
+public record ProductReqVm(String name, Double price, String thumbnailUrl, List<String> imgUrl, int quantity,
+                           String blogPostId, Long groupId, String description,
                            List<ProductVariationReqVm> productVariations, List<ProductAttributeReqVm> attributeReqVms) {
 
 }
