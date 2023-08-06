@@ -3,7 +3,7 @@ package com.e.store.product.services.impl;
 import com.e.store.product.entity.ProductGroup;
 import com.e.store.product.exceptions.BadRequestException;
 import com.e.store.product.repositories.ProductGroupRepository;
-import com.e.store.product.services.ProductGroupService;
+import com.e.store.product.services.IProductGroupService;
 import com.e.store.product.viewmodel.res.ResVm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductGroupServiceImpl implements ProductGroupService {
+public class ProductGroupServiceImpl implements IProductGroupService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProductGroupServiceImpl.class);
     private final ProductGroupRepository productGroupRepository;
 
     @Autowired

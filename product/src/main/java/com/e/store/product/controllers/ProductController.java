@@ -1,6 +1,6 @@
 package com.e.store.product.controllers;
 
-import com.e.store.product.services.ProductService;
+import com.e.store.product.services.IProductService;
 import com.e.store.product.viewmodel.req.ProductReqVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     @Autowired
-    ProductService productService;
+    IProductService iProductService;
     @PostMapping()
     public ResponseEntity<ResVm> createNewProduct(@RequestBody ProductReqVm productReqVm) {
-        return productService.createNewProduct(productReqVm);
+        return iProductService.createNewProduct(productReqVm);
     }
 
     @GetMapping("get/{name}")

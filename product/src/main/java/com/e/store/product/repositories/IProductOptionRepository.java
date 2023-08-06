@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductOptionRepository extends JpaRepository<ProductOption, String> {
-
+public interface IProductOptionRepository extends JpaRepository<ProductOption, String> {
+    boolean existsByName(String name);
 }

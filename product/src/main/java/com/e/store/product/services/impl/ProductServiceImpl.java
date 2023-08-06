@@ -3,11 +3,9 @@ package com.e.store.product.services.impl;
 import com.e.store.product.entity.Product;
 import com.e.store.product.entity.ProductGroup;
 import com.e.store.product.exceptions.EntityNotFoundException;
-import com.e.store.product.repositories.ProductAttributeRepository;
-import com.e.store.product.repositories.ProductAttributeValueRepository;
 import com.e.store.product.repositories.ProductGroupRepository;
 import com.e.store.product.repositories.ProductRepository;
-import com.e.store.product.services.ProductService;
+import com.e.store.product.services.IProductService;
 import com.e.store.product.viewmodel.req.ProductReqVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import org.slf4j.Logger;
@@ -18,21 +16,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements IProductService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
-    private final ProductAttributeRepository productAttributeRepository;
-    private final ProductAttributeValueRepository productAttributeValueRepository;
     private final ProductGroupRepository productGroupRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository,
-        ProductAttributeRepository productAttributeRepository,
-        ProductAttributeValueRepository productAttributeValueRepository,ProductGroupRepository productGroupRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductGroupRepository productGroupRepository) {
         this.productRepository = productRepository;
-        this.productAttributeRepository = productAttributeRepository;
-        this.productAttributeValueRepository = productAttributeValueRepository;
         this.productGroupRepository = productGroupRepository;
     }
 
