@@ -1,6 +1,5 @@
 package com.e.store.product.services;
 
-import com.e.store.product.repositories.IProductAttributeRepository;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import org.springframework.http.ResponseEntity;
