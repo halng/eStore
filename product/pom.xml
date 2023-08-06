@@ -147,10 +147,9 @@
 									<exclude>**/entity/**</exclude>
 									<exclude>**/viewmodel/**</exclude>
 									<exclude>**/constant/**</exclude>
-									<exclude>**/exception/**</exclude>
+									<exclude>**/exceptions/**</exclude>
 									<exclude>**/repositories/**</exclude>
 									<exclude>**/controllers/**</exclude>
-									<exclude>**/annotation/**</exclude>
 									<exclude>**/*ProductApplication.*</exclude>
 								</excludes>
 								<rules>

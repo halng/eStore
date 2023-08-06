@@ -1,5 +1,6 @@
 package com.e.store.product.entity.option;
 
+import com.e.store.product.entity.AuditEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class ProductOption {
+public class ProductOption extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

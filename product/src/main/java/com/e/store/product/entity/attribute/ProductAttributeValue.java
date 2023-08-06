@@ -24,8 +24,8 @@ import lombok.Setter;
 @Setter
 public class ProductAttributeValue extends AuditEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private String value;
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
