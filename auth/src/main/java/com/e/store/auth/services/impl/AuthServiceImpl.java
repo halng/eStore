@@ -14,16 +14,21 @@ import com.e.store.auth.exception.TokenException;
 import com.e.store.auth.repositories.IAuthRepository;
 import com.e.store.auth.repositories.IRoleRepository;
 import com.e.store.auth.repositories.IVerifyAccountRepository;
-import com.e.store.auth.services.AuthService;
+import com.e.store.auth.services.IAuthService;
 import com.e.store.auth.services.IMessageProducer;
 import com.e.store.auth.services.IRefreshTokenService;
 import com.e.store.auth.viewmodel.req.SignInVm;
 import com.e.store.auth.viewmodel.req.SignUpVm;
 import com.e.store.auth.viewmodel.res.AuthMessageVm;
 import com.e.store.auth.viewmodel.res.AuthResVm;
+import com.e.store.auth.viewmodel.res.ValidateAuthVm;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +37,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements IAuthService {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
     private final IAuthRepository authRepository;
@@ -153,5 +160,14 @@ public class AuthServiceImpl implements AuthService {
         iVerifyAccountRepository.delete(verifyAccount);
 
         return ResponseEntity.status(200).build();
+    }
+
+    @Override
+    public ResponseEntity<ValidateAuthVm> validateAuth () {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Account account = getAccountByUsername(authentication.getName());
+        ValidateAuthVm result = new ValidateAuthVm(account.getUsername(),
+                                                   account.getAuthorities().stream().map(e -> e.getAuthority().toString()).reduce("", String::concat));
+        return ResponseEntity.ok(result);
     }
 }

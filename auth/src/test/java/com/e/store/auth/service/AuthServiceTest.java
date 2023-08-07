@@ -16,7 +16,7 @@ import com.e.store.auth.exception.InternalErrorException;
 import com.e.store.auth.exception.NotFoundException;
 import com.e.store.auth.exception.TokenException;
 import com.e.store.auth.repositories.IVerifyAccountRepository;
-import com.e.store.auth.services.AuthService;
+import com.e.store.auth.services.IAuthService;
 import com.e.store.auth.services.IMessageProducer;
 import com.e.store.auth.viewmodel.res.AuthResVm;
 import java.time.Instant;
@@ -52,7 +52,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 class AuthServiceTest {
 
-    AuthService authService;
+    IAuthService    iAuthService;
     IRoleRepository roleRepository;
     IAuthRepository authRepository;
     Account account;
@@ -77,8 +77,8 @@ class AuthServiceTest {
         authentication = mock(Authentication.class);
         iMessageProducer = mock(IMessageProducer.class);
         iVerifyAccountRepository = mock(IVerifyAccountRepository.class);
-        authService = new AuthServiceImpl(authRepository, roleRepository, passwordEncoder, authenticationManager,
-            jwtUtilities, refreshTokenService, iMessageProducer, iVerifyAccountRepository);
+        iAuthService = new AuthServiceImpl(authRepository, roleRepository, passwordEncoder, authenticationManager,
+                                           jwtUtilities, refreshTokenService, iMessageProducer, iVerifyAccountRepository);
 
         role = Role.builder().roleName(AccountRole.ADMIN).build();
         account = Account.builder().id("111-222").status(AccountStatus.ACTIVE).email("admin@estore.com")
@@ -92,7 +92,7 @@ class AuthServiceTest {
     void signUp_ShouldReturnErrorMessage_WhenInvalidRole() {
         SignUpVm signUpVm = new SignUpVm("test", "test_pass", "test_pass", 0L, "test@gmail.com");
         BadRequestException badRequestException = Assertions.assertThrows(BadRequestException.class, () -> {
-            authService.signUp(signUpVm);
+            iAuthService.signUp(signUpVm);
         });
         assertEquals("Role incorrect", badRequestException.getMessage());
     }
@@ -101,7 +101,7 @@ class AuthServiceTest {
     void signUp_ShouldReturnErrorMessage_WhenPasswordNotIdentical() {
         SignUpVm signUpVm = new SignUpVm("test", "test", "test_pass", 1L, "test@gmail.com");
         BadRequestException badRequestException = Assertions.assertThrows(BadRequestException.class, () -> {
-            authService.signUp(signUpVm);
+            iAuthService.signUp(signUpVm);
         });
         assertEquals("Password are not identical!", badRequestException.getMessage());
     }
@@ -111,7 +111,7 @@ class AuthServiceTest {
         SignUpVm signUpVm = new SignUpVm("test", "test_pass", "test_pass", 1L, "test@gmail.com");
         when(authRepository.existsByEmail(anyString())).thenReturn(true);
         BadRequestException badRequestException = Assertions.assertThrows(BadRequestException.class, () -> {
-            authService.signUp(signUpVm);
+            iAuthService.signUp(signUpVm);
         });
         assertEquals(badRequestException.getMessage(), "Email %s already exist!".formatted(signUpVm.email()));
     }
@@ -130,7 +130,7 @@ class AuthServiceTest {
         when(authRepository.save(any())).thenReturn(account);
         when(iVerifyAccountRepository.save((any()))).thenReturn(verifyAccount);
 
-        ResponseEntity<HttpStatus> result = authService.signUp(signUpVm);
+        ResponseEntity<HttpStatus> result = iAuthService.signUp(signUpVm);
 
         assertEquals(result.getStatusCode().toString(), HttpStatus.CREATED.toString());
     }
@@ -148,7 +148,7 @@ class AuthServiceTest {
         account.setId(null);
 
         InternalErrorException exception = Assertions.assertThrows(InternalErrorException.class, () -> {
-            authService.signUp(signUpVm);
+            iAuthService.signUp(signUpVm);
 
         });
 
@@ -159,7 +159,7 @@ class AuthServiceTest {
     void getAccountByUsername_ShouldReturnError_whenUsernameNotFound() {
         UsernameNotFoundException usernameNotFoundException = Assertions.assertThrows(UsernameNotFoundException.class,
             () -> {
-                authService.loadAccountByUsername("any");
+                iAuthService.loadAccountByUsername("any");
             });
 
         assertEquals("Username not found", usernameNotFoundException.getMessage());
@@ -169,7 +169,7 @@ class AuthServiceTest {
     void getAccountByUsername_ShouldReturnError_whenDataValid() {
         when(authRepository.findByUsername(anyString())).thenReturn(Optional.of(account));
 
-        Account expected = authService.loadAccountByUsername("username");
+        Account expected = iAuthService.loadAccountByUsername("username");
 
         assertEquals(expected.getUsername(), account.getUsername());
         assertEquals(expected.getEmail(), account.getEmail());
@@ -179,7 +179,7 @@ class AuthServiceTest {
     void loadAccountByUsername_ShouldReturnError_whenUsernameNotFound() {
         UsernameNotFoundException usernameNotFoundException = Assertions.assertThrows(UsernameNotFoundException.class,
             () -> {
-                authService.loadAccountByUsername("any");
+                iAuthService.loadAccountByUsername("any");
             });
 
         assertEquals("Username not found", usernameNotFoundException.getMessage());
@@ -247,7 +247,7 @@ class AuthServiceTest {
         when(authRepository.findByUsername(any())).thenReturn(Optional.of(account));
 
         ForbiddenException forbiddenException = Assertions.assertThrows(ForbiddenException.class, () -> {
-            authService.signIn(signInVm);
+            iAuthService.signIn(signInVm);
         });
 
         assertEquals(forbiddenException.getMessage(), "Account Not Active");
@@ -316,7 +316,7 @@ class AuthServiceTest {
         when(jwtUtilities.generateAccessToken(any(), any())).thenReturn("abc-xyz");
         when(refreshTokenService.generateRefreshToken(any())).thenReturn("123");
 
-        ResponseEntity<AuthResVm> authResExpected = authService.signIn(signInVm);
+        ResponseEntity<AuthResVm> authResExpected = iAuthService.signIn(signInVm);
 
         Authentication expectedAuthenticate = SecurityContextHolder.getContext().getAuthentication();
         assertTrue(expectedAuthenticate.isAuthenticated());
@@ -338,7 +338,7 @@ class AuthServiceTest {
         when(authRepository.findByEmail(anyString())).thenReturn(Optional.empty());
 
         NotFoundException notFoundException = Assertions.assertThrows(NotFoundException.class, () -> {
-            authService.activeAccount("token", "email@gmail");
+            iAuthService.activeAccount("token", "email@gmail");
         });
 
         assertEquals(notFoundException.getMessage(), "Account with email: %s not found".formatted("email@gmail"));
@@ -349,7 +349,7 @@ class AuthServiceTest {
         when(authRepository.findByEmail(anyString())).thenReturn(Optional.of(account));
 
         BadRequestException exception = Assertions.assertThrows(BadRequestException.class, () -> {
-            authService.activeAccount("token", "email@gmail");
+            iAuthService.activeAccount("token", "email@gmail");
         });
 
         assertEquals("Account already active", exception.getMessage());
@@ -363,7 +363,7 @@ class AuthServiceTest {
         when(iVerifyAccountRepository.findByToken("123-323")).thenReturn(Optional.empty());
 
         NotFoundException notFoundException = Assertions.assertThrows(NotFoundException.class, () -> {
-            authService.activeAccount("123-323", "email@gmail");
+            iAuthService.activeAccount("123-323", "email@gmail");
         });
 
         assertEquals(notFoundException.getMessage(),"Token: %s not found".formatted("123-323"));
@@ -378,7 +378,7 @@ class AuthServiceTest {
         when(iVerifyAccountRepository.findByToken("123-323")).thenReturn(Optional.of(verifyAccount));
 
         TokenException exception = Assertions.assertThrows(TokenException.class, () -> {
-            authService.activeAccount("123-323", "email@gmail");
+            iAuthService.activeAccount("123-323", "email@gmail");
         });
 
         assertEquals("Token expired", exception.getMessage());
@@ -393,7 +393,7 @@ class AuthServiceTest {
         when(iVerifyAccountRepository.findByToken("123-323")).thenReturn(Optional.of(verifyAccount));
         when(authRepository.save(account)).thenReturn(account);
 
-        ResponseEntity<HttpStatus> result =  authService.activeAccount("123-323", "email@gmail");
+        ResponseEntity<HttpStatus> result =  iAuthService.activeAccount("123-323", "email@gmail");
 
 
         assertEquals("200 OK", result.getStatusCode().toString());

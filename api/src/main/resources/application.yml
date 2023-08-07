@@ -32,16 +32,16 @@ spring:
             allowed-methods: "*"
             allowed-headers: "*"
 #            allow-credentials: true
-      routes:
-        - id: auth
-          uri: http://localhost:9091
-          predicates:
-            - Path=/api/v1/auth/**
-          filters:
-            - RewritePath=(?<segment>.*), $\{segment}
-        - id: product
-          uri: http://localhost:9092
-          predicates:
-            - Path=/api/v1/product/**
-          filters:
-            - RewritePath=/api/v1/product/(?<segment>.*), $\{segment}
+#      routes:
+#        - id: auth
+#          uri: http://localhost:9091
+#          predicates:
+#            - Path=/api/v1/auth/**
+#          filters:
+#            - RewritePath=(?<segment>.*), $\{segment}
+#        - id: product
+#          uri: http://localhost:9093
+#          predicates:
+#            - Path=/api/v1/product/**
+#          filters:
+#            - RewritePath=/api/v1/product/(?<segment>.*), $\{segment}

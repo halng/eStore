@@ -7,11 +7,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final RequestFilterConfig requestFilterConfig;
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -20,12 +26,11 @@ public class SecurityConfig {
                     "/error")
                 .permitAll()
                 .requestMatchers("/api/v1/product", "/api/v1/product/**")
-                .permitAll()
-                .requestMatchers("/api/v1/auth/grant").hasAuthority("ADMIN")
+                .hasAuthority("ADMIN")
                 .anyRequest().authenticated());
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);
-
+        httpSecurity.addFilterBefore(requestFilterConfig, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
     @Bean
