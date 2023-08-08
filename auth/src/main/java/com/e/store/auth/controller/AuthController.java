@@ -1,9 +1,10 @@
 package com.e.store.auth.controller;
 
-import com.e.store.auth.services.AuthService;
+import com.e.store.auth.services.IAuthService;
 import com.e.store.auth.viewmodel.req.SignInVm;
 import com.e.store.auth.viewmodel.req.SignUpVm;
 import com.e.store.auth.viewmodel.res.AuthResVm;
+import com.e.store.auth.viewmodel.res.ValidateAuthVm;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,36 +20,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final IAuthService iAuthService;
 
     @Autowired
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public AuthController(IAuthService iAuthService) {
+        this.iAuthService = iAuthService;
     }
 
     @PostMapping("register")
     public ResponseEntity<HttpStatus> register(@Valid @RequestBody SignUpVm signUpData) {
-        return authService.signUp(signUpData);
+        return iAuthService.signUp(signUpData);
     }
 
     @PostMapping("login")
     public ResponseEntity<AuthResVm> login(@RequestBody SignInVm signInData) {
-        return authService.signIn(signInData);
+        return iAuthService.signIn(signInData);
     }
 
     @PostMapping("active-account/{token}/{email}")
     public ResponseEntity<HttpStatus> activeAccount(@PathVariable String token, @PathVariable String email){
-        return authService.activeAccount(token, email);
+        return iAuthService.activeAccount(token, email);
     }
 
-    @GetMapping("grant")
-    public String hello() {
-        return "hello world";
-    }
-
-    @GetMapping("hello")
-    public String helloOnly() {
-        return "hello";
+    @GetMapping("validate")
+    public ResponseEntity<ValidateAuthVm> validationAccount(){
+        return this.iAuthService.validateAuth();
     }
 
 }
