@@ -59,7 +59,7 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
                     .map(res -> {
                         exchange.getRequest().mutate().header("username", res.username());
                         exchange.getRequest().mutate().header("authority", res.authority());
-                        LOG.info("Success validate user. Forward to %s".formatted(exchange.getRequest()));
+                        LOG.info("Success validate user. Forward to %s".formatted(exchange.getRequest().getPath()));
                         return exchange;
                     }).flatMap(chain::filter).onErrorResume(err -> {
                         LOG.error("Error when validating account");
@@ -75,6 +75,7 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
                         return onError(exchange, errMsg, "JWT Authentication Failed", errCode);
                     });
             }
+            LOG.info("*****************************************************************************");
             return chain.filter(exchange);
         };
     }

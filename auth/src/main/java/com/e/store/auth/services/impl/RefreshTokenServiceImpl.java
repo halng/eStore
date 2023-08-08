@@ -31,7 +31,7 @@ public class RefreshTokenServiceImpl implements IRefreshTokenService {
 
         RefreshToken newRefreshToken = RefreshToken.builder().account(account).expiryDate(
             Instant.now().plusMillis(refreshTokenExpiration)).build();
-        RefreshToken savedRefreshToken = iRefreshTokenRepository.saveAndFlush(newRefreshToken);
+        RefreshToken savedRefreshToken = iRefreshTokenRepository.save(newRefreshToken);
         return savedRefreshToken.getId();
     }
 }
