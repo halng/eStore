@@ -20,8 +20,12 @@ import com.e.store.auth.services.IAuthService;
 import com.e.store.auth.services.IMessageProducer;
 import com.e.store.auth.viewmodel.res.AuthResVm;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+
+import javax.swing.text.html.Option;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +36,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,6 +53,8 @@ import com.e.store.auth.services.IRefreshTokenService;
 import com.e.store.auth.services.impl.AuthServiceImpl;
 import com.e.store.auth.viewmodel.req.SignInVm;
 import com.e.store.auth.viewmodel.req.SignUpVm;
+import com.e.store.auth.viewmodel.res.ValidateAuthVm;
+
 import org.springframework.test.util.ReflectionTestUtils;
 
 class AuthServiceTest {
@@ -398,5 +405,56 @@ class AuthServiceTest {
 
         assertEquals("200 OK", result.getStatusCode().toString());
 
+    }
+
+    @Test
+    void validateAuthTest(){
+        Authentication authentication1 = new Authentication() {
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities () {
+                return account.getAuthorities();
+            }
+
+            @Override
+            public Object getCredentials () {
+                return null;
+            }
+
+            @Override
+            public Object getDetails () {
+                return null;
+            }
+
+            @Override
+            public Object getPrincipal () {
+                return null;
+            }
+
+            @Override
+            public boolean isAuthenticated () {
+                return false;
+            }
+
+            @Override
+            public void setAuthenticated (boolean isAuthenticated) throws IllegalArgumentException {
+
+            }
+
+            @Override
+            public String getName () {
+                return account.getUsername();
+            }
+        };
+        SecurityContextHolder.getContext().setAuthentication(authentication1);
+
+        when(authRepository.findByUsername(anyString())).thenReturn(Optional.of(account));
+
+        ResponseEntity<ValidateAuthVm> actualResult = iAuthService.validateAuth();
+        assertEquals("200 OK", actualResult.getStatusCode().toString());
+
+        ValidateAuthVm rawResult = actualResult.getBody();
+        assertNotNull(rawResult);
+        assertEquals(account.getUsername(), rawResult.username());
+        assertEquals("ADMIN", rawResult.authority());
     }
 }
