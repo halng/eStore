@@ -26,7 +26,6 @@ import com.e.store.auth.viewmodel.res.ValidateAuthVm;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.Instant;
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +107,7 @@ public class AuthServiceImpl implements IAuthService {
 
     public Account getAccountByUsername(String username) {
         return authRepository.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("Username % not found".formatted(username)));
+            .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
     }
 
     @Override

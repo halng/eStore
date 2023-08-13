@@ -9,24 +9,32 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.e.store.auth.config.jwt.JwtUtilities;
+import com.e.store.auth.constant.AccountRole;
+import com.e.store.auth.constant.AccountStatus;
 import com.e.store.auth.constant.Const;
+import com.e.store.auth.entity.Account;
+import com.e.store.auth.entity.Role;
 import com.e.store.auth.entity.VerifyAccount;
+import com.e.store.auth.exception.BadRequestException;
 import com.e.store.auth.exception.ForbiddenException;
 import com.e.store.auth.exception.InternalErrorException;
 import com.e.store.auth.exception.NotFoundException;
 import com.e.store.auth.exception.TokenException;
+import com.e.store.auth.repositories.IAuthRepository;
+import com.e.store.auth.repositories.IRoleRepository;
 import com.e.store.auth.repositories.IVerifyAccountRepository;
 import com.e.store.auth.services.IAuthService;
 import com.e.store.auth.services.IMessageProducer;
+import com.e.store.auth.services.IRefreshTokenService;
+import com.e.store.auth.services.impl.AuthServiceImpl;
+import com.e.store.auth.viewmodel.req.SignInVm;
+import com.e.store.auth.viewmodel.req.SignUpVm;
 import com.e.store.auth.viewmodel.res.AuthResVm;
+import com.e.store.auth.viewmodel.res.ValidateAuthVm;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-
-import javax.swing.text.html.Option;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,25 +44,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.e.store.auth.config.jwt.JwtUtilities;
-import com.e.store.auth.constant.AccountRole;
-import com.e.store.auth.constant.AccountStatus;
-import com.e.store.auth.entity.Account;
-import com.e.store.auth.entity.Role;
-import com.e.store.auth.exception.BadRequestException;
-import com.e.store.auth.repositories.IAuthRepository;
-import com.e.store.auth.repositories.IRoleRepository;
-import com.e.store.auth.services.IRefreshTokenService;
-import com.e.store.auth.services.impl.AuthServiceImpl;
-import com.e.store.auth.viewmodel.req.SignInVm;
-import com.e.store.auth.viewmodel.req.SignUpVm;
-import com.e.store.auth.viewmodel.res.ValidateAuthVm;
-
 import org.springframework.test.util.ReflectionTestUtils;
 
 class AuthServiceTest {
@@ -169,7 +161,7 @@ class AuthServiceTest {
                 iAuthService.loadAccountByUsername("any");
             });
 
-        assertEquals("Username not found", usernameNotFoundException.getMessage());
+        assertEquals("Username any not found", usernameNotFoundException.getMessage());
     }
 
     @Test
@@ -189,7 +181,7 @@ class AuthServiceTest {
                 iAuthService.loadAccountByUsername("any");
             });
 
-        assertEquals("Username not found", usernameNotFoundException.getMessage());
+        assertEquals("Username any not found", usernameNotFoundException.getMessage());
     }
 
     @Test
