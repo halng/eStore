@@ -6,6 +6,8 @@ spring:
     name: api-getaway
   profiles:
     active: "dev"
+  main:
+    allow-bean-definition-overriding: true
 
 logging:
   level:
@@ -14,23 +16,23 @@ logging:
     org:
       springframework:
         cloud:
-          gateway: TRACE
+          gateway: INFO
 
 ---
 spring:
   config:
     activate:
       on-profile: "dev"
-  cloud:
-    gateway:
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowed-origins: "*"
-            allowed-methods: "*"
-            allowed-headers: "*"
+#  cloud:
+#    gateway:
+#      default-filters:
+#        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowed-origins: "*"
+#            allowed-methods: "*"
+#            allowed-headers: "*"
 #            allow-credentials: true
 #      routes:
 #        - id: auth
