@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,7 +42,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ForbiddenException.class})
     protected ResponseEntity<ErrorVm> handleTokenException(ForbiddenException exception, WebRequest webRequest) {
-        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED", HttpStatus.FORBIDDEN.toString());
+        ErrorVm errorVm = new ErrorVm(exception.getMessage(), "ACCESS DENIED", HttpStatus.FORBIDDEN.toString());
         log.error("ForbiddenException: {}", exception.getMessage());
         return ResponseEntity.status(403).body(errorVm);
     }
@@ -52,5 +54,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             HttpStatus.INTERNAL_SERVER_ERROR.toString());
         log.error("InternalErrorException: {}", exception.getMessage());
         return ResponseEntity.status(501).body(errorVm);
+    }
+
+    @ExceptionHandler({AuthenException.class})
+    protected  ResponseEntity<ErrorVm> handleAuthenticationException(AuthenException e, WebRequest webRequest) {
+        ErrorVm errorVm = new ErrorVm(e.getMessage(), "BAD CREDENTIAL", HttpStatus.UNAUTHORIZED.toString());
+        log.error("AuthenException {}",e.getMessage());
+        return ResponseEntity.status(401).body(errorVm);
     }
 }

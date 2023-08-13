@@ -2,6 +2,7 @@ package com.e.store.product.controllers;
 
 import com.e.store.product.services.IProductGroupService;
 import com.e.store.product.viewmodel.res.ResVm;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ public class ProductGroupController {
     IProductGroupService iProductGroupService;
 
     @PostMapping()
-    public ResponseEntity<ResVm> createNewProduct(String groupName) {
+    public ResponseEntity<ResVm> createNewProduct(@NotBlank  String groupName) {
         return this.iProductGroupService.createNewGroup(groupName);
     }
 

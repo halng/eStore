@@ -5,9 +5,10 @@ import './app.css'
 
 import LogInForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
+
 const App = () => (
     <div className='auth-app'>
-        <RegisterForm />
+        <LogInForm />
     </div>
 )
 ReactDOM.render(<App />, document.getElementById('app'))

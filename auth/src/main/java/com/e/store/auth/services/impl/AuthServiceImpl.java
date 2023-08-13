@@ -6,6 +6,7 @@ import com.e.store.auth.constant.Const;
 import com.e.store.auth.entity.Account;
 import com.e.store.auth.entity.Role;
 import com.e.store.auth.entity.VerifyAccount;
+import com.e.store.auth.exception.AuthenException;
 import com.e.store.auth.exception.BadRequestException;
 import com.e.store.auth.exception.ForbiddenException;
 import com.e.store.auth.exception.InternalErrorException;
@@ -24,10 +25,7 @@ import com.e.store.auth.viewmodel.res.AuthResVm;
 import com.e.store.auth.viewmodel.res.ValidateAuthVm;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -37,9 +35,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -111,7 +108,7 @@ public class AuthServiceImpl implements IAuthService {
 
     public Account getAccountByUsername(String username) {
         return authRepository.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("Username % not found".formatted(username)));
     }
 
     @Override
@@ -121,22 +118,26 @@ public class AuthServiceImpl implements IAuthService {
 
     @Override
     public ResponseEntity<AuthResVm> signIn(SignInVm signInData) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(signInData.username(), signInData.password()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signInData.username(), signInData.password()));
+            Account account = getAccountByUsername(authentication.getName());
 
-        Account account = getAccountByUsername(authentication.getName());
+            if (!account.getStatus().equals(AccountStatus.ACTIVE)) {
+                throw new ForbiddenException("Account Not Active");
+            }
 
-        if (!account.getStatus().equals(AccountStatus.ACTIVE)) {
-            throw new ForbiddenException("Account Not Active");
+            String accessToken = jwtUtilities.generateAccessToken(account.getUsername(),
+                account.getRole().getRoleName().toString());
+            String refreshToken = refreshTokenService.generateRefreshToken(account);
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            return ResponseEntity.status(200).body(AuthResVm.fromAccount(accessToken, refreshToken, account));
+        } catch (AuthenticationException exception) {
+            logger.error("Login failed. Reason: %s".formatted(exception.getMessage()));
+            throw new AuthenException("Invalid username or password");
         }
-
-        String accessToken = jwtUtilities.generateAccessToken(account.getUsername(),
-            account.getRole().getRoleName().toString());
-        String refreshToken = refreshTokenService.generateRefreshToken(account);
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return ResponseEntity.status(200).body(AuthResVm.fromAccount(accessToken, refreshToken, account));
     }
 
     @Override
@@ -163,11 +164,11 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public ResponseEntity<ValidateAuthVm> validateAuth () {
+    public ResponseEntity<ValidateAuthVm> validateAuth() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Account account = getAccountByUsername(authentication.getName());
         ValidateAuthVm result = new ValidateAuthVm(account.getUsername(),
-                                                   account.getAuthorities().stream().map(e -> e.getAuthority().toString()).reduce("", String::concat));
+            account.getAuthorities().stream().map(e -> e.getAuthority().toString()).reduce("", String::concat));
         return ResponseEntity.ok(result);
     }
 }
