@@ -1,4 +1,4 @@
-const IGNORE_AUTH_URL = ['auth/login', 'auth/register', 'auth/active-account', 'auth/refreshtoken']
+const IGNORE_AUTH_URL = ['login', 'register', 'active-account', 'refreshtoken']
 
 const isIgnore = (url: string | undefined) => {
     if (url === undefined || url === '') {

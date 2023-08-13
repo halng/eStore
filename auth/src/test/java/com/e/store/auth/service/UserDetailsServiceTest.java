@@ -32,10 +32,10 @@ class UserDetailsServiceTest {
     void loadUserByUsername_shouldThrowException_whenDataInvalid() {
         UsernameNotFoundException usernameNotFoundException = Assert.assertThrows(UsernameNotFoundException.class,
             () -> {
-                userDetailsService.loadUserByUsername("username");
+                userDetailsService.loadUserByUsername("admin");
             });
 
-        assertEquals("Username not found", usernameNotFoundException.getMessage());
+        assertEquals("Username admin not found", usernameNotFoundException.getMessage());
     }
 
     @Test
