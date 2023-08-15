@@ -17,6 +17,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.core.io.buffer.DataBufferFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -51,6 +52,7 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             String path = request.getURI().getPath();
+            HttpMethod method = request.getMethod();
             LOG.info("*****************************************************************************");
             Set<URI> uris = exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR, Collections.emptySet());
             String originalUri = (uris.isEmpty()) ? "Unknown" : uris.iterator().next().toString();
@@ -58,7 +60,7 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
             URI routeUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
             LOG.info("Incoming request %s is routed to id: %s, uri: %s".formatted(originalUri, route.getId(), routeUri));
 
-            if (ExcludeUrlConfig.isSecure(path)) {
+            if (ExcludeUrlConfig.isSecure(path, method)) {
                 String bearerToken = request.getHeaders().get("authorization").get(0);
                 if (bearerToken == null) {
                     LOG.error("Can not access to secure end point with null token");
