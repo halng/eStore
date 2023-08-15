@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final RequestFilterConfig requestFilterConfig;
+
     @Bean
     public SecurityFilterChain httpSecurity(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -22,7 +23,7 @@ public class SecurityConfig {
                     "/swagger-ui.html", "/swagger-ui/**", "/api-docs/**",
                     "/error")
                 .permitAll()
-                .requestMatchers(HttpMethod.GET,"/api/v1/media", "/api/v1/media/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/media", "/api/v1/media/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/media", "/api/v1/media/**")
                 .hasAuthority("SELLER")
                 .anyRequest().authenticated());

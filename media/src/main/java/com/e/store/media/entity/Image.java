@@ -22,6 +22,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -29,6 +30,7 @@ public class Image {
     private String uploadBy;
     @Lob
     private byte[] data;
+    private String fileType;
     @CreationTimestamp
     private Date uploadDate;
 }

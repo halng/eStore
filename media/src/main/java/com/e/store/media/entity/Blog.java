@@ -23,6 +23,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "blog_details")
 public class Blog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

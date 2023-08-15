@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.projectKey>tanhao111_eStore_auth</sonar.projectKey>
+		<sonar.projectKey>tanhao111_eStore_media</sonar.projectKey>
 		<sonar.coverage.jacoco.xmlReportPaths>**/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
 	<dependencies>
@@ -119,12 +119,11 @@
 								<exclude>**/config/**</exclude>
 								<exclude>**/entity/**</exclude>
 								<exclude>**/viewmodel/**</exclude>
-								<exclude>**/constant/**</exclude>
 								<exclude>**/exception/**</exclude>
 								<exclude>**/repositories/**</exclude>
 								<exclude>**/controller/**</exclude>
 								<exclude>**/annotation/**</exclude>
-								<exclude>**/*AuthApplication.*</exclude>
+								<exclude>**/*MediaApplication.*</exclude>
 							</excludes>
 							<rules>
 								<rule>

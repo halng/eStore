@@ -27,8 +27,8 @@ public class RequestFilterConfig extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
 
-        String username = "admin";//request.getHeader("username");
-        String authority = "SELLER";//request.getHeader("authority");
+        String username = request.getHeader("username");
+        String authority = request.getHeader("authority");
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = null;
         if (username != null && authority != null) {
@@ -38,7 +38,7 @@ public class RequestFilterConfig extends OncePerRequestFilter {
                 grantedAuthorityList);
         }
 
-        LOG.info(String.format("Receive a request %s from %s", request.getRequestURI().toString(), username));
+        LOG.info(String.format("Receive a request %s from %s", request.getRequestURI(), username));
 
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request, response);

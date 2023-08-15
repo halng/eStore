@@ -1,7 +1,7 @@
 package com.e.store.media.viewmodel.req;
 
-import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
-public record ImagesReqVm( MultipartFile[] listImage) {
+public record ImagesReqVm(List<String> imageIds) {
 
 }

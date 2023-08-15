@@ -1,12 +1,19 @@
 package com.e.store.media.service;
 
 import com.e.store.media.viewmodel.req.ImagesReqVm;
+import com.e.store.media.viewmodel.res.ImagesResVm;
 import com.e.store.media.viewmodel.res.ResVm;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface IImageService {
-    ResponseEntity<ResVm> uploadImage(ImagesReqVm imagesReqVm);
 
+    ResponseEntity<ResVm> uploadImage(List<MultipartFile> files, String caption);
+
+    ResponseEntity<List<ImagesResVm>> getImages(ImagesReqVm imagesReqVm);
+
+    ResponseEntity<byte[]> getImage(String id);
 }

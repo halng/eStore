@@ -52,12 +52,12 @@ public class EntityAuditorTest {
 
             @Override
             public String getName() {
-                return null;
+                return "admin";
             }
         };
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Optional<String> user = auditorAware.getCurrentAuditor();
-        Assertions.assertEquals("USER", user.get());
+        Assertions.assertEquals("admin", user.get());
     }
 
     @Test
