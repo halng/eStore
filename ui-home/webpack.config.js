@@ -44,7 +44,8 @@ module.exports = (_, argv) => ({
       name: "ui_home",
       filename: "remoteEntry.js",
       remotes: {
-        'ui-auth': 'ui_auth@http://localhost:3001/remoteEntry.js'
+        'UIAuth': 'ui_auth@http://localhost:3001/remoteEntry.js',
+        'UIProduct': 'ui_product@http://localhost:3002/remoteEntry.js',
       },
       exposes: {},
       shared: {

@@ -44,7 +44,9 @@ module.exports = (_, argv) => ({
             name: 'ui_auth',
             filename: 'remoteEntry.js',
             remotes: {},
-            exposes: {},
+            exposes: {
+                './AuthApp': '/src/App.tsx',
+            },
             shared: {
                 ...deps,
                 react: {

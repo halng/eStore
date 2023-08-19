@@ -147,7 +147,7 @@ const RegisterForm = () => {
                                             Already have an account?{' '}
                                             <a
                                                 className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover'
-                                                href='/login'
+                                                href='/auth/login'
                                             >
                                                 Log In
                                             </a>

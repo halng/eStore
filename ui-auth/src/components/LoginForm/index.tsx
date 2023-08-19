@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Auth } from 'api-estore-v2'
@@ -130,12 +131,12 @@ const LogInForm = () => {
                                     <div className='text-center'>
                                         <p>
                                             Not a member?{' '}
-                                            <a
+                                            <Link
                                                 className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover'
-                                                href='#'
+                                                to={'/auth/register'}
                                             >
                                                 Create account
-                                            </a>
+                                            </Link>
                                         </p>
                                     </div>
                                 </form>

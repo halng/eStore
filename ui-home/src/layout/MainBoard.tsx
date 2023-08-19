@@ -1,12 +1,14 @@
-import React from "react";
-import {Outlet} from 'react-router-dom'
-import DashBoard from "./DashBoard";
+import React from 'react'
+import { Outlet } from 'react-router-dom'
+import DashBoard from './DashBoard'
 
 const MainBoard = () => {
     return (
-        <div className="main-board">
+        <div className='main-board d-flex'>
             <DashBoard />
-            <Outlet />
+            <div className='main-data'>
+                <Outlet />
+            </div>
         </div>
     )
 }
