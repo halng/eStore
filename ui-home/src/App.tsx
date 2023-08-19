@@ -1,12 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import Test from 'ui-auth/test'
-import "./index.css";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.min.js'
+
+import Layout from './layout'
 
 const App = () => (
-  <div className="container">
-   hello from ui-home
-   <Test />
-  </div>
-);
-ReactDOM.render(<App />, document.getElementById("app"));
+    <div className='app'>
+        <Layout />
+    </div>
+)
+ReactDOM.render(<App />, document.getElementById('app'))
