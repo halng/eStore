@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, redirect } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Auth } from 'api-estore-v2'
-
 import { UserLogin } from '../../model'
 
 import './style.css'
@@ -33,6 +32,7 @@ const LogInForm = () => {
         Auth.login(resData)
             .then((res) => {
                 console.log(res)
+                return redirect('/')
             })
             .catch((err) => {
                 console.log(err)

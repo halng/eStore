@@ -26,7 +26,7 @@ public class SecurityConfig {
                     "/error")
                 .permitAll()
                 .requestMatchers("/api/v1/product", "/api/v1/product/**")
-                .hasAuthority("ADMIN")
+                .hasAuthority("SELLER")
                 .anyRequest().authenticated());
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);

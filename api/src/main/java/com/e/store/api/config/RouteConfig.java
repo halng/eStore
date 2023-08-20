@@ -16,7 +16,7 @@ public class RouteConfig {
                 f -> f.rewritePath("/api/v1/auth(?<segment>/?.*)", "/api/v1/auth${segment}")
                     .filter(dedup.apply(dedupeConfig2())).filter(authFilter.apply(new AuthFilterConfig.Config())))
             .uri("http://localhost:9091")).route("product", r -> r.path("/api/v1/product/**").filters(
-            f -> f.rewritePath("/api/v1/product(?<segment>/?.*)", "/api/v1/product${segment}")
+            f -> f.rewritePath("/api/v1/product(?<segment>/?.*)", "/api/v1/product${segment}").filter(dedup.apply(dedupeConfig2()))
                 .filter(authFilter.apply(new AuthFilterConfig.Config()))).uri("http://localhost:9093")).route("media",
             r -> r.path("/api/v1/media/**").filters(
                 f -> f.rewritePath("/api/v1/media(?<segment>/?.*)", "/api/v1/media${segment}")

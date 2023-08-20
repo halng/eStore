@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
@@ -15,8 +15,8 @@ const App = () => (
         <React.Suspense fallback='Loading'>
             <BrowserRouter>
                 <Routes>
-                    <Route path='app' element={<Layout />}>
-                        <Route path='product/*' element={<ProductApp />}></Route>
+                    <Route path='' element={<Layout />}>
+                        <Route path='/product/*' element={<ProductApp />}></Route>
                     </Route>
                     <Route path='/auth/*' element={<AuthApp />} />
                 </Routes>
@@ -24,4 +24,9 @@ const App = () => (
         </React.Suspense>
     </div>
 )
-ReactDOM.render(<App />, document.getElementById('app'))
+ReactDOM.render(
+    <StrictMode>
+        <App />
+    </StrictMode>,
+    document.getElementById('app'),
+)
