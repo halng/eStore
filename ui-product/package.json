@@ -36,12 +36,14 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
+    "api-estore-v2": "^0.0.3",
     "bootstrap": "^5.3.1",
     "eslint": "^8.47.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.15.0"
+    "react-router-dom": "^6.15.0",
+    "react-toastify": "^9.1.3"
   }
 }

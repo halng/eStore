@@ -27,7 +27,7 @@ const Navbar = () => {
           Home
         </li>
         {breadcrumbItems.map((item, index) => (
-          <li className={"breadcrumb-item"}>
+          <li className={"breadcrumb-item"} key={index}>
             {item.charAt(0).toUpperCase() + item.substring(1)}
           </li>
         ))}

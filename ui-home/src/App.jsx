@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
@@ -24,4 +24,9 @@ const App = () => (
         </React.Suspense>
     </div>
 )
-ReactDOM.render(<App />, document.getElementById('app'))
+ReactDOM.render(
+    <StrictMode>
+        <App />
+    </StrictMode>,
+    document.getElementById('app'),
+)

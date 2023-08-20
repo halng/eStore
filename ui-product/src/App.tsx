@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 import "./index.css";
 import { Product, ProductAttribute, ProductGroup } from "./components";
 
@@ -12,6 +14,7 @@ const App = () => (
       <Route path="attribute" element={<ProductAttribute />}></Route>
       <Route path="group" element={<ProductGroup />}></Route>
     </Routes>
+    <ToastContainer />
   </div>
 );
 

@@ -14,3 +14,20 @@ body {
   --bs-table-border-color: #272f3d;
   --bs-table-active-bg: #272f3d;
 }
+
+/* .table-responsive {
+    overflow-y: scroll !important;
+} */
+
+tr {
+  text-align: center;
+}
+
+.modal-content, .offcanvas {
+  background-color: #272f3d !important;
+  color: white;
+}
+
+th, td{
+  vertical-align: baseline;
+}
