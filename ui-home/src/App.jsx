@@ -15,8 +15,8 @@ const App = () => (
         <React.Suspense fallback='Loading'>
             <BrowserRouter>
                 <Routes>
-                    <Route path='app' element={<Layout />}>
-                        <Route path='product/*' element={<ProductApp />}></Route>
+                    <Route path='' element={<Layout />}>
+                        <Route path='/product/*' element={<ProductApp />}></Route>
                     </Route>
                     <Route path='/auth/*' element={<AuthApp />} />
                 </Routes>

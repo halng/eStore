@@ -8,14 +8,13 @@ const DashBoard = () => {
                 <div className='accordion accordion-flush' id='accordionFlushExample'>
                     <div className='accordion-item'>
                         <h2 className='accordion-header' id='flush-headingOne'>
-                            <button
-                                className='accordion-button collapsed fs-4'
-                                type='button'
-                                data-bs-toggle='collapse'
-                                aria-expanded='false'
+                            <Link
+                                to={"/"}
+                                className='accordion-button collapsed fs-4 menu-item'
+                                role='button'
                             >
                                 Main Board
-                            </button>
+                            </Link>
                         </h2>
                     </div>
                     <div className='accordion-item'>
@@ -50,8 +49,8 @@ const DashBoard = () => {
                                 <Link to={'product/group'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
                                     Product Group
                                 </Link>
-                                <Link to={'product/campaign'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
-                                    Campaign
+                                <Link to={'product/option'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                    Product Option
                                 </Link>
                             </div>
                         </div>

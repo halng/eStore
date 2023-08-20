@@ -2,9 +2,15 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.container {
-  font-size: 3rem;
-  margin: auto;
-  max-width: 800px;
-  margin-top: 20px;
+.table-light {
+  --bs-table-bg: #394151 !important;
+  --bs-table-border-color: #272f3d;
+  --bs-table-color: white;
+}
+
+.table {
+  --bs-table-bg: #212937;
+  --bs-table-color: white;
+  --bs-table-border-color: #272f3d;
+  --bs-table-active-bg: #272f3d;
 }
