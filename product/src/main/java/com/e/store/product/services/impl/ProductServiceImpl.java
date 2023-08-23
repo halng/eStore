@@ -3,7 +3,7 @@ package com.e.store.product.services.impl;
 import com.e.store.product.entity.Product;
 import com.e.store.product.entity.ProductGroup;
 import com.e.store.product.exceptions.EntityNotFoundException;
-import com.e.store.product.repositories.ProductGroupRepository;
+import com.e.store.product.repositories.IProductGroupRepository;
 import com.e.store.product.repositories.ProductRepository;
 import com.e.store.product.services.IProductService;
 import com.e.store.product.viewmodel.req.ProductReqVm;
@@ -20,12 +20,12 @@ public class ProductServiceImpl implements IProductService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
     private final ProductRepository productRepository;
-    private final ProductGroupRepository productGroupRepository;
+    private final IProductGroupRepository iProductGroupRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, ProductGroupRepository productGroupRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, IProductGroupRepository iProductGroupRepository) {
         this.productRepository = productRepository;
-        this.productGroupRepository = productGroupRepository;
+        this.iProductGroupRepository = iProductGroupRepository;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ProductServiceImpl implements IProductService {
             .shortDescription(productReqVm.description()).blogPostId(productReqVm.blogPostId()).build();
 
         ProductGroup productGroup =
-            productGroupRepository.findById(productReqVm.groupId()).orElseThrow(() -> new EntityNotFoundException(
+            iProductGroupRepository.findById(productReqVm.groupId()).orElseThrow(() -> new EntityNotFoundException(
                 "Product group with id: " + productReqVm.groupId() + " not founded"));
         product.setProductGroup(productGroup);
 

@@ -8,10 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class EntityAuditorAware implements AuditorAware<String> {
     @Override
     public Optional getCurrentAuditor() {
-        /**
-         * TODO: Need to implement code to call real user name.
-         * Maybe we need to call to auth service to get real name or find a new mechanism
-         */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication != null) {
             return Optional.of(authentication.getName());
