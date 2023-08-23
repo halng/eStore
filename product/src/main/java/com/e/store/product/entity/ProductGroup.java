@@ -1,6 +1,9 @@
 package com.e.store.product.entity;
 
+import com.e.store.product.constant.Status;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,6 +28,8 @@ public class ProductGroup extends AuditEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @OneToMany(mappedBy = "productGroup")
     private List<Product> productList;
 }
