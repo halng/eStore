@@ -1,6 +1,7 @@
 export type ProductGroupType = {
   id: number;
   name: string;
+  status: string;
   createdDate: string;
-  updateDate: String;
+  updatedDate: String;
 };

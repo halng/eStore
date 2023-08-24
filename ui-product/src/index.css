@@ -23,11 +23,17 @@ tr {
   text-align: center;
 }
 
-.modal-content, .offcanvas {
+.modal-content,
+.offcanvas {
   background-color: #272f3d !important;
   color: white;
 }
 
-th, td{
+th,
+td {
   vertical-align: baseline;
+}
+
+.pagination {
+  --bs-pagination-active-bg: auto;
 }

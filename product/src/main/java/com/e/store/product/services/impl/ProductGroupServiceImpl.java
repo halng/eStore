@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -123,7 +125,7 @@ public class ProductGroupServiceImpl implements IProductGroupService {
     public ResponseEntity<ListProductGroupResVm> getAllGroup(int page) {
         LOG.info("Receive request to get all group");
         String creator = SecurityContextHolder.getContext().getAuthentication().getName();
-        Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL);
+        Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.ASC, "status"));
 
         Page<ProductGroup> productGroupPages = this.iProductGroupRepository.findByCreatorWithPagination(creator, pageable);
         List<ProductGroupResVm> productGroupResVmList = productGroupPages.getContent().stream()
