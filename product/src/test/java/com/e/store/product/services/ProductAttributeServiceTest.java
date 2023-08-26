@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.e.store.product.entity.attribute.ProductAttribute;
-import com.e.store.product.entity.option.ProductOption;
 import com.e.store.product.exceptions.BadRequestException;
 import com.e.store.product.repositories.IProductAttributeRepository;
 import com.e.store.product.services.impl.ProductAttributeServiceImpl;

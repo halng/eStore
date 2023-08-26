@@ -1,0 +1,11 @@
+.text-disabled {
+  color: yellow !important;
+}
+
+.text-enabled {
+  color: rgb(53, 255, 53) !important;
+}
+
+.text-removed {
+  color: red !important;
+}

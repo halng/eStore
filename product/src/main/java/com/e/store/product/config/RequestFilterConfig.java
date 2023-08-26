@@ -34,9 +34,12 @@ public class RequestFilterConfig extends OncePerRequestFilter {
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             grantedAuthorities.add(new SimpleGrantedAuthority(authority));
             authenticationToken = new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
+            LOG.info("Validate for user %s done".formatted(username));
+        } else {
+            LOG.info("Cannot validate user!");
         }
 
-        LOG.info("Validate for user %s done".formatted(username));
+
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
         filterChain.doFilter(request, response);
