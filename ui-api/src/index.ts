@@ -1,4 +1,4 @@
 import Auth from './api/auth'
-import { ProductGroupAPI } from './api/product'
+import { ProductGroupAPI, ProductOptionAPI } from './api/product'
 
-export { Auth, ProductGroupAPI }
+export { Auth, ProductGroupAPI, ProductOptionAPI }

@@ -1,3 +1,4 @@
 import ProductGroupAPI from './ProductGroup'
+import ProductOptionAPI from './ProductOption'
 
-export { ProductGroupAPI }
+export { ProductGroupAPI, ProductOptionAPI }
