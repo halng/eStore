@@ -39,7 +39,7 @@ const RegisterForm = () => {
             password: data.password,
             email: data.email,
             rePassword: data.rePassword,
-            role: 2
+            role: 2,
         }
 
         Auth.register(resData)

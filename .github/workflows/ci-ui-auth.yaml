@@ -4,13 +4,13 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "ui/auth/**"
-      - ".github/workflows/ci-auth-ui.yaml"
+      - "ui-auth/**"
+      - ".github/workflows/ci-ui-auth.yaml"
   pull_request:
     branches: ["main", "dev"]
     paths:
-      - "ui/auth/**"
-      - ".github/workflows/ci-auth-ui.yaml"
+      - "ui-auth/**"
+      - ".github/workflows/ci-ui-auth.yaml"
 
   workflow_dispatch:
 
@@ -26,11 +26,18 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-        working-directory: ui/auth
+        working-directory: ui-auth
       - run: npm run build
-        working-directory: ui/auth
-      - run: npm run format:check
-        working-directory: ui/auth
+        working-directory: ui-auth
+      - run: npm run lint
+        working-directory: ui-auth
+      - name: Analyze with sonar cloud
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: ui-auth
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   security:
     needs: "analyze"
@@ -63,9 +70,9 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-        working-directory: ui/auth
+        working-directory: ui-auth
       - run: npm run build
-        working-directory: ui/auth
+        working-directory: ui-auth
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
         with:
@@ -82,15 +89,15 @@ jobs:
   #       with:
   #         node-version: 18
   #     - run: npm ci
-  #       working-directory: ui/auth
+  #       working-directory: ui-auth
   #     - run: npm run build
-  #       working-directory: ui/auth
+  #       working-directory: ui-auth
   #     - run: npm run junit-test  -- -u && npm run test:cover  -- -u
-  #       working-directory: ui/auth
+  #       working-directory: ui-auth
   #     - name: Analyze with sonar cloud
   #       uses: SonarSource/sonarcloud-github-action@master
   #       with:
-  #         projectBaseDir: ui/auth
+  #         projectBaseDir: ui-auth
   #       env:
   #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -99,7 +106,7 @@ jobs:
   #       if: always()
   #       with:
   #           name: JEST Tests            # Name of the check run which will be created
-  #           path: ui/auth/reports/jest-junit.xml    # Path to test results
+  #           path: ui-auth/reports/jest-junit.xml    # Path to test results
   #           reporter: jest-junit   
 
   docker:
@@ -120,7 +127,7 @@ jobs:
       - name: install deplendency
         if: ${{ github.ref != 'refs/heads/main' }}
         run: npm ci && npm run build
-        working-directory: ui/auth
+        working-directory: ui-auth
       - name: Log in to the Container registry
         if: ${{ github.ref != 'refs/heads/main' }}
         uses: docker/login-action@v2
@@ -131,6 +138,6 @@ jobs:
         if: ${{ github.ref != 'refs/heads/main' }}
         uses: docker/build-push-action@v3
         with:
-          context: ./ui/auth
+          context: ./ui-auth
           push: true
           tags: tanhaoke/estore-ui-auth:latest

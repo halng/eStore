@@ -1,5 +1,5 @@
 export type UserLogin = {
-    username: String,
-    password: String,
-    isRemember?: Boolean,
+    username: string
+    password: string
+    isRemember?: boolean
 }

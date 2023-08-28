@@ -1,7 +1,7 @@
 export type UserRegister = {
-    username: String
-    email: String
-    password: String
-    rePassword: String
+    username: string
+    email: string
+    password: string
+    rePassword: string
     role?: number
 }

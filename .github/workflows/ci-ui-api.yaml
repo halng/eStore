@@ -22,8 +22,11 @@ jobs:
         with:
           node-version: 18
           registry-url: "https://registry.npmjs.org"
-      - name: install dependency
+      - name: Install dependency
         run: npm i && npm run build
+        working-directory: ui-api
+      - name: Check convention
+        run: npm run lint
         working-directory: ui-api
       - name: Publish package
         run: npm publish
