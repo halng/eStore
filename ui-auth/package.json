@@ -2,8 +2,8 @@
     "name": "ui-auth",
     "version": "1.0.0",
     "scripts": {
-        "lint": "eslint src/**",
-        "lint:format": "eslint --fix",
+        "lint": "eslint **/*.tsx",
+        "lint:format": "eslint --fix **/*.tsx",
         "build": "webpack --mode production",
         "build:dev": "webpack --mode development",
         "build:start": "cd dist && PORT=3001 npx serve",
