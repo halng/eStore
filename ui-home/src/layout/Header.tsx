@@ -10,7 +10,6 @@ const Header = () => {
             </div>
 
             <div className='header-item store-info d-flex flex-row justify-content-end p-2'>
-
                 <div className='store-item d-flex flex-row align-items-center'>
                     {/* 
                     waiting
@@ -93,9 +92,7 @@ const Header = () => {
                     </button>
 
                     {/* store name */}
-                    <div className="store-name fs-2 ps-3 ms-2">
-                        Test store
-                    </div>
+                    <div className='store-name fs-2 ps-3 ms-2'>Test store</div>
                 </div>
             </div>
         </div>

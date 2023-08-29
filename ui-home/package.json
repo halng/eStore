@@ -2,6 +2,8 @@
   "name": "ui-home",
   "version": "1.0.0",
   "scripts": {
+    "lint": "eslint **/*.tsx",
+    "lint:format": "eslint --fix **/*.tsx",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "build:start": "cd dist && PORT=3000 npx serve",
@@ -34,9 +36,12 @@
     "@typescript-eslint/parser": "^6.4.0",
     "bootstrap": "^5.3.1",
     "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "node-sass": "^9.0.0",
+    "prettier": "^3.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0"

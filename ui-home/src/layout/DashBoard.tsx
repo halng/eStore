@@ -8,11 +8,7 @@ const DashBoard = () => {
                 <div className='accordion accordion-flush' id='accordionFlushExample'>
                     <div className='accordion-item'>
                         <h2 className='accordion-header' id='flush-headingOne'>
-                            <Link
-                                to={"/"}
-                                className='accordion-button collapsed fs-4 menu-item'
-                                role='button'
-                            >
+                            <Link to={'/'} className='accordion-button collapsed fs-4 menu-item' role='button'>
                                 Main Board
                             </Link>
                         </h2>
@@ -37,19 +33,39 @@ const DashBoard = () => {
                             data-bs-parent='#accordionFlushExample'
                         >
                             <div className='accordion-body'>
-                                <Link to={'product/statistic'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                <Link
+                                    to={'product/statistic'}
+                                    className='menu-item fs-5 btn btn-outline-primary'
+                                    role='button'
+                                >
                                     Statistic
                                 </Link>
-                                <Link to={'product/all'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                <Link
+                                    to={'product/all'}
+                                    className='menu-item fs-5 btn btn-outline-primary'
+                                    role='button'
+                                >
                                     All product
                                 </Link>
-                                <Link to={'product/attribute'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                <Link
+                                    to={'product/attribute'}
+                                    className='menu-item fs-5 btn btn-outline-primary'
+                                    role='button'
+                                >
                                     Product Attribute
                                 </Link>
-                                <Link to={'product/group'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                <Link
+                                    to={'product/group'}
+                                    className='menu-item fs-5 btn btn-outline-primary'
+                                    role='button'
+                                >
                                     Product Group
                                 </Link>
-                                <Link to={'product/option'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                <Link
+                                    to={'product/option'}
+                                    className='menu-item fs-5 btn btn-outline-primary'
+                                    role='button'
+                                >
                                     Product Option
                                 </Link>
                             </div>
@@ -75,7 +91,7 @@ const DashBoard = () => {
                             data-bs-parent='#accordionFlushExample'
                         >
                             <div className='accordion-body'>
-                                <Link  to={'order/new'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                <Link to={'order/new'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
                                     New Order
                                 </Link>
                                 <Link to={'order/so'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
@@ -104,10 +120,18 @@ const DashBoard = () => {
                             data-bs-parent='#accordionFlushExample'
                         >
                             <div className='accordion-body'>
-                                <Link to={'customer/message'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                <Link
+                                    to={'customer/message'}
+                                    className='menu-item fs-5 btn btn-outline-primary'
+                                    role='button'
+                                >
                                     Message
                                 </Link>
-                                <Link to={'customer/policy'} className='menu-item fs-5 btn btn-outline-primary' role='button'>
+                                <Link
+                                    to={'customer/policy'}
+                                    className='menu-item fs-5 btn btn-outline-primary'
+                                    role='button'
+                                >
                                     Return
                                 </Link>
                             </div>
@@ -136,11 +160,11 @@ const DashBoard = () => {
                             viewBox='0 0 16 16'
                         >
                             <path
-                                fill-rule='evenodd'
+                                fillRule='evenodd'
                                 d='M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z'
                             />
                             <path
-                                fill-rule='evenodd'
+                                fillRule='evenodd'
                                 d='M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z'
                             />
                         </svg>
