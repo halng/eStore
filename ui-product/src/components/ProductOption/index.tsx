@@ -10,7 +10,7 @@ import CustomTable from '../../common/CustomTable'
 const ProductOption = () => {
     const [options, setOptions] = useState<ProductOptionType[]>([])
     const [page, setPage] = useState<number>(1)
-    const [totalPage, setTotalPage] = useState<number>(3)
+    const [totalPage, setTotalPage] = useState<number>(0)
     const [totalOptions, setTotalOptions] = useState<number>(0)
     const [newOption, setNewOption] = useState<ProductOptionCreateType>({
         description: '',
@@ -35,8 +35,8 @@ const ProductOption = () => {
                 setTotalPage(res.data.totalPages)
                 setTotalOptions(res.data.totalOptions)
             })
-            .catch((err) => {
-                toast.error("Can't get all group! Try again later.")
+            .catch(() => {
+                toast.error("Can't get all option! Try again later.")
             })
     }
 
@@ -87,7 +87,7 @@ const ProductOption = () => {
                     description: '',
                 })
             })
-            .catch((err) => {
+            .catch(() => {
                 toast.error('Create new group failed. Try again later!')
             })
     }
@@ -205,8 +205,9 @@ const ProductOption = () => {
                     onDeleteHandler={deleteOption}
                     onUpdateHandler={updateOption}
                 ></CustomTable>
-
-                <Pagination total={totalOptions} currentPage={page} totalPage={totalPage} setPage={setPage} />
+                {totalPage > 1 && (
+                    <Pagination total={totalOptions} currentPage={page} totalPage={totalPage} setPage={setPage} />
+                )}
             </div>
         </div>
     )

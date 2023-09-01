@@ -48,14 +48,14 @@ public class ProductGroupServiceImpl implements IProductGroupService {
 
         iProductGroupRepository.save(productGroup);
 
-        ResVm resVm = new ResVm(HttpStatus.CREATED, "create new group with name: " + groupName + " successfully");
+        ResVm resVm = new ResVm(HttpStatus.CREATED, "Create new group with name: " + groupName + " successfully");
         LOG.info(resVm.getLogMessage());
         return ResponseEntity.status(HttpStatus.CREATED).body(resVm);
     }
 
-    public ProductGroup getProductGroup(int groupId) {
-        ProductGroup group = iProductGroupRepository.findById(Long.valueOf(groupId))
-            .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id: %d does not exist", groupId)));
+    public ProductGroup getProductGroup(String groupId) {
+        ProductGroup group = iProductGroupRepository.findById(groupId)
+            .orElseThrow(() -> new EntityNotFoundException(String.format("Group with id: %s does not exist", groupId)));
 
         if (Status.REMOVED.equals(group.getStatus())) {
             LOG.error("Cannot handle on group that removed");
@@ -65,9 +65,8 @@ public class ProductGroupServiceImpl implements IProductGroupService {
         return group;
     }
 
-
     @Override
-    public ResponseEntity<ResVm> updateProductGroup(String newName, int groupId) {
+    public ResponseEntity<ResVm> updateProductGroup(String newName, String groupId) {
         LOG.info("Receive request to update name of product group");
 
         ProductGroup oldGroup = getProductGroup(groupId);
@@ -82,7 +81,7 @@ public class ProductGroupServiceImpl implements IProductGroupService {
     }
 
     @Override
-    public ResponseEntity<ResVm> disableEnableGroup(int groupId, String action) {
+    public ResponseEntity<ResVm> disableEnableGroup(String groupId, String action) {
         LOG.info("Receive request to disable/enable product group");
         ProductGroup oldGroup = getProductGroup(groupId);
         ResVm res = null;
@@ -105,7 +104,7 @@ public class ProductGroupServiceImpl implements IProductGroupService {
     }
 
     @Override
-    public ResponseEntity<ResVm> deleteProductGroup(int groupId) {
+    public ResponseEntity<ResVm> deleteProductGroup(String groupId) {
         LOG.info("Receive request to delete product group");
         ProductGroup oldGroup = getProductGroup(groupId);
         if (!oldGroup.getProductList().isEmpty()) {

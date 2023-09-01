@@ -44,7 +44,7 @@ public class ProductGroupServiceTest {
     void setup() {
         iProductGroupRepository = mock(IProductGroupRepository.class);
         productGroupService = new ProductGroupServiceImpl(iProductGroupRepository);
-        mockProductGroup = ProductGroup.builder().id(1L).name("test").status(Status.ENABLED).build();
+        mockProductGroup = ProductGroup.builder().id("1").name("test").status(Status.ENABLED).build();
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ProductGroupServiceTest {
     @Test
     void getProductGroup_shouldThrowException_whenGroupNotExist() {
         EntityNotFoundException entityNotFoundException = Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            this.productGroupService.getProductGroup(1232);
+            this.productGroupService.getProductGroup("1232");
         });
         Assertions.assertEquals("Group with id: 1232 does not exist", entityNotFoundException.getMessage());
     }
@@ -81,7 +81,7 @@ public class ProductGroupServiceTest {
         mockProductGroup.setStatus(Status.REMOVED);
         when(this.iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
         BadRequestException badRequestException = Assertions.assertThrows(BadRequestException.class, () -> {
-            this.productGroupService.getProductGroup(111);
+            this.productGroupService.getProductGroup("111");
         });
 
         Assertions.assertEquals("Product Group Removed. Cannot Handle!", badRequestException.getMessage());
@@ -90,9 +90,9 @@ public class ProductGroupServiceTest {
     @Test
     void getProductGroup_shouldReturnGroup_whenDataValid() {
         when(this.iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
-        ProductGroup group = this.productGroupService.getProductGroup(1);
+        ProductGroup group = this.productGroupService.getProductGroup("1");
 
-        Assertions.assertEquals(1L, group.getId());
+        Assertions.assertEquals("1", group.getId());
         Assertions.assertEquals("test", group.getName());
         Assertions.assertEquals(Status.ENABLED, group.getStatus());
     }
@@ -104,7 +104,7 @@ public class ProductGroupServiceTest {
         when(iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
         when(iProductGroupRepository.save(any())).thenReturn(newGroup);
 
-        ResponseEntity<ResVm> response = this.productGroupService.updateProductGroup("new", 1);
+        ResponseEntity<ResVm> response = this.productGroupService.updateProductGroup("new", "1");
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -119,13 +119,13 @@ public class ProductGroupServiceTest {
         when(iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
         when(iProductGroupRepository.save(any())).thenReturn(newGroup);
 
-        ResponseEntity<ResVm> response = this.productGroupService.disableEnableGroup(1, "disabled");
+        ResponseEntity<ResVm> response = this.productGroupService.disableEnableGroup("1", "disabled");
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
         Assertions.assertEquals("Disable product group successfully!", response.getBody().message());
 
-        ResponseEntity<ResVm> response2 = this.productGroupService.disableEnableGroup(1, "enabled");
+        ResponseEntity<ResVm> response2 = this.productGroupService.disableEnableGroup("1", "enabled");
         Assertions.assertNotNull(response2);
         Assertions.assertEquals(HttpStatus.OK, response2.getStatusCode());
         Assertions.assertNotNull(response2.getBody());
@@ -140,7 +140,7 @@ public class ProductGroupServiceTest {
         when(iProductGroupRepository.save(any())).thenReturn(newGroup);
 
         BadRequestException exception = Assertions.assertThrows(BadRequestException.class, () -> {
-            this.productGroupService.disableEnableGroup(1, "disbled");
+            this.productGroupService.disableEnableGroup("1", "disbled");
         });
 
         Assertions.assertEquals("Cannot update group with status disbled. Action not valid", exception.getMessage());
@@ -153,7 +153,7 @@ public class ProductGroupServiceTest {
 
         when(iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
         BadRequestException exception = Assertions.assertThrows(BadRequestException.class, () -> {
-            this.productGroupService.deleteProductGroup(1);
+            this.productGroupService.deleteProductGroup("1");
         });
 
         Assertions.assertEquals("Group test contain product. Please make sure this group empty before delete",
@@ -168,7 +168,7 @@ public class ProductGroupServiceTest {
         when(iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
         when(iProductGroupRepository.save(any())).thenReturn(newGroup);
 
-        ResponseEntity<ResVm> response = this.productGroupService.deleteProductGroup(1);
+        ResponseEntity<ResVm> response = this.productGroupService.deleteProductGroup("1");
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
@@ -247,8 +247,8 @@ public class ProductGroupServiceTest {
 
             @Override
             public List<ProductGroup> getContent() {
-                ProductGroup productGroup = ProductGroup.builder().id(1L).status(Status.ENABLED).build();
-                ProductGroup productGroup1 = ProductGroup.builder().id(2L).status(Status.ENABLED).build();
+                ProductGroup productGroup = ProductGroup.builder().id("1").status(Status.ENABLED).build();
+                ProductGroup productGroup1 = ProductGroup.builder().id("2").status(Status.ENABLED).build();
                 productGroup1.setCreateDate(Instant.now());
                 productGroup1.setLastUpdate(Instant.now());
                 productGroup.setCreateDate(Instant.now());

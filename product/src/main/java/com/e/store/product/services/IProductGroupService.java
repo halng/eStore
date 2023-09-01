@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 public interface IProductGroupService {
     ResponseEntity<ResVm> createNewGroup(String groupName);
 
-    ResponseEntity<ResVm> updateProductGroup(String newName, int groupId);
+    ResponseEntity<ResVm> updateProductGroup(String newName, String groupId);
 
-    ResponseEntity<ResVm> disableEnableGroup(int groupId, String action);
+    ResponseEntity<ResVm> disableEnableGroup(String groupId, String action);
 
     ResponseEntity<ListProductGroupResVm> getAllGroup(int page);
 
-    ResponseEntity<ResVm> deleteProductGroup(int groupId);
+    ResponseEntity<ResVm> deleteProductGroup(String groupId);
 
 }

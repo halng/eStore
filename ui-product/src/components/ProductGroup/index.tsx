@@ -11,7 +11,7 @@ const ProductGroup = () => {
     const [groups, setGroups] = useState<ProductGroupType[]>([])
     const [tempGroups, setTempGroup] = useState<ProductGroupType[]>([])
     const [page, setPage] = useState<number>(1)
-    const [totalPage, setTotalPage] = useState<number>(1)
+    const [totalPage, setTotalPage] = useState<number>(0)
     const [totalGroups, setTotalGroups] = useState<number>(0)
     const [newGroup, setNewGroup] = useState<string>('')
     const firstRow = [
@@ -40,7 +40,7 @@ const ProductGroup = () => {
         getAllGroup()
     }, [page])
 
-    const deleteGroup = (e: any, groupId: number) => {
+    const deleteGroup = (e: any, groupId: string) => {
         ProductGroupAPI.deleteGroup(groupId)
             .then((res) => {
                 toast.success(res.data.message)
@@ -63,7 +63,7 @@ const ProductGroup = () => {
             })
     }
 
-    const createGroup = (e: any) => {
+    const createGroup = () => {
         ProductGroupAPI.create(newGroup)
             .then((res) => {
                 toast.success(res.data.message)
@@ -75,7 +75,7 @@ const ProductGroup = () => {
             })
     }
 
-    const changeStatus = (e: any, groupId: number, status: string) => {
+    const changeStatus = (e: any, groupId: string, status: string) => {
         if (status === 'ENABLED') {
             ProductGroupAPI.disableGroup(groupId)
                 .then((res) => {
@@ -167,7 +167,7 @@ const ProductGroup = () => {
                                         className='form-control'
                                         id='new-group-name'
                                         value={newGroup}
-                                        onFocus={(e) => setNewGroup(e.target.value)}
+                                        onChange={(e) => setNewGroup(e.target.value)}
                                     />
                                 </div>
                                 <div className='pt-3 text-center'>
@@ -194,7 +194,9 @@ const ProductGroup = () => {
                     onChangeGroupStatusHandler={changeStatus}
                 />
 
-                <Pagination total={totalGroups} currentPage={page} totalPage={totalPage} setPage={setPage} />
+                {totalPage > 1 && (
+                    <Pagination total={totalGroups} currentPage={page} totalPage={totalPage} setPage={setPage} />
+                )}
             </div>
         </div>
     )
