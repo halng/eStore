@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Auth } from 'api-estore-v2'
@@ -32,7 +32,7 @@ const LogInForm = () => {
         Auth.login(resData)
             .then((res) => {
                 console.log(res)
-                return redirect('/')
+                window.location.replace('http://localhost:3000/')
             })
             .catch((err) => {
                 console.log(err)
