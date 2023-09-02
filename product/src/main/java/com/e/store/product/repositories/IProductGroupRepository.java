@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IProductGroupRepository extends JpaRepository<ProductGroup, Long> {
+public interface IProductGroupRepository extends JpaRepository<ProductGroup, String> {
     boolean existsByName(String name);
 
     @Query("SELECT g FROM ProductGroup g WHERE g.createBy=?1")

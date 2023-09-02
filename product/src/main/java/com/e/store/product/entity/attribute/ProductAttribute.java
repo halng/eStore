@@ -1,7 +1,10 @@
 package com.e.store.product.entity.attribute;
 
+import com.e.store.product.constant.Status;
 import com.e.store.product.entity.AuditEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,6 +30,8 @@ public class ProductAttribute extends AuditEntity {
     private String id;
     private String name;
     private String description;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @OneToMany(mappedBy = "productAttribute")
     private List<ProductAttributeValue> productAttributeValueList;
 }

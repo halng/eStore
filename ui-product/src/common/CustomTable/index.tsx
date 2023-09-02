@@ -127,46 +127,47 @@ const CustomTable = ({
                                         type='text'
                                         className='form-control'
                                         id='new-name'
+                                        placeholder={item.name}
                                         onChange={(e) => setData({ ...data, name: e.target.value })}
                                     />
                                 </div>
                                 {category === 'option' && (
-                                    <>
-                                        <div>
-                                            <select
-                                                className='form-select mt-3'
-                                                id='form-displayType'
-                                                onChange={(e) => setData({ ...data, displayType: e.target.value })}
-                                            >
-                                                <option selected={item.displayType === 'color'} value='color'>
-                                                    Color
-                                                </option>
-                                                <option selected={item.displayType === 'number'} value='number'>
-                                                    Number
-                                                </option>
-                                                <option selected={item.displayType === 'text'} value='text'>
-                                                    Text
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div className='mt-3'>
-                                            <textarea
-                                                className='form-control'
-                                                placeholder='Description for new options'
-                                                rows={4}
-                                                onChange={(e) =>
-                                                    setData({
-                                                        ...data,
-                                                        description: e.target.value,
-                                                    })
-                                                }
-                                            />
-                                        </div>
-                                    </>
+                                    <div>
+                                        <select
+                                            className='form-select mt-3'
+                                            id='form-displayType'
+                                            onChange={(e) => setData({ ...data, displayType: e.target.value })}
+                                        >
+                                            <option selected={item.displayType === 'color'} value='color'>
+                                                Color
+                                            </option>
+                                            <option selected={item.displayType === 'number'} value='number'>
+                                                Number
+                                            </option>
+                                            <option selected={item.displayType === 'text'} value='text'>
+                                                Text
+                                            </option>
+                                        </select>
+                                    </div>
+                                )}
+                                {(category === 'attribute' || category === 'option') && (
+                                    <div className='mt-3'>
+                                        <textarea
+                                            className='form-control'
+                                            placeholder={item.description}
+                                            rows={4}
+                                            onChange={(e) =>
+                                                setData({
+                                                    ...data,
+                                                    description: e.target.value,
+                                                })
+                                            }
+                                        />
+                                    </div>
                                 )}
                             </div>
                             <div className='modal-footer'>
-                                {category === 'group' && (
+                                {(category === 'group' || category === 'attribute') && (
                                     <button
                                         type='button'
                                         className='btn btn-warning'
@@ -197,15 +198,15 @@ const CustomTable = ({
             <table className='table'>
                 <thead className='table-light'>
                     <tr>
-                        {(firstRow || []).map((item: TableRowType, index) => (
-                            <th scope='col' key={index}>
+                        {(firstRow || []).map((item: TableRowType) => (
+                            <th scope='col' key={item.value}>
                                 {item.value}
                             </th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {(rows || []).map((item: any, index) => (
+                    {(rows || []).map((item: any, index: any) => (
                         <tr key={index}>
                             {[...Array(firstRow.length - 1)].map((_, index) => (
                                 <th
@@ -221,7 +222,7 @@ const CustomTable = ({
                                 </th>
                             ))}
                             <td className='d-flex flex-row justify-content-center'>
-                                {category === 'group' && item.status === 'REMOVED' ? (
+                                {(category === 'group' || category === 'attribute') && item.status === 'REMOVED' ? (
                                     <></>
                                 ) : (
                                     <>

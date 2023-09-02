@@ -31,7 +31,7 @@ public class ProductServiceTest {
         IProductGroupRepository = mock(IProductGroupRepository.class);
         productService = new ProductServiceImpl(productRepository, IProductGroupRepository);
 
-        productReqVm = new ProductReqVm("test 1", 3.4, "url", null, 34, "xxx-yyy", 1L, "None", null, null);
+        productReqVm = new ProductReqVm("test 1", 3.4, "url", null, 34, "xxx-yyy", "1", "None", null, null);
     }
 
     @Test
@@ -46,9 +46,9 @@ public class ProductServiceTest {
 
     @Test
     void createNewProductOption_shouldSuccess_whenDataValid() {
-        ProductGroup productGroup = ProductGroup.builder().id(1l).name("Product Name").build();
+        ProductGroup productGroup = ProductGroup.builder().id("1").name("Product Name").build();
         Product expected = Product.builder().id("xxx-111").build();
-        when(this.IProductGroupRepository.findById(1l)).thenReturn(Optional.of(productGroup));
+        when(this.IProductGroupRepository.findById("1")).thenReturn(Optional.of(productGroup));
         when(this.productRepository.save(any())).thenReturn(expected);
 
         ResponseEntity<ResVm> actualResult = this.productService.createNewProduct(this.productReqVm);

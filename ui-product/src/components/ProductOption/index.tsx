@@ -9,8 +9,9 @@ import CustomTable from '../../common/CustomTable'
 
 const ProductOption = () => {
     const [options, setOptions] = useState<ProductOptionType[]>([])
+    const [tempOptions, setTempOptions] = useState<ProductOptionType[]>([])
     const [page, setPage] = useState<number>(1)
-    const [totalPage, setTotalPage] = useState<number>(3)
+    const [totalPage, setTotalPage] = useState<number>(0)
     const [totalOptions, setTotalOptions] = useState<number>(0)
     const [newOption, setNewOption] = useState<ProductOptionCreateType>({
         description: '',
@@ -34,9 +35,10 @@ const ProductOption = () => {
                 setOptions(res.data.options)
                 setTotalPage(res.data.totalPages)
                 setTotalOptions(res.data.totalOptions)
+                setTempOptions(res.data.options)
             })
-            .catch((err) => {
-                toast.error("Can't get all group! Try again later.")
+            .catch(() => {
+                toast.error("Can't get all option! Try again later.")
             })
     }
 
@@ -87,9 +89,14 @@ const ProductOption = () => {
                     description: '',
                 })
             })
-            .catch((err) => {
+            .catch(() => {
                 toast.error('Create new group failed. Try again later!')
             })
+    }
+
+    const onSearchHandler = (e: any) => {
+        const temp = tempOptions.filter((item) => item.name.includes(e.target.value))
+        setOptions(temp)
     }
 
     return (
@@ -116,7 +123,7 @@ const ProductOption = () => {
                                 type='text'
                                 placeholder='Search in option name'
                                 aria-label='Search'
-                                // onChange={(e) => onSearchHandler(e)}
+                                onChange={(e) => onSearchHandler(e)}
                             />
                         </div>
 
@@ -205,8 +212,9 @@ const ProductOption = () => {
                     onDeleteHandler={deleteOption}
                     onUpdateHandler={updateOption}
                 ></CustomTable>
-
-                <Pagination total={totalOptions} currentPage={page} totalPage={totalPage} setPage={setPage} />
+                {totalPage > 1 && (
+                    <Pagination total={totalOptions} currentPage={page} totalPage={totalPage} setPage={setPage} />
+                )}
             </div>
         </div>
     )

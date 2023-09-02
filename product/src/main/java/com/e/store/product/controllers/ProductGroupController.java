@@ -29,17 +29,17 @@ public class ProductGroupController {
     }
 
     @PutMapping("{groupId}")
-    public ResponseEntity<ResVm> updateProductGroup(@NotBlank @RequestParam String newName, @PathVariable int groupId) {
+    public ResponseEntity<ResVm> updateProductGroup(@NotBlank @RequestParam String newName, @PathVariable String groupId) {
         return this.iProductGroupService.updateProductGroup(newName, groupId);
     }
 
     @PatchMapping("{groupId}/{action}")
-    public ResponseEntity<ResVm> disableEnableGroup(@PathVariable int groupId, @PathVariable String action) {
+    public ResponseEntity<ResVm> disableEnableGroup(@PathVariable String groupId, @PathVariable String action) {
         return this.iProductGroupService.disableEnableGroup(groupId, action);
     }
 
     @DeleteMapping("{groupId}")
-    public ResponseEntity<ResVm> deleteProductGroup(@PathVariable int groupId) {
+    public ResponseEntity<ResVm> deleteProductGroup(@PathVariable String groupId) {
         return this.iProductGroupService.deleteProductGroup(groupId);
     }
 

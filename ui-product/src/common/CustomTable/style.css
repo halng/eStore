@@ -9,3 +9,8 @@
 .text-removed {
   color: red !important;
 }
+
+
+.col_id{
+  max-width: 1rem;
+}

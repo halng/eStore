@@ -1,0 +1,26 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Product DB",
+      "group": "eStore",
+      "database": "product",
+      "username": "postgres",
+      "password": "postgres"
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Auth DB",
+      "group": "eStore",
+      "database": "account",
+      "username": "postgres",
+      "password": "postgres"
+    }
+  ]
+}

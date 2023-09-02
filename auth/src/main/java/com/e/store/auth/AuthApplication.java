@@ -30,10 +30,10 @@ public class AuthApplication {
         logger.info("create account and role into table");
         return args -> {
             roleRepository.save(Role.builder().roleName(AccountRole.BUYER).build());
-            roleRepository.save(Role.builder().roleName(AccountRole.SELLER).build());
             roleRepository.save(Role.builder().roleName(AccountRole.STAFF).build());
             Role adminRole = roleRepository.save(Role.builder().roleName(AccountRole.ADMIN).build());
             Role superRole = roleRepository.save(Role.builder().roleName(AccountRole.SUPERADMIN).build());
+            Role sellerRole = roleRepository.save(Role.builder().roleName(AccountRole.SELLER).build());
 
             Account adminAccount = Account.builder().status(AccountStatus.ACTIVE).email("admin@estore.com").username(
                 "admin").password(passwordEncoder.encode("admin")).role(adminRole).build();
@@ -45,8 +45,14 @@ public class AuthApplication {
             superAccount.setCreateBy(Const.DEFAULT_USER);
             superAccount.setUpdateBy(Const.DEFAULT_USER);
 
+            Account sellerAccount = Account.builder().status(AccountStatus.ACTIVE).email("seller@estore.com").username(
+                "seller").password(passwordEncoder.encode("123456")).role(sellerRole).build();
+            sellerAccount.setCreateBy(Const.DEFAULT_USER);
+            sellerAccount.setUpdateBy(Const.DEFAULT_USER);
+
             authRepository.save(adminAccount);
             authRepository.save(superAccount);
+            authRepository.save(sellerAccount);
         };
     }
 

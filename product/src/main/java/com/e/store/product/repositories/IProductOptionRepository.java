@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IProductOptionRepository extends JpaRepository<ProductOption, String> {
-    boolean existsByName(String name);
+    boolean existsByNameAndCreateBy(String name, String createBy);
 
     @Query("SELECT g FROM ProductOption g WHERE g.createBy=?1")
     Page<ProductOption> findByCreatorWithPagination(String creator, Pageable pageable);
