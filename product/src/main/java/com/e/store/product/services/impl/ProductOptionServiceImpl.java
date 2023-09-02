@@ -37,8 +37,9 @@ public class ProductOptionServiceImpl implements IProductOptionService {
     @Override
     public ResponseEntity<ResVm> createNewProductOption(ProductOptionCreateReqVm productOptionCreateReqVm) {
         ProductOption productOption = productOptionCreateReqVm.toModel();
+        String createBy = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (this.iProductOptionRepository.existsByName(productOption.getName())) {
+        if (this.iProductOptionRepository.existsByNameAndCreateBy(productOption.getName(), createBy)) {
             throw new BadRequestException("Product Option with name " + productOption.getName() + " already exists!");
         }
 

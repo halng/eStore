@@ -9,6 +9,7 @@ import CustomTable from '../../common/CustomTable'
 
 const ProductOption = () => {
     const [options, setOptions] = useState<ProductOptionType[]>([])
+    const [tempOptions, setTempOptions] = useState<ProductOptionType[]>([])
     const [page, setPage] = useState<number>(1)
     const [totalPage, setTotalPage] = useState<number>(0)
     const [totalOptions, setTotalOptions] = useState<number>(0)
@@ -34,6 +35,7 @@ const ProductOption = () => {
                 setOptions(res.data.options)
                 setTotalPage(res.data.totalPages)
                 setTotalOptions(res.data.totalOptions)
+                setTempOptions(res.data.options)
             })
             .catch(() => {
                 toast.error("Can't get all option! Try again later.")
@@ -92,6 +94,11 @@ const ProductOption = () => {
             })
     }
 
+    const onSearchHandler = (e: any) => {
+        const temp = tempOptions.filter((item) => item.name.includes(e.target.value))
+        setOptions(temp)
+    }
+
     return (
         <div className='product-option'>
             <Navbar />
@@ -116,7 +123,7 @@ const ProductOption = () => {
                                 type='text'
                                 placeholder='Search in option name'
                                 aria-label='Search'
-                                // onChange={(e) => onSearchHandler(e)}
+                                onChange={(e) => onSearchHandler(e)}
                             />
                         </div>
 

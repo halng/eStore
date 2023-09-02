@@ -1,61 +1,68 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../common/Navbar'
-import { ProductGroupType } from '../../types/ProductGroupType'
 import { toast } from 'react-toastify'
+import { ProductAttributeCreateType, ProductAttributeType } from '../../types/ProductAttributeType'
 
-import { ProductGroupAPI } from 'api-estore-v2'
+import { ProductAttributeAPI } from 'api-estore-v2'
 import Pagination from '../../common/pagination'
 import CustomTable from '../../common/CustomTable'
 
 const ProductAttribute = () => {
-    const [groups, setGroups] = useState<ProductGroupType[]>([])
-    const [tempGroups, setTempGroup] = useState<ProductGroupType[]>([])
+    const [attributes, setAttributes] = useState<ProductAttributeType[]>([])
+    const [tempAttributes, setTempAttributes] = useState<ProductAttributeType[]>([])
     const [page, setPage] = useState<number>(1)
     const [totalPage, setTotalPage] = useState<number>(0)
-    const [totalGroups, setTotalGroups] = useState<number>(0)
-    const [newGroup, setNewGroup] = useState<string>('')
+    const [totalAttribute, setTotalAttribute] = useState<number>(0)
+    const [newAtt, setNewAtt] = useState<ProductAttributeCreateType>({
+        name: '',
+        description: '',
+    })
     const firstRow = [
         { value: 'Id', fieldName: 'id' },
         { value: 'Name', fieldName: 'name' },
+        { value: 'Description', fieldName: 'description' },
         { value: 'Status', fieldName: 'status' },
-        { value: 'Create Date', fieldName: 'createdDate' },
-        { value: 'Update Date', fieldName: 'updatedDate' },
+        { value: 'Last Update Date', fieldName: 'lastUpdateDate' },
         { value: 'Actions', fieldName: '' },
     ]
 
-    const getAllGroup = () => {
-        ProductGroupAPI.getAll(page)
+    const getAllAttribute = () => {
+        ProductAttributeAPI.getAll(page)
             .then((res) => {
-                setGroups(res.data.groups)
-                setTempGroup(res.data.groups)
+                setAttributes(res.data.attributes)
+                setTempAttributes(res.data.attributes)
                 setTotalPage(res.data.totalPages)
-                setTotalGroups(res.data.totalGroup)
+                setTotalAttribute(res.data.totalAttributes)
             })
             .catch(() => {
-                toast.error("Can't get all group! Try again later.")
+                toast.error("Can't get all attribute! Try again later.")
             })
     }
 
     useEffect(() => {
-        getAllGroup()
+        getAllAttribute()
     }, [page])
 
-    const deleteGroup = (e: any, groupId: string) => {
-        ProductGroupAPI.deleteGroup(groupId)
+    const deleteAttribute = (e: any, attId: string) => {
+        ProductAttributeAPI.deleteAttribute(attId)
             .then((res) => {
                 toast.success(res.data.message)
-                getAllGroup()
+                getAllAttribute()
             })
             .catch((err) => {
                 toast.error(err.response.data.msg)
             })
     }
 
-    const updateGroup = (e: any, data: any, group: any) => {
-        ProductGroupAPI.update(data['name'], group.id)
+    const updateAttribute = (e: any, data: any, att: any) => {
+        const body = {
+            name: data['name'] ? data['name'] : att.name,
+            description: data['description'] ? data['description'] : att.description,
+        }
+        ProductAttributeAPI.update(body, att.id)
             .then((res) => {
                 toast.success(res.data.message)
-                getAllGroup()
+                getAllAttribute()
             })
             .catch((err) => {
                 console.log(err)
@@ -63,33 +70,33 @@ const ProductAttribute = () => {
             })
     }
 
-    const createGroup = () => {
-        ProductGroupAPI.create(newGroup)
+    const createAttribute = () => {
+        ProductAttributeAPI.create(newAtt)
             .then((res) => {
                 toast.success(res.data.message)
-                getAllGroup()
-                setNewGroup('')
+                getAllAttribute()
+                setNewAtt({ name: '', description: '' })
             })
             .catch(() => {
                 toast.error('Create new group failed. Try again later!')
             })
     }
 
-    const changeStatus = (e: any, groupId: string, status: string) => {
+    const changeStatus = (e: any, attId: string, status: string) => {
         if (status === 'ENABLED') {
-            ProductGroupAPI.disableGroup(groupId)
+            ProductAttributeAPI.disableAttribute(attId)
                 .then((res) => {
                     toast.success(res.data.message)
-                    getAllGroup()
+                    getAllAttribute()
                 })
                 .catch(() => {
                     toast.error('Disable group failed. Try again later!')
                 })
         } else {
-            ProductGroupAPI.enabledGroup(groupId)
+            ProductAttributeAPI.enabledAttribute(attId)
                 .then((res) => {
                     toast.success(res.data.message)
-                    getAllGroup()
+                    getAllAttribute()
                 })
                 .catch(() => {
                     toast.error('Enable group failed. Try again later!')
@@ -98,8 +105,8 @@ const ProductAttribute = () => {
     }
 
     const onSearchHandler = (e: any) => {
-        const temp = tempGroups.filter((item) => item.name.includes(e.target.value))
-        setGroups(temp)
+        const temp = tempAttributes.filter((item) => item.name.includes(e.target.value))
+        setAttributes(temp)
     }
 
     return (
@@ -108,7 +115,7 @@ const ProductAttribute = () => {
 
             <div className='product-group-main'>
                 <div className='d-flex justify-content-between pb-3'>
-                    <div className='fs-3'>Product Group</div>
+                    <div className='fs-3'>Product Attribute</div>
                     <div className='product-group-func d-flex justify-content-end align-items-center'>
                         <div className='search-box d-flex align-items-center me-3'>
                             <svg
@@ -124,7 +131,7 @@ const ProductAttribute = () => {
                             <input
                                 className='me-2 ps-3 py-2'
                                 type='text'
-                                placeholder='Search in group name'
+                                placeholder='Search'
                                 aria-label='Search'
                                 onChange={(e) => onSearchHandler(e)}
                             />
@@ -137,7 +144,7 @@ const ProductAttribute = () => {
                             data-bs-target='#offcanvasRight'
                             aria-controls='offcanvasRight'
                         >
-                            Create new group
+                            Create new attribute
                         </button>
 
                         <div
@@ -148,7 +155,7 @@ const ProductAttribute = () => {
                         >
                             <div className='offcanvas-header'>
                                 <h5 className='offcanvas-title' id='offcanvasRightLabel'>
-                                    Create New Group:
+                                    Create New Attribute:
                                 </h5>
                                 <button
                                     type='button'
@@ -160,14 +167,28 @@ const ProductAttribute = () => {
                             <div className='offcanvas-body d-flex flex-column align-content-center'>
                                 <div>
                                     <label htmlFor='new-group-name' className='col-form-label'>
-                                        New Group Name:
+                                        New Attribute Name:
                                     </label>
                                     <input
                                         type='text'
                                         className='form-control'
                                         id='new-group-name'
-                                        value={newGroup}
-                                        onChange={(e) => setNewGroup(e.target.value)}
+                                        value={newAtt.name}
+                                        onChange={(e) => setNewAtt({ ...newAtt, name: e.target.value })}
+                                    />
+                                </div>
+                                <div className='mt-3'>
+                                    <textarea
+                                        className='form-control'
+                                        placeholder='Description for new options'
+                                        rows={4}
+                                        value={newAtt.description}
+                                        onChange={(e) =>
+                                            setNewAtt({
+                                                ...newAtt,
+                                                description: e.target.value,
+                                            })
+                                        }
                                     />
                                 </div>
                                 <div className='pt-3 text-center'>
@@ -175,7 +196,7 @@ const ProductAttribute = () => {
                                         type='button'
                                         className='btn btn-primary'
                                         data-bs-dismiss='offcanvas'
-                                        onClick={createGroup}
+                                        onClick={createAttribute}
                                     >
                                         Create
                                     </button>
@@ -186,16 +207,16 @@ const ProductAttribute = () => {
                 </div>
 
                 <CustomTable
-                    category={'group'}
+                    category={'attribute'}
                     firstRow={firstRow}
-                    rows={groups}
-                    onDeleteHandler={deleteGroup}
-                    onUpdateHandler={updateGroup}
+                    rows={attributes}
+                    onDeleteHandler={deleteAttribute}
+                    onUpdateHandler={updateAttribute}
                     onChangeGroupStatusHandler={changeStatus}
                 />
 
                 {totalPage > 1 && (
-                    <Pagination total={totalGroups} currentPage={page} totalPage={totalPage} setPage={setPage} />
+                    <Pagination total={totalAttribute} currentPage={page} totalPage={totalPage} setPage={setPage} />
                 )}
             </div>
         </div>

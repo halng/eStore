@@ -44,7 +44,7 @@ public class ProductAttributeServiceImpl implements IProductAttributeService {
             throw new BadRequestException(
                 "Product Attribute with name " + productAttribute.getName() + " already exists!");
         }
-
+        productAttribute.setStatus(Status.ENABLED);
         ProductAttribute newProductAttribute = this.iProductAttributeRepository.save(productAttribute);
 
         ResVm resVm = new ResVm(HttpStatus.CREATED,

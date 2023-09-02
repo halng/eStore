@@ -65,7 +65,7 @@ public class ProductGroupServiceTest {
         ResponseEntity<ResVm> actualResult = this.productGroupService.createNewGroup("test");
 
         Assertions.assertEquals(201, actualResult.getStatusCode().value());
-        Assertions.assertEquals("create new group with name: test successfully", actualResult.getBody().message());
+        Assertions.assertEquals("Create new group with name: test successfully", actualResult.getBody().message());
     }
 
     @Test

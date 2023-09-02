@@ -1,4 +1,5 @@
 import ProductGroupAPI from './ProductGroup'
 import ProductOptionAPI from './ProductOption'
+import ProductAttributeAPI from './ProductAttribute'
 
-export { ProductGroupAPI, ProductOptionAPI }
+export { ProductGroupAPI, ProductOptionAPI, ProductAttributeAPI }

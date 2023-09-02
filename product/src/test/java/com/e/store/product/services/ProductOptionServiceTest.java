@@ -83,7 +83,7 @@ public class ProductOptionServiceTest {
 
     @Test
     void createNewProductOption_shouldThrowException_whenDataInvalid() {
-        when(this.iProductOptionRepository.existsByName(anyString())).thenReturn(true);
+        when(this.iProductOptionRepository.existsByNameAndCreateBy(anyString(), anyString())).thenReturn(true);
 
         BadRequestException badRequestException = Assertions.assertThrows(BadRequestException.class, () -> {
             this.productOptionService.createNewProductOption(this.optionCreateReqVm);
@@ -97,7 +97,7 @@ public class ProductOptionServiceTest {
     void createNewProductOption_shouldSuccess_whenDataValid() {
         ProductOption expected = this.optionCreateReqVm.toModel();
         expected.setId("xxx-111-222");
-        when(this.iProductOptionRepository.existsByName(anyString())).thenReturn(false);
+        when(this.iProductOptionRepository.existsByNameAndCreateBy(anyString(), anyString())).thenReturn(false);
         when(this.iProductOptionRepository.save(any())).thenReturn(expected);
 
         ResponseEntity<ResVm> res = this.productOptionService.createNewProductOption(this.optionCreateReqVm);
