@@ -1,10 +1,12 @@
 package com.e.store.product.services;
 
 import com.e.store.product.viewmodel.req.ProductOptionCreateReqVm;
+import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductOptionResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public interface IProductOptionService {
@@ -12,5 +14,5 @@ public interface IProductOptionService {
     ResponseEntity<ListProductOptionResVm> getAllOption(int page);
     ResponseEntity<ResVm> updateOption(String optionId, ProductOptionCreateReqVm req);
     ResponseEntity<ResVm> deleteOption(String optionId);
-
+    ResponseEntity<List<CommonProductResVm>> getAllOption();
 }

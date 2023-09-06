@@ -10,3 +10,9 @@ export type ProductAttributeType = {
     description: string
     lastUpdateDate: string
 }
+
+export type ProductAttributeValueType = {
+    id: string
+    name: string
+    value: string
+}

@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import './index.css'
+import '../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import { Product, ProductAttribute, ProductGroup, ProductOption } from './components'
 
 const App = () => (

@@ -1,6 +1,7 @@
 import api from '../helper/api'
 
 const ProductAttributeAPI = {
+    getAttribute: () => api.get('product/attribute/all'),
     create: (data: any) => api.post(`/product/attribute`, data),
     getAll: (page: number) => api.get(`/product/attribute?page=${page}`),
     update: (data: any, attributeId: string) => api.put(`/product/attribute/${attributeId}`, data),

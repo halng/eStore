@@ -7,9 +7,11 @@ import com.e.store.product.exceptions.BadRequestException;
 import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductGroupRepository;
 import com.e.store.product.services.IProductGroupService;
+import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductGroupResVm;
 import com.e.store.product.viewmodel.res.ProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -121,10 +123,24 @@ public class ProductGroupServiceImpl implements IProductGroupService {
     }
 
     @Override
+    public ResponseEntity<List<CommonProductResVm>> getAllGroup() {
+        LOG.info("Receive request to get all product group");
+        String creator = CommonService.getUser();
+        List<ProductGroup> productGroups = this.iProductGroupRepository.findByCreateByAndStatus(creator, Status.ENABLED);
+        List<CommonProductResVm> commonProductResVms = new ArrayList<>();
+
+        for(ProductGroup group:productGroups) {
+            commonProductResVms.add(new CommonProductResVm(group.getId(), group.getName()));
+        }
+
+        return ResponseEntity.ok(commonProductResVms);
+    }
+
+    @Override
     public ResponseEntity<ListProductGroupResVm> getAllGroup(int page) {
         LOG.info("Receive request to get all group");
-        String creator = SecurityContextHolder.getContext().getAuthentication().getName();
-        Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.ASC, "status"));
+        String creator = CommonService.getUser();
+        Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
 
         Page<ProductGroup> productGroupPages = this.iProductGroupRepository.findByCreatorWithPagination(creator, pageable);
         List<ProductGroupResVm> productGroupResVmList = productGroupPages.getContent().stream()

@@ -9,9 +9,12 @@ import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductAttributeRepository;
 import com.e.store.product.services.IProductAttributeService;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
+import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductAttributeServiceImpl implements IProductAttributeService {
@@ -71,7 +74,7 @@ public class ProductAttributeServiceImpl implements IProductAttributeService {
     public ResponseEntity<ListProductAttributeResVm> getAllProductAttribute(int page) {
         LOG.info("Receive request to get all product attribute");
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL);
+        Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
 
         Page<ProductAttribute> productAttributes = this.iProductAttributeRepository.findByCreatorWithPagination(
             username, pageable);
@@ -133,5 +136,19 @@ public class ProductAttributeServiceImpl implements IProductAttributeService {
         LOG.info(resVm.getLogMessage());
 
         return ResponseEntity.ok(resVm);
+    }
+
+    @Override
+    public ResponseEntity<List<CommonProductResVm>> getAllAttribute() {
+        String user = CommonService.getUser();
+        List<ProductAttribute> productAttributes = this.iProductAttributeRepository.findByCreateByAndStatus(user,
+            Status.ENABLED);
+        List<CommonProductResVm> productResVms = new ArrayList<>();
+
+        for (ProductAttribute attribute : productAttributes) {
+            productResVms.add(new CommonProductResVm(attribute.getId(), attribute.getName()));
+        }
+
+        return ResponseEntity.ok(productResVms);
     }
 }
