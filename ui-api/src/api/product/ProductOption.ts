@@ -1,6 +1,7 @@
 import api from '../helper/api'
 
 const ProductOptionAPI = {
+    getOption: () => api.get('/product/option/all'),
     create: (data: any) => api.post(`/product/option`, data),
     getAll: (page: number) => api.get(`/product/option?page=${page}`),
     update: (data: any, optionId: string) => api.put(`/product/option/${optionId}`, data),

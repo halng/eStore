@@ -32,13 +32,13 @@ const ProductImage = () => {
         <div className='product-attribute w-100'>
             <div className='thumbnail '>
                 <div className='input-group mb-3'>
-                    <label className='input-group-text' htmlFor='inputGroupFile01'>
+                    <label className='input-group-text' htmlFor='inputThumbnail'>
                         Upload Thumbnail
                     </label>
                     <input
                         type='file'
                         className='form-control'
-                        id='inputGroupFile01'
+                        id='inputThumbnail'
                         accept='image/*'
                         onChange={(e) => onUploadThumbnail(e)}
                     />
@@ -47,14 +47,14 @@ const ProductImage = () => {
             </div>
             <div className='image'>
                 <div className='input-group mb-3'>
-                    <label className='input-group-text' htmlFor='inputGroupFile01'>
+                    <label className='input-group-text' htmlFor='inputProductImage'>
                         Upload Product Image
                     </label>
                     <input
                         type='file'
                         multiple
                         className='form-control'
-                        id='inputGroupFile01'
+                        id='inputProductImage'
                         accept='image/*'
                         onChange={(e) => onUploadImage(e)}
                     />
