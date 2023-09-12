@@ -1,0 +1,1 @@
+refer <https://github.com/tiangolo/full-stack-fastapi-postgresql/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/backend> to setup and code convention
