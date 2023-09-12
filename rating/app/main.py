@@ -9,8 +9,3 @@ def read_all():
     return {
         'msg': 'Hello World'
     }
-    
-    
-    
-    
-    
