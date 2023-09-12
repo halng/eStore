@@ -8,4 +8,6 @@ for root, dirs, files in os.walk('./app/'):
         if (filename.endswith('.py')):
             list_file.append(os.path.join(root, filename))
 
-checker.check_files(list_file)
+result = checker.check_files(list_file)
+if result.total_errors != 0:
+    raise SyntaxError('Have some file(s) not correct with format')
