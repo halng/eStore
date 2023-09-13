@@ -29,13 +29,6 @@ jobs:
         working-directory: order
       - run: npm run lint
         working-directory: order
-      - name: Analyze with sonar cloud
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: order
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   security:
     needs: "analyze"
@@ -67,45 +60,36 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm ci
+      - run: npm i
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
         with:
           category: "/language:${{matrix.language}}"
 
-  # unit-test:
-  #   needs: security
-  #   runs-on: ubuntu-latest
-  #   permissions: write-all
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: set up env
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18
-  #     - run: npm ci
-  #       working-directory: order
-  #     - run: npm run build
-  #       working-directory: order
-  #     - run: npm run junit-test  -- -u && npm run test:cover  -- -u
-  #       working-directory: order
-  #     - name: Analyze with sonar cloud
-  #       uses: SonarSource/sonarcloud-github-action@master
-  #       with:
-  #         projectBaseDir: order
-  #       env:
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     - name: Unit Test Results
-  #       uses: dorny/test-reporter@v1
-  #       if: always()
-  #       with:
-  #           name: JEST Tests            # Name of the check run which will be created
-  #           path: order/reports/jest-junit.xml    # Path to test results
-  #           reporter: jest-junit   
-
+  unit-test:
+    needs: security
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+        working-directory: order
+      - run: npm run test:cover
+        working-directory: order
+      - name: Analyze with sonar cloud
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: order
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
   docker:
-    # needs: "unit-test"
+    needs: "unit-test"
     runs-on: ubuntu-latest
     permissions: write-all
     steps:

@@ -91,6 +91,7 @@ jobs:
           python-version: '3.10'
       - name: set up env
         run: pip install -r requirements.txt
+        working-directory: rating
       - name: Log in to the Container registry
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: docker/login-action@v2
