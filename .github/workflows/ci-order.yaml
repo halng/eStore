@@ -61,6 +61,7 @@ jobs:
         with:
           node-version: 18
       - run: npm i
+        working-directory: order
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
         with:
@@ -87,7 +88,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
   docker:
     needs: "unit-test"
     runs-on: ubuntu-latest
