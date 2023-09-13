@@ -1,0 +1,39 @@
+{
+    "name": "order",
+    "version": "1.0.0",
+    "description": "order service for eStore project",
+    "main": "index.js",
+    "scripts": {
+        "test": "mocha ./test/**/*.spec.js",
+        "test:watch": "mocha --watch ./test/**/*.spec.js",
+        "start": "nodemon index.js",
+        "lint": "npx prettier . --check",
+        "lint:format": "npx prettier . --write"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tanhaok/eStore.git"
+    },
+    "keywords": [
+        "eStore"
+    ],
+    "author": "tanhaok",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/tanhaok/eStore/issues"
+    },
+    "homepage": "https://github.com/tanhaok/eStore#readme",
+    "dependencies": {
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2"
+    },
+    "devDependencies": {
+        "chai": "^4.3.8",
+        "concurrently": "^8.2.1",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-prettier": "^5.0.0",
+        "mocha": "^10.2.0",
+        "nodemon": "^3.0.1",
+        "prettier": "3.0.3"
+    }
+}
