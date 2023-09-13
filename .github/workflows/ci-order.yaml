@@ -1,16 +1,16 @@
-name: rating service ci
+name: ci order service
 
 on:
   push:
     branches: ["main"]
     paths:
-      - "rating/**"
-      - ".github/workflows/ci-rating.yaml"
+      - "order/**"
+      - ".github/workflows/ci-order.yaml"
   pull_request:
     branches: ["main", "dev"]
     paths:
-      - "rating/**"
-      - ".github/workflows/ci-rating.yaml"
+      - "order/**"
+      - ".github/workflows/ci-order.yaml"
 
   workflow_dispatch:
 
@@ -21,24 +21,14 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up python env
-        uses: actions/setup-python@v4
+      - name: set up env
+        uses: actions/setup-node@v3
         with:
-          python-version: '3.10'
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-        working-directory: rating
-      - name: Check format code
-        run: python script/lint.py
-        working-directory: rating
-      - name: Analyze with sonar cloud
-        uses: SonarSource/sonarcloud-github-action@master
-        if: ${{ github.event.pull_request.head.repo.full_name == github.repository || github.ref == 'refs/heads/main' }}
-        with:
-          projectBaseDir: rating
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node-version: 18
+      - run: npm ci
+        working-directory: order
+      - run: npm run lint
+        working-directory: order
 
   security:
     needs: "analyze"
@@ -51,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["python"]
+        language: ["javascript"]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Use only 'java' to analyze code written in Java, Kotlin or both
         # Use only 'javascript' to analyze code written in JavaScript, TypeScript or both
@@ -66,35 +56,68 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
-
+      - name: set up env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm i
+        working-directory: order
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
         with:
           category: "/language:${{matrix.language}}"
 
+  unit-test:
+    needs: security
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+        working-directory: order
+      - run: npm run test:cover
+        working-directory: order
+      - name: Analyze with sonar cloud
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: order
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker:
-    needs: "analyze"
+    needs: "unit-test"
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      packages: write
+    permissions: write-all
     steps:
       - name: checkout version
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: set up env
+        if: ${{ github.ref != 'refs/heads/main' }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install deplendency
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: npm ci
+        working-directory: order
       - name: Log in to the Container registry
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and push Docker images
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: docker/build-push-action@v3
         with:
-          context: ./rating
+          context: ./order
           push: true
-          tags: tanhaoke/estore-rating:latest
+          tags: tanhaoke/estore-order:latest
