@@ -1,3 +1,4 @@
+import pprint
 from typing import Generic, Any, Dict, List, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
@@ -22,21 +23,19 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
 
         self.model = model
 
-    def get_by_id(self, db: Session, id: Any) -> Optional[ModelType]:
+    def get_by_id(self, db: Session, id: Any):
         return db.query(self.model).filter(self.model.id == id).first()
 
-    def get_with_paging(
-        self, db: Session, *, offset: int = 0, limit: int = 25
-    ) -> List[ModelType]:
+    def get_with_paging(self, db: Session, *, offset: int = 0, limit: int = 25):
         return db.query(self.model).offset(offset).limit(limit).all()
 
-    def create(self, db: Session, *, obj: CreateSchemaType) -> ModelType:
+    def create(self, db: Session, *, obj: CreateSchemaType):
         data = jsonable_encoder(obj)
         convert_data = self.model(**data)
         db.add(convert_data)
         db.commit()
         db.refresh(convert_data)
-        return convert_data
+        return jsonable_encoder(convert_data)
 
     def update(
         self,
@@ -44,7 +43,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         *,
         origin_obj: ModelType,
         new_obj: Union[UpdateSchemaType, Dict[str, any]]
-    ) -> ModelType:
+    ):
         origin_data_converted = jsonable_encoder(origin_obj)
 
         if isinstance(new_obj, dict):
@@ -61,7 +60,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db.refresh(origin_obj)
         return origin_obj
 
-    def remove(self, db: Session, *, id: Any) -> ModelType:
+    def remove(self, db: Session, *, id: Any):
         obj = db.query(self.model).get(id)
 
         db.delete(obj)

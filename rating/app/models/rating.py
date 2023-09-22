@@ -6,9 +6,9 @@ from datetime import datetime
 
 
 class Rating(Base):
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     comment = Column(String)
-    star = Column(Float, index=True)
+    star = Column(Float)
     prod_id = Column(String, index=True)
     username = Column(String)
     user_id = Column(String, index=True)
