@@ -1,28 +1,16 @@
+ 
+FROM python:3.11-slim
 
-
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9-slim AS builder
-
+# 
 WORKDIR /app
 
-COPY requirements.txt ./
-RUN pip install -r requirements.txt
+COPY ./requirements.txt /requirements.txt
+
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc 
+RUN pip install --no-cache-dir --upgrade -r /requirements.txt
+
 
 COPY ./app ./app
 
-FROM builder as dev-envs
-
-RUN <<EOF
-apt-get update
-apt-get install -y --no-install-recommends git
-EOF
-
-RUN <<EOF
-useradd -s /bin/bash -m vscode
-groupadd docker
-usermod -aG docker vscode
-EOF
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
-
-EXPOSE 8000
-CMD [ "uvicorn", "app.main:app", "--reload" ]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "9094"]
