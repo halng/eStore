@@ -25,6 +25,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - run: npm i
+        working-directory: ui-product
       - run: npm ci
         working-directory: ui-product
       - run: npm run build
