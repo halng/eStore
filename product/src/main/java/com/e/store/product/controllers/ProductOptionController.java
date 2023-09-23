@@ -2,8 +2,10 @@ package com.e.store.product.controllers;
 
 import com.e.store.product.services.IProductOptionService;
 import com.e.store.product.viewmodel.req.ProductOptionCreateReqVm;
+import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductOptionResVm;
 import com.e.store.product.viewmodel.res.ResVm;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,5 +43,8 @@ public class ProductOptionController {
     public ResponseEntity<ResVm> deleteOption(@PathVariable String optionId) {
         return this.iProductOptionService.deleteOption(optionId);
     }
-
+    @GetMapping("all")
+    public ResponseEntity<List<CommonProductResVm>> getAllOption() {
+        return this.iProductOptionService.getAllOption();
+    }
 }

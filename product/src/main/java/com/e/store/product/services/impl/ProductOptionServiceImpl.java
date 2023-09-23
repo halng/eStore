@@ -1,15 +1,18 @@
 package com.e.store.product.services.impl;
 
 import com.e.store.product.constant.Constant;
+import com.e.store.product.entity.ProductGroup;
 import com.e.store.product.entity.option.ProductOption;
 import com.e.store.product.exceptions.BadRequestException;
 import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductOptionRepository;
 import com.e.store.product.services.IProductOptionService;
 import com.e.store.product.viewmodel.req.ProductOptionCreateReqVm;
+import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductOptionResVm;
 import com.e.store.product.viewmodel.res.ProductOptionResVm;
 import com.e.store.product.viewmodel.res.ResVm;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -18,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,7 +58,7 @@ public class ProductOptionServiceImpl implements IProductOptionService {
     public ResponseEntity<ListProductOptionResVm> getAllOption(int page) {
         LOG.info("Receive request to get all option");
         String creator = SecurityContextHolder.getContext().getAuthentication().getName();
-        Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL);
+        Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
         Page<ProductOption> productOptionPage = this.iProductOptionRepository.findByCreatorWithPagination(creator,
             pageable);
 
@@ -98,5 +103,18 @@ public class ProductOptionServiceImpl implements IProductOptionService {
         ResVm resVm = new ResVm(HttpStatus.OK, "Delete option %s successfully".formatted(productOption.getName()));
         LOG.info(resVm.getLogMessage());
         return ResponseEntity.ok(resVm);
+    }
+
+    @Override
+    public ResponseEntity<List<CommonProductResVm>> getAllOption() {
+        LOG.info("Receive request to get all option");
+        String creator = CommonService.getUser();
+
+        List<ProductOption> productOptions = this.iProductOptionRepository.findByCreateBy(creator);
+        List<CommonProductResVm> commonProductResVms = new ArrayList<>();
+        for (ProductOption option: productOptions) {
+            commonProductResVms.add(new CommonProductResVm(option.getId(), option.getName()));
+        }
+        return ResponseEntity.ok(commonProductResVms);
     }
 }

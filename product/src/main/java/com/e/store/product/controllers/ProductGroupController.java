@@ -1,6 +1,7 @@
 package com.e.store.product.controllers;
 
 import com.e.store.product.services.IProductGroupService;
+import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/product/group")
@@ -46,6 +48,11 @@ public class ProductGroupController {
     @GetMapping()
     public ResponseEntity<ListProductGroupResVm> getAllProductGroup(@RequestParam int page) {
         return this.iProductGroupService.getAllGroup(page);
+    }
+
+    @GetMapping("all")
+    public ResponseEntity<List<CommonProductResVm>> getAllProductGroup() {
+        return this.iProductGroupService.getAllGroup();
     }
 
 }

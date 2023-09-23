@@ -1,6 +1,7 @@
 import api from '../helper/api'
 
 const ProductGroupAPI = {
+    getGroup: () => api.get('product/group/all'),
     create: (name: string) => api.post(`/product/group?groupName=${name}`),
     getAll: (page: number) => api.get(`/product/group?page=${page}`),
     update: (newName: string, groupId: string) => api.put(`/product/group/${groupId}?newName=${newName}`),

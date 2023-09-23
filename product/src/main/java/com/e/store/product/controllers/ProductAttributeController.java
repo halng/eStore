@@ -2,6 +2,7 @@ package com.e.store.product.controllers;
 
 import com.e.store.product.services.IProductAttributeService;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
+import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/product/attribute")
@@ -46,6 +48,11 @@ public class ProductAttributeController {
     @DeleteMapping("{attId}")
     public ResponseEntity<ResVm> deleteAttribute(@PathVariable String attId) {
         return this.iProductAttributeService.deleteAttribute(attId);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<CommonProductResVm>> getAllAttribute(){
+        return this.iProductAttributeService.getAllAttribute();
     }
 
 }
