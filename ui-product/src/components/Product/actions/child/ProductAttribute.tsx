@@ -3,11 +3,19 @@ import { ProductAttributeValueType } from '../../../../types/ProductAttributeTyp
 import { CommonType } from '../../../../types/CommonType'
 import { ProductAttributeAPI } from 'api-estore-v2'
 import { toast } from 'react-toastify'
-const ProductAttribute = () => {
+import { UseFormSetValue, UseFormGetValues } from 'react-hook-form'
+import { ProductCreateType } from '../../../../types/ProductType'
+interface props {
+    setFunc: UseFormSetValue<ProductCreateType>
+    getFunc: UseFormGetValues<ProductCreateType>
+}
+const ProductAttribute = ({ setFunc, getFunc }: props) => {
     const [attributeValues, setAttributeValues] = useState<ProductAttributeValueType[]>([])
     const [attributes, setAttributes] = useState<CommonType[]>([])
 
     useEffect(() => {
+        const data = getFunc('attributes') || []
+        setAttributeValues(data)
         ProductAttributeAPI.getAttribute()
             .then((res) => {
                 setAttributes(res.data)
@@ -25,6 +33,7 @@ const ProductAttribute = () => {
             const newAttribute: ProductAttributeValueType = { id: '', name: '', value: '' }
             oldAttribute.push(newAttribute)
             setAttributeValues([...oldAttribute])
+            setFunc('attributes', [...oldAttribute])
         }
     }
 
@@ -38,6 +47,7 @@ const ProductAttribute = () => {
         oldAttribute[index].id = e.target.value
 
         setAttributeValues([...oldAttribute])
+        setFunc('attributes', [...oldAttribute])
     }
 
     const onAttributeValueChange = (e: any, attributeId: string) => {
@@ -47,12 +57,14 @@ const ProductAttribute = () => {
         oldAttribute[index].value = e.target.value
 
         setAttributeValues([...oldAttribute])
+        setFunc('attributes', [...oldAttribute])
     }
 
     const onRemoveAttribute = (attId: string) => {
         const oldAttribute = [...attributeValues]
         const newAttribute = oldAttribute.filter((obj) => obj.id !== attId)
         setAttributeValues([...newAttribute])
+        setFunc('attributes', [...newAttribute])
     }
 
     return (
@@ -78,6 +90,7 @@ const ProductAttribute = () => {
                         type='text'
                         placeholder='Enter value'
                         className='form-control me-3'
+                        value={item.value}
                         onChange={(e) => onAttributeValueChange(e, item.id)}
                     />
                     <button

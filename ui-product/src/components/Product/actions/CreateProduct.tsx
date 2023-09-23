@@ -1,21 +1,66 @@
 import React, { useState } from 'react'
-import { ProductAttribute, ProductBasicInfo, ProductImage, ProductPost, ProductSEO, ProductVariation } from './child'
+import { ProductAttribute, ProductBasicInfo, ProductImage, ProductPost, ProductSEO } from './child'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { ProductCreateType } from '../../../types/ProductType'
+import { toast } from 'react-toastify'
+import { MediaAPI } from 'api-estore-v2'
 
 const CreateProduct = () => {
-    const tabs = ['Basic Info', 'Images', 'Blog Post', 'Product Variation', 'Product Attribute', 'SEO']
-    const tabComponent = [
-        <ProductBasicInfo key={'basic-info'} />,
-        <ProductImage key={'image'} />,
-        <ProductPost key={'post'} />,
-        <ProductVariation key={'variation'} />,
-        <ProductAttribute key={'attribute'} />,
-        <ProductSEO key={'seo'} />,
-    ]
-
     const [currentTab, setCurrentTab] = useState<number>(0)
+    const { handleSubmit, setValue, getValues } = useForm<ProductCreateType>()
 
+    const uploadFile = (data: any): string[] | any => {
+        MediaAPI.uploadImages(data)
+            .then((res) => {
+                return res.data['itemIds']
+            })
+            .catch(() => {
+                toast.error('Cannot Upload Image(s)')
+            })
+    }
+    const onSubmitHandler: SubmitHandler<ProductCreateType> = (data) => {
+        const form: any = new FormData()
+        form.append('caption', getValues('name'))
+
+        // upload thumbnail first
+        const thumbnail = getValues('thumbnailId.file')
+        form.append('files', thumbnail)
+        const thumbnailIds = uploadFile(form)
+        form.delete('files')
+
+        //upload images
+        const images = getValues('imageIds.files')
+        images?.forEach((img) => {
+            form.append('files', img)
+        })
+        const imageIds = uploadFile(form)
+
+        // create product
+        setValue('imageIds', imageIds)
+        setValue('thumbnailId', thumbnailIds)
+        console.log(data)
+    }
+
+    const onInputValueChange = (
+        fieldName: any,
+        e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
+    ) => {
+        setValue(fieldName, e.target.value)
+    }
+
+    const getInputValue = (fieldName: any) => getValues(fieldName)
+
+    const tabs = ['Basic Info', 'Images', 'Blog Post', 'Product Attribute', 'SEO']
+    const tabComponent = [
+        <ProductBasicInfo key={'basic-info'} setFunc={onInputValueChange} getFunc={getInputValue} />,
+        <ProductImage key={'image'} setFunc={setValue} getFunc={getValues} />,
+        <ProductPost key={'post'} />,
+        // <ProductVariation key={'variation'} />,
+        <ProductAttribute key={'attribute'} setFunc={setValue} getFunc={getValues} />,
+        <ProductSEO key={'seo'} setFunc={onInputValueChange} getFunc={getInputValue} />,
+    ]
     return (
-        <div>
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
             <div className='create-product-header'>
                 <ul className='nav nav-tabs'>
                     {tabs.map((item, index) => (
@@ -52,7 +97,7 @@ const CreateProduct = () => {
                     </button>
                 </div>
                 <div>
-                    <button type='button' className='me-3 btn btn-primary'>
+                    <button type='submit' className='me-3 btn btn-primary'>
                         Save
                     </button>
                 </div>
@@ -67,7 +112,7 @@ const CreateProduct = () => {
                     </button>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 

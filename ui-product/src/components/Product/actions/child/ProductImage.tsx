@@ -1,14 +1,32 @@
-import React, { useState } from 'react'
-import { ProductImageType, ProductThumbnail } from '../../../../types/ProductType'
+import React, { useState, useEffect } from 'react'
+import { ProductCreateType, ProductImageType, ProductThumbnail } from '../../../../types/ProductType'
+import { UseFormSetValue, UseFormGetValues } from 'react-hook-form'
 
-const ProductImage = () => {
+interface props {
+    setFunc: UseFormSetValue<ProductCreateType>
+    getFunc: UseFormGetValues<ProductCreateType>
+}
+
+const ProductImage = ({ setFunc, getFunc }: props) => {
     const [thumbnail, setThumbnail] = useState<ProductThumbnail>({ url: '' })
     const [images, setImages] = useState<ProductImageType>({ urls: [], files: [] })
+
+    useEffect(() => {
+        const thumbnailUrl = getFunc('thumbnailId.url')
+        const thumbnailFile = getFunc('thumbnailId.file')
+        setThumbnail({ url: thumbnailUrl, file: thumbnailFile })
+
+        const imagesUrls = getFunc('imageIds.urls')
+        const imagesFiles = getFunc('imageIds.files')
+
+        setImages({ urls: imagesUrls, files: imagesFiles })
+    }, [])
 
     const onUploadThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const src = URL.createObjectURL(e.target.files[0])
             setThumbnail({ file: e.target.files[0], url: src })
+            setFunc('thumbnailId', { file: e.target.files[0], url: src })
         }
     }
 
@@ -25,6 +43,8 @@ const ProductImage = () => {
             })
 
             setImages({ urls: _urls, files: _files })
+            setFunc('imageIds.urls', _urls)
+            setFunc('imageIds.files', _files)
         }
     }
 
