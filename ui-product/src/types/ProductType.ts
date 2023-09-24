@@ -18,8 +18,8 @@ export type ProductCreateType = {
     quantity: number
     group: string
     description: string
-    thumbnailId: string | ProductThumbnail
-    imageIds: string[] | ProductImageType
+    thumbnail: ProductThumbnail
+    images: ProductImageType
     attributes: ProductAttributeValueType[]
     seo: ProductSEOType
 }

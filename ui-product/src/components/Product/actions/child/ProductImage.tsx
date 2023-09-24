@@ -12,12 +12,12 @@ const ProductImage = ({ setFunc, getFunc }: props) => {
     const [images, setImages] = useState<ProductImageType>({ urls: [], files: [] })
 
     useEffect(() => {
-        const thumbnailUrl = getFunc('thumbnailId.url')
-        const thumbnailFile = getFunc('thumbnailId.file')
+        const thumbnailUrl = getFunc('thumbnail.url')
+        const thumbnailFile = getFunc('thumbnail.file')
         setThumbnail({ url: thumbnailUrl, file: thumbnailFile })
 
-        const imagesUrls = getFunc('imageIds.urls')
-        const imagesFiles = getFunc('imageIds.files')
+        const imagesUrls = getFunc('images.urls')
+        const imagesFiles = getFunc('images.files')
 
         setImages({ urls: imagesUrls, files: imagesFiles })
     }, [])
@@ -26,7 +26,7 @@ const ProductImage = ({ setFunc, getFunc }: props) => {
         if (e.target.files) {
             const src = URL.createObjectURL(e.target.files[0])
             setThumbnail({ file: e.target.files[0], url: src })
-            setFunc('thumbnailId', { file: e.target.files[0], url: src })
+            setFunc('thumbnail', { file: e.target.files[0], url: src })
         }
     }
 
@@ -43,8 +43,8 @@ const ProductImage = ({ setFunc, getFunc }: props) => {
             })
 
             setImages({ urls: _urls, files: _files })
-            setFunc('imageIds.urls', _urls)
-            setFunc('imageIds.files', _files)
+            setFunc('images.urls', _urls)
+            setFunc('images.files', _files)
         }
     }
 

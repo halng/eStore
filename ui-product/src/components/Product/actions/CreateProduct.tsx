@@ -2,43 +2,41 @@ import React, { useState } from 'react'
 import { ProductAttribute, ProductBasicInfo, ProductImage, ProductPost, ProductSEO } from './child'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { ProductCreateType } from '../../../types/ProductType'
-import { toast } from 'react-toastify'
 import { MediaAPI } from 'api-estore-v2'
+import * as _ from 'lodash'
 
 const CreateProduct = () => {
     const [currentTab, setCurrentTab] = useState<number>(0)
     const { handleSubmit, setValue, getValues } = useForm<ProductCreateType>()
 
-    const uploadFile = (data: any): string[] | any => {
-        MediaAPI.uploadImages(data)
-            .then((res) => {
-                return res.data['itemIds']
-            })
-            .catch(() => {
-                toast.error('Cannot Upload Image(s)')
-            })
+    const uploadFile = async (data: any) => {
+        const res = await MediaAPI.uploadImages(data)
+        return await res.data['itemIds']
     }
-    const onSubmitHandler: SubmitHandler<ProductCreateType> = (data) => {
+    const onSubmitHandler: SubmitHandler<ProductCreateType> = async (data) => {
         const form: any = new FormData()
-        form.append('caption', getValues('name'))
-
-        // upload thumbnail first
-        const thumbnail = getValues('thumbnailId.file')
+        form.append('caption', `thumbnail${getValues('name')}`)
+        const thumbnail = getValues('thumbnail.file')
         form.append('files', thumbnail)
-        const thumbnailIds = uploadFile(form)
-        form.delete('files')
 
         //upload images
-        const images = getValues('imageIds.files')
+        const form2: any = new FormData()
+        form2.append('caption', `image_${getValues('name')}`)
+        const images = getValues('images.files')
         images?.forEach((img) => {
-            form.append('files', img)
+            form2.append('files', img)
         })
-        const imageIds = uploadFile(form)
 
-        // create product
-        setValue('imageIds', imageIds)
-        setValue('thumbnailId', thumbnailIds)
-        console.log(data)
+        Promise.all([uploadFile(form), uploadFile(form2)]).then((values) => {
+            const excludedData = _.omit(data, ['thumbnail', 'images']) // exclude file field
+            const bodyData = {
+                ...excludedData,
+                thumbnailId: values[0],
+                imagesIds: values[1],
+            }
+
+            console.log(bodyData)
+        })
     }
 
     const onInputValueChange = (
