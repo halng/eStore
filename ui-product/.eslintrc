@@ -10,7 +10,7 @@
         // "next/core-web-vitals"
     ],
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint", "react", "react-hooks"],
+    "plugins": ["@typescript-eslint", "react", "react-hooks", "jest"],
     "rules": {
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
@@ -26,7 +26,8 @@
     },
     "env": {
         "browser": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "globals": {
         "JSX": true

@@ -1,0 +1,1 @@
+This folder will use cypress for e2e testing

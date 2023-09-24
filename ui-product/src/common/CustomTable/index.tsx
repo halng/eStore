@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import './style.css'
 import { TableRowType } from '../../types/TableRowType'
 
-interface propsData {
+interface PropsData {
     category: string
     firstRow: TableRowType[]
     rows: any
@@ -25,14 +25,14 @@ const CustomTable = ({
     onDeleteHandler,
     onUpdateHandler,
     onChangeGroupStatusHandler,
-}: propsData) => {
+}: PropsData) => {
     const DeleteModal = ({ item }: any) => {
         return (
             <div>
                 {/* <!-- Button trigger modal --> */}
                 <button
                     type='button'
-                    className='btn btn-danger'
+                    className='btn btn-danger btn_del'
                     data-bs-toggle='modal'
                     data-bs-target={`#deleteModal_${item.id}`}
                 >
@@ -209,7 +209,9 @@ const CustomTable = ({
                 <tbody>
                     {(rows || []).map((item: any, index: any) => (
                         <tr key={index}>
+                            {/* index column */}
                             <th>{index + 1}</th>
+                            {/* data columns */}
                             {[...Array(firstRow.length - 1)].map((_, index) => (
                                 <th
                                     scope='row'
@@ -223,6 +225,7 @@ const CustomTable = ({
                                     {item[firstRow[index].fieldName.toString()]}
                                 </th>
                             ))}
+                            {/* action col */}
                             <td className='d-flex flex-row justify-content-center'>
                                 {(category === 'group' || category === 'attribute') && item.status === 'REMOVED' ? (
                                     <></>

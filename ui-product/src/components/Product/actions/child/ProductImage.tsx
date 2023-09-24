@@ -36,7 +36,7 @@ const ProductImage = ({ setFunc, getFunc }: props) => {
             const _files: File[] = []
 
             const fileList = [...e.target.files]
-            fileList.map((item) => {
+            fileList.forEach((item) => {
                 const url = URL.createObjectURL(item)
                 _urls.push(url)
                 _files.push(item)
