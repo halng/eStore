@@ -198,6 +198,7 @@ const CustomTable = ({
             <table className='table'>
                 <thead className='table-light'>
                     <tr>
+                        <th scope='col'>STT</th>
                         {(firstRow || []).map((item: TableRowType) => (
                             <th scope='col' key={item.value}>
                                 {item.value}
@@ -208,6 +209,7 @@ const CustomTable = ({
                 <tbody>
                     {(rows || []).map((item: any, index: any) => (
                         <tr key={index}>
+                            <th>{index + 1}</th>
                             {[...Array(firstRow.length - 1)].map((_, index) => (
                                 <th
                                     scope='row'
