@@ -129,7 +129,8 @@ const ProductOption = () => {
 
                         <button
                             type='button'
-                            className='btn btn-primary'
+                            data-testid='openOffcanvas'
+                            className='btn btn-primary '
                             data-bs-toggle='offcanvas'
                             data-bs-target='#offcanvasRight'
                             aria-controls='offcanvasRight'
@@ -144,7 +145,11 @@ const ProductOption = () => {
                             aria-labelledby='offcanvasRightLabel'
                         >
                             <div className='offcanvas-header'>
-                                <h5 className='offcanvas-title' id='offcanvasRightLabel'>
+                                <h5
+                                    className='offcanvas-title'
+                                    data-testid='offcanvasRightLabel'
+                                    id='offcanvasRightLabel'
+                                >
                                     Create New Option:
                                 </h5>
                                 <button
@@ -166,6 +171,7 @@ const ProductOption = () => {
                                     />
                                 </div>
                                 <select
+                                    data-testid='formSelectOptionType'
                                     className='form-select mt-3'
                                     onChange={(e) => setNewOption({ ...newOption, displayType: e.target.value })}
                                 >
@@ -193,6 +199,7 @@ const ProductOption = () => {
                                 <div className='pt-3 text-center'>
                                     <button
                                         type='button'
+                                        data-testid='btnCreate'
                                         className='btn btn-primary'
                                         data-bs-dismiss='offcanvas'
                                         onClick={createOption}
