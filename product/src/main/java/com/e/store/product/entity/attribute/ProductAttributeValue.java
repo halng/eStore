@@ -2,6 +2,7 @@ package com.e.store.product.entity.attribute;
 
 import com.e.store.product.entity.AuditEntity;
 import com.e.store.product.entity.Product;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +28,7 @@ public class ProductAttributeValue extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String value;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
     @ManyToOne

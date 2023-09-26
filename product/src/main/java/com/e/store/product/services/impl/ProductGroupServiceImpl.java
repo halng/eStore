@@ -24,7 +24,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -86,7 +85,7 @@ public class ProductGroupServiceImpl implements IProductGroupService {
     public ResponseEntity<ResVm> disableEnableGroup(String groupId, String action) {
         LOG.info("Receive request to disable/enable product group");
         ProductGroup oldGroup = getProductGroup(groupId);
-        ResVm res = null;
+        ResVm res;
 
         if (Status.ENABLED.toString().toLowerCase().equals(action)) {
             oldGroup.setStatus(Status.ENABLED);

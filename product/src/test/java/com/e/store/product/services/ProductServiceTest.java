@@ -7,7 +7,11 @@ import static org.mockito.Mockito.when;
 import com.e.store.product.entity.Product;
 import com.e.store.product.entity.ProductGroup;
 import com.e.store.product.exceptions.EntityNotFoundException;
+import com.e.store.product.repositories.IProductAttributeRepository;
+import com.e.store.product.repositories.IProductAttributeValueRepository;
 import com.e.store.product.repositories.IProductGroupRepository;
+import com.e.store.product.repositories.IProductImageRepository;
+import com.e.store.product.repositories.IProductSEORepository;
 import com.e.store.product.repositories.ProductRepository;
 import com.e.store.product.services.impl.ProductServiceImpl;
 import com.e.store.product.viewmodel.req.ProductReqVm;
@@ -21,22 +25,32 @@ import org.springframework.http.ResponseEntity;
 public class ProductServiceTest {
 
     ProductRepository productRepository;
-    IProductGroupRepository IProductGroupRepository;
+    IProductGroupRepository iProductGroupRepository;
+    IProductAttributeRepository iProductAttributeRepository;
+    IProductImageRepository iProductImageRepository;
+    IProductSEORepository iProductSEORepository;
+    IProductAttributeValueRepository iProductAttributeValueRepository;
     IProductService productService;
     ProductReqVm productReqVm;
 
     @BeforeEach
     void setup() {
         productRepository = mock(ProductRepository.class);
-        IProductGroupRepository = mock(IProductGroupRepository.class);
-        productService = new ProductServiceImpl(productRepository, IProductGroupRepository);
+        iProductGroupRepository = mock(IProductGroupRepository.class);
+        iProductAttributeRepository = mock(IProductAttributeRepository.class);
+        iProductImageRepository = mock(IProductImageRepository.class);
+        iProductSEORepository = mock(IProductSEORepository.class);
+        iProductAttributeValueRepository = mock(IProductAttributeValueRepository.class);
 
-        productReqVm = new ProductReqVm("test 1", 3.4, "url", null, 34, "xxx-yyy", "1", "None", null, null);
+        productService = new ProductServiceImpl(productRepository, iProductGroupRepository, iProductAttributeRepository,
+            iProductImageRepository, iProductSEORepository, iProductAttributeValueRepository);
+
+        productReqVm = new ProductReqVm("test 1","test-1", 3.4, "url", null, 34, "xxx-yyy", "1", null, null);
     }
 
     @Test
     void createNewProductOption_shouldThrowException_whenDataInvalid() {
-        when(this.IProductGroupRepository.findById(any())).thenReturn(Optional.empty());
+        when(this.iProductGroupRepository.findById(any())).thenReturn(Optional.empty());
         EntityNotFoundException e = Assertions.assertThrows(EntityNotFoundException.class, () -> {
             this.productService.createNewProduct(this.productReqVm);
         });
@@ -48,7 +62,7 @@ public class ProductServiceTest {
     void createNewProductOption_shouldSuccess_whenDataValid() {
         ProductGroup productGroup = ProductGroup.builder().id("1").name("Product Name").build();
         Product expected = Product.builder().id("xxx-111").build();
-        when(this.IProductGroupRepository.findById("1")).thenReturn(Optional.of(productGroup));
+        when(this.iProductGroupRepository.findById("1")).thenReturn(Optional.of(productGroup));
         when(this.productRepository.save(any())).thenReturn(expected);
 
         ResponseEntity<ResVm> actualResult = this.productService.createNewProduct(this.productReqVm);
