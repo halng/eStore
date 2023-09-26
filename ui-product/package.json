@@ -4,8 +4,8 @@
     "scripts": {
         "test": "jest",
         "test:cover": "jest --coverage",
-        "lint": "eslint **/*.tsx",
-        "lint:format": "eslint --fix **/*.tsx",
+        "lint": "eslint \"{**/*,*}.{ts,jsx,tsx}\"",
+        "lint:format": "eslint \"{**/*,*}.{ts,jsx,tsx}\" --fix",
         "build": "webpack --mode production",
         "build:dev": "webpack --mode development",
         "build:start": "cd dist && PORT=3002 npx serve",
@@ -44,7 +44,7 @@
     "dependencies": {
         "@typescript-eslint/eslint-plugin": "^6.4.0",
         "@typescript-eslint/parser": "^6.4.0",
-        "api-estore-v2": "^0.0.8",
+        "api-estore-v2": "^0.0.9",
         "bootstrap": "^5.3.1",
         "eslint": "^8.47.0",
         "eslint-config-prettier": "^9.0.0",
@@ -58,6 +58,7 @@
         "react-draft-wysiwyg": "^1.15.0",
         "react-hook-form": "^7.46.2",
         "react-router-dom": "^6.15.0",
-        "react-toastify": "^9.1.3"
+        "react-toastify": "^9.1.3",
+        "slugify": "^1.6.6"
     }
 }

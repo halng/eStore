@@ -1,16 +1,19 @@
 .text-disabled {
-  color: yellow !important;
+    color: yellow !important;
 }
 
 .text-enabled {
-  color: rgb(53, 255, 53) !important;
+    color: rgb(53, 255, 53) !important;
 }
 
 .text-removed {
-  color: red !important;
+    color: red !important;
 }
 
+.col_id {
+    max-width: 1rem;
+}
 
-.col_id{
-  max-width: 1rem;
+tr {
+    text-align: left !important;
 }

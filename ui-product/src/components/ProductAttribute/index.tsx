@@ -18,7 +18,7 @@ const ProductAttribute = () => {
         description: '',
     })
     const firstRow = [
-        { value: 'Id', fieldName: 'id' },
+        // { value: 'Id', fieldName: 'id' },
         { value: 'Name', fieldName: 'name' },
         { value: 'Description', fieldName: 'description' },
         { value: 'Status', fieldName: 'status' },

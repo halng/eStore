@@ -20,7 +20,7 @@ const ProductOption = () => {
     })
 
     const firstRow = [
-        { value: 'Id', fieldName: 'id' },
+        // { value: 'Id', fieldName: 'id' },
         { value: 'Name', fieldName: 'name' },
         { value: 'Display Type', fieldName: 'displayType' },
         { value: 'Description', fieldName: 'description' },
