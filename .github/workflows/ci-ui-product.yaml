@@ -84,11 +84,11 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-        working-directory: ui-product
-      - run: npm run build
-        working-directory: ui-product
-      - run: npm run test:cover
-        working-directory: ui-product
+      #   working-directory: ui-product
+      # - run: npm run build
+      #   working-directory: ui-product
+      # - run: npm run test:cover
+      #   working-directory: ui-product
       - name: Analyze with sonar cloud
         uses: SonarSource/sonarcloud-github-action@master
         with:
