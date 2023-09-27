@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import { ProductAttribute, ProductBasicInfo, ProductImage, ProductPost, ProductSEO } from './child'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { ProductCreateType } from '../../../types/ProductType'
-import { MediaAPI } from 'api-estore-v2'
+import { MediaAPI, ProductAPI } from 'api-estore-v2'
 import * as _ from 'lodash'
+import { convertStandardSlug } from '../../../utils'
+import { toast } from 'react-toastify'
 
 const CreateProduct = () => {
     const [currentTab, setCurrentTab] = useState<number>(0)
+    const [progress, setProgress] = useState<number>(0)
     const { handleSubmit, setValue, getValues } = useForm<ProductCreateType>()
 
     const uploadFile = async (data: any) => {
@@ -18,7 +21,6 @@ const CreateProduct = () => {
         form.append('caption', `thumbnail${getValues('name')}`)
         const thumbnail = getValues('thumbnail.file')
         form.append('files', thumbnail)
-
         //upload images
         const form2: any = new FormData()
         form2.append('caption', `image_${getValues('name')}`)
@@ -28,14 +30,24 @@ const CreateProduct = () => {
         })
 
         Promise.all([uploadFile(form), uploadFile(form2)]).then((values) => {
-            const excludedData = _.omit(data, ['thumbnail', 'images']) // exclude file field
+            setProgress(66)
+            const slug = data.slug ? convertStandardSlug(data.slug) : convertStandardSlug(data.name)
+            const excludedData = _.omit(data, ['thumbnail', 'images', 'slug']) // exclude file field
             const bodyData = {
                 ...excludedData,
-                thumbnailId: values[0],
+                slug: slug,
+                thumbnailId: values[0][0],
                 imagesIds: values[1],
             }
-
-            console.log(bodyData)
+            ProductAPI.create(bodyData)
+                .then((res) => {
+                    toast.success(res.data.message)
+                })
+                .catch((err) => {
+                    console.log(err)
+                    toast.error('Create product failed. Please try again later!')
+                })
+            setProgress(100)
         })
     }
 
@@ -74,6 +86,15 @@ const CreateProduct = () => {
                         </li>
                     ))}
                 </ul>
+            </div>
+            <div className='progress'>
+                <div
+                    className={`progress-bar progress-bar-striped progress-bar-animated w-${progress}`}
+                    role='progressbar'
+                    aria-valuenow={progress}
+                    aria-valuemin='0'
+                    aria-valuemax='100'
+                ></div>
             </div>
             <div className='create-product-body pt-3  d-flex justify-content-center'>{tabComponent[currentTab]}</div>
 

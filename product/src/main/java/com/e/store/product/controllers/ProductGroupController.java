@@ -5,6 +5,7 @@ import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/product/group")

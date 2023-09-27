@@ -15,7 +15,7 @@ const ProductGroup = () => {
     const [totalGroups, setTotalGroups] = useState<number>(0)
     const [newGroup, setNewGroup] = useState<string>('')
     const firstRow = [
-        { value: 'Id', fieldName: 'id' },
+        // { value: 'Id', fieldName: 'id' },
         { value: 'Name', fieldName: 'name' },
         { value: 'Status', fieldName: 'status' },
         { value: 'Create Date', fieldName: 'createdDate' },

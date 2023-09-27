@@ -3,3 +3,8 @@
     color: black;
     height: 75vh;
 }
+
+.progress,
+.progress-stacked {
+    --bs-progress-height: 0.3rem;
+}

@@ -3,9 +3,9 @@ package com.e.store.product.services;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.List;
 @Service
 public interface IProductGroupService {
     ResponseEntity<ResVm> createNewGroup(String groupName);

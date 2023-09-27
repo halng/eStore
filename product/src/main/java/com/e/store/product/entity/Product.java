@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -29,11 +30,13 @@ public class Product extends AuditEntity{
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String name;
+    private String slug;
     private double price;
     private int quantity;
     private String thumbnailId;
     private String blogPostId;
     private String shortDescription;
+    private boolean isParent;
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList;
     @OneToMany(mappedBy = "product")
@@ -43,4 +46,6 @@ public class Product extends AuditEntity{
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = true)
     private ProductGroup productGroup;
+    @OneToOne(mappedBy = "product")
+    private ProductSEO productSEO;
 }

@@ -198,7 +198,7 @@ const CustomTable = ({
             <table className='table'>
                 <thead className='table-light'>
                     <tr>
-                        <th scope='col'>STT</th>
+                        <th scope='col'>No.</th>
                         {(firstRow || []).map((item: TableRowType) => (
                             <th scope='col' key={item.value}>
                                 {item.value}

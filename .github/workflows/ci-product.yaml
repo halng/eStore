@@ -79,7 +79,6 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-
   docker:
     needs: "analyze"
     runs-on: ubuntu-latest

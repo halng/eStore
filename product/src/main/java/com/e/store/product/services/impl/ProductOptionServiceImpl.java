@@ -1,7 +1,6 @@
 package com.e.store.product.services.impl;
 
 import com.e.store.product.constant.Constant;
-import com.e.store.product.entity.ProductGroup;
 import com.e.store.product.entity.option.ProductOption;
 import com.e.store.product.exceptions.BadRequestException;
 import com.e.store.product.exceptions.EntityNotFoundException;
