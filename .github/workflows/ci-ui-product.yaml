@@ -33,6 +33,13 @@ jobs:
         working-directory: ui-product
       - run: npm run lint
         working-directory: ui-product
+      - name: Analyze with sonar cloud
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: ui-product
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   security:
     needs: "analyze"
@@ -73,29 +80,29 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-  unit-test:
-    needs: security
-    runs-on: ubuntu-latest
-    permissions: write-all
-    steps:
-      - uses: actions/checkout@v3
-      - name: set up env
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - run: npm ci
-      #   working-directory: ui-product
-      # - run: npm run build
-      #   working-directory: ui-product
-      # - run: npm run test:cover
-      #   working-directory: ui-product
-      - name: Analyze with sonar cloud
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: ui-product
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # unit-test:
+  #   needs: security
+  #   runs-on: ubuntu-latest
+  #   permissions: write-all
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: set up env
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
+  #     - run: npm ci
+  #     #   working-directory: ui-product
+  #     # - run: npm run build
+  #     #   working-directory: ui-product
+  #     # - run: npm run test:cover
+  #     #   working-directory: ui-product
+  #     - name: Analyze with sonar cloud
+  #       uses: SonarSource/sonarcloud-github-action@master
+  #       with:
+  #         projectBaseDir: ui-product
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # docker:
   #   # needs: "unit-test"
