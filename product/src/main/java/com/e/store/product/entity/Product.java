@@ -2,7 +2,6 @@ package com.e.store.product.entity;
 
 import com.e.store.product.entity.attribute.ProductAttributeValue;
 import com.e.store.product.entity.option.ProductOptionValue;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

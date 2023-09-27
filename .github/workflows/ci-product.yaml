@@ -46,19 +46,16 @@ jobs:
 
   qodana:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # a full history is required for pull request analysis
-      - name: "Qodana Scan"
+          fetch-depth: 0
+      - name: 'Qodana Backend'
         uses: JetBrains/qodana-action@v2023.2
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
-          working-directory: product
+        with:
+          args: |
+            --source-directory,product
+          artifact-name: qodana
 
   security:
     needs: "analyze"
