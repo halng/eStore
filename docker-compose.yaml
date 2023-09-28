@@ -1,36 +1,111 @@
-version: '3.5'
+version: "3.5"
 
 services:
   postgres:
-    container_name: postgres_container
-    image: postgres
+    image: postgres:15.4
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       PGDATA: /data/postgres
     volumes:
-       - postgres:/data/postgres
+      - postgres:/data/postgres
     ports:
       - "5432:5432"
     networks:
-      - postgres
+      - estore_app
     restart: unless-stopped
-  
-  # pgadmin:
-  #   container_name: pgadmin_container
-  #   image: dpage/pgadmin4
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@admin.org}
-  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
-  #   volumes:
-  #      - pgadmin:/var/lib/pgadmin
 
-    # ports:
-    #   - "${PGADMIN_PORT:-5050}:80"
-    # networks:
-    #   - postgres
-    # restart: unless-stopped
+  auth:
+    # image: tanhaoke/estore-auth:latest
+    build:
+      context: auth
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - 9091:9091
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/account
+      KAFKA_BOOTSTRAP_SERVER: kafka:29092
+    networks:
+      - estore_app
+
+  email:
+    # image: tanhaoke/estore-email:latest
+    build:
+      context: email
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - 9093:9093
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/account
+      KAFKA_BOOTSTRAP_SERVER: kafka:29092
+    networks:
+      - estore_app
+  product:
+    # image: tanhaoke/estore-product:latest
+    build:
+      context: product
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - 9094:9094
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product
+    networks:
+      - estore_app
+
+  media:
+    # image: tanhaoke/estore-media:latest
+    build:
+      context: media
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - 9095:9095
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/media
+    networks:
+      - estore_app
+
+  api:
+    # image: tanhaoke/estore-api:latest
+    build:
+      context: api
+      dockerfile: Dockerfile
+    depends_on:
+      - product
+      - postgres
+      - media
+      - auth
+    ports:
+      - 9090:9090
+    networks:
+      - estore_app
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@admin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - estore_app
+    restart: unless-stopped
 
   zookeeper:
     image: confluentinc/cp-zookeeper:5.2.1
@@ -41,7 +116,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-      
+
   kafka:
     image: confluentinc/cp-kafka:5.2.1
     hostname: kafka
@@ -53,12 +128,14 @@ services:
       - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-  
+    networks:
+      - estore_app
+
   kafdrop:
     image: obsidiandynamics/kafdrop
     restart: "no"
@@ -69,10 +146,20 @@ services:
       JVM_OPTS: "-Xms16M -Xmx48M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
     depends_on:
       - "kafka"
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui:v4.16.0
+    ports:
+      - 8083:8080
+    environment:
+      BASE_URL: /swagger-ui
+      URLS: "[{ url: 'http://localhost:9094/v3/api-docs', name: 'Product' },{ url: 'http://localhost:9095/v3/api-docs', name: 'Media' },{ url: 'http://localhost:9091/v3/api-docs', name: 'Auth' }]"
+    networks:
+      - estore_app
 networks:
-  postgres:
+  estore_app:
     driver: bridge
 
 volumes:
-    postgres:
-    pgadmin:
+  postgres:
+  pgadmin:
