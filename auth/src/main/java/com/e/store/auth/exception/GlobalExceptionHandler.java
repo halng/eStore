@@ -1,6 +1,10 @@
 package com.e.store.auth.exception;
 
 import com.e.store.auth.viewmodel.res.ErrorVm;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,8 +20,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({BadRequestException.class})
-    protected ResponseEntity<ErrorVm> handleBadRequestException(BadRequestException exception, WebRequest webRequest) {
+    @ExceptionHandler({BadRequestException.class, IllegalArgumentException.class})
+    protected ResponseEntity<ErrorVm> handleBadRequestException(Exception exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "BAD REQUEST", HttpStatus.BAD_REQUEST.toString());
         log.error("Bad request: {}", exception.getMessage());
         return ResponseEntity.badRequest().body(errorVm);
@@ -30,11 +34,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(404).body(errorVm);
     }
 
-    @ExceptionHandler({TokenException.class})
-    protected ResponseEntity<ErrorVm> handleTokenException(TokenException exception, WebRequest webRequest) {
+    @ExceptionHandler({TokenException.class, SignatureException.class, MalformedJwtException.class,
+        ExpiredJwtException.class, UnsupportedJwtException.class})
+    protected ResponseEntity<ErrorVm> handleTokenException(Exception exception, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(exception.getMessage(), "AUTHENTICATE FAILED",
             HttpStatus.UNAUTHORIZED.toString());
-        log.error("Token exception: authentication failed. Try again!. Detail: {}", exception.getMessage() );
+        log.error("Token exception: authentication failed. Try again!. Detail: {}", exception.getMessage());
         return ResponseEntity.status(401).body(errorVm);
     }
 
@@ -55,9 +60,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({AuthenException.class})
-    protected  ResponseEntity<ErrorVm> handleAuthenticationException(AuthenException e, WebRequest webRequest) {
+    protected ResponseEntity<ErrorVm> handleAuthenticationException(AuthenException e, WebRequest webRequest) {
         ErrorVm errorVm = new ErrorVm(e.getMessage(), "BAD CREDENTIAL", HttpStatus.UNAUTHORIZED.toString());
-        log.error("AuthenException {}",e.getMessage());
+        log.error("AuthenException {}", e.getMessage());
         return ResponseEntity.status(401).body(errorVm);
     }
 }
