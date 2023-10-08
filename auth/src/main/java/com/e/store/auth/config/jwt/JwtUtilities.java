@@ -1,5 +1,7 @@
 package com.e.store.auth.config.jwt;
 
+import com.e.store.auth.exception.AuthenException;
+import com.e.store.auth.exception.TokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +17,7 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -37,6 +40,7 @@ public class JwtUtilities {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(accessToken).getBody();
     }
 
+    @Cacheable(value = "token", key = "#accessToken")
     public String getUsernameFromAccessToken (String accessToken) {
         return extractClaim(accessToken, Claims::getSubject);
     }
