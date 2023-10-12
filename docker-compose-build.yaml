@@ -27,7 +27,9 @@ services:
       - "redis_data:/bitnami/redis/data"
 
   auth:
-    image: tanhaoke/estore-auth:latest
+    build:
+      context: auth
+      dockerfile: Dockerfile
     depends_on:
       - kafka
       - postgres
@@ -40,7 +42,9 @@ services:
       - estore_app
 
   email:
-    image: tanhaoke/estore-email:latest
+    build:
+      context: email
+      dockerfile: Dockerfile
     depends_on:
       - kafka
       - postgres
@@ -52,7 +56,9 @@ services:
     networks:
       - estore_app
   product:
-    image: tanhaoke/estore-product:latest
+    build:
+      context: product
+      dockerfile: Dockerfile
     depends_on:
       - kafka
       - postgres
@@ -64,7 +70,9 @@ services:
       - estore_app
 
   media:
-    image: tanhaoke/estore-media:latest
+    build:
+      context: media
+      dockerfile: Dockerfile
     depends_on:
       - kafka
       - postgres
