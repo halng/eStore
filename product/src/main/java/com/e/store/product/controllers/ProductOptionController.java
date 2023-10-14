@@ -30,7 +30,7 @@ public class ProductOptionController {
     }
 
     @GetMapping()
-    public ResponseEntity<ListProductOptionResVm> getAllOptions(@RequestParam int page) {
+    public ResponseEntity<ListProductOptionResVm> getOptions(@RequestParam int page) {
         return this.iProductOptionService.getAllOption(page);
     }
 
