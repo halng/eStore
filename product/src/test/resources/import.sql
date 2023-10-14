@@ -5,7 +5,7 @@ INSERT INTO product_group (id, create_by, create_date, last_update, last_update_
 
 INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id, is_parent, name, price, quantity, short_description, slug, thumbnail_id, group_id) VALUES ('p1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '', true, 'Product 1', 22.22, 3, '', 'product-1', 'thumb-1', 'g1');
 INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id, is_parent, name, price, quantity, short_description, slug, thumbnail_id, group_id) VALUES	('p2', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '', true, 'Product 2', 22.22, 3, '', 'product-2', 'thumb-2', 'g2');
-INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id, is_parent, name, price, quantity, short_description, slug, thumbnail_id, group_id) VALUES	('p3', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '', true, 'Product 3', 22.22, 3, '', 'product-3', 'thumb-3', 'g3');
+INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id, is_parent, name, price, quantity, short_description, slug, thumbnail_id, group_id) VALUES	('p3', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '', true, 'Product 3', 22.22, 3, '', 'product-3', 'thumb-3', 'g2');
 
 
 INSERT INTO public.product_attribute (id, create_by, create_date, last_update, last_update_by, description, name, status) VALUES	('att1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Product Attribute 1', 'Att - 1', 'ENABLED');
@@ -40,7 +40,7 @@ INSERT INTO public.product_option_value (id, create_by, create_date, last_update
 INSERT INTO public.product_option_value (id, create_by, create_date, last_update, last_update_by, value, product_id, product_option_id) VALUES	('ov2', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Option Value 2', 'p2', 'o1');
 INSERT INTO public.product_option_value (id, create_by, create_date, last_update, last_update_by, value, product_id, product_option_id) VALUES	('ov3', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Option Value 3', 'p2', 'o3');
 INSERT INTO public.product_option_value (id, create_by, create_date, last_update, last_update_by, value, product_id, product_option_id) VALUES	('ov4', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Option Value 4', 'p1', 'o3');
-INSERT INTO public.product_option_value (id, create_by, create_date, last_update, last_update_by, value, product_id, product_option_id) VALUES	('ov5', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Option Value 5', 'p3', 'o2');
+INSERT INTO public.product_option_value (id, create_by, create_date, last_update, last_update_by, value, product_id, product_option_id) VALUES	('ov5', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Option Value 5', 'p3', 'o1');
 
 INSERT INTO public.product_seo(id, create_by, create_date, last_update, last_update_by, keyword, metadata, product_id) VALUES ('s1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'key 1', 'metadata 1', 'p1');
 

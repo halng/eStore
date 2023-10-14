@@ -26,7 +26,7 @@ public class ProductGroupController {
     IProductGroupService iProductGroupService;
 
     @PostMapping()
-    public ResponseEntity<ResVm> createNewProduct(@RequestParam String groupName) {
+    public ResponseEntity<ResVm> createNewGroup(@RequestParam String groupName) {
         return this.iProductGroupService.createNewGroup(groupName);
     }
 
@@ -46,7 +46,7 @@ public class ProductGroupController {
     }
 
     @GetMapping()
-    public ResponseEntity<ListProductGroupResVm> getAllProductGroup(@RequestParam int page) {
+    public ResponseEntity<ListProductGroupResVm> getProductGroup(@RequestParam int page) {
         return this.iProductGroupService.getAllGroup(page);
     }
 
