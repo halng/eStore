@@ -6,13 +6,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,14 +26,15 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ProductApplication.class)
 @WebAppConfiguration
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class AbstractControllerTest {
-
     protected MockMvc mockMvc;
     @Autowired
     WebApplicationContext webApplicationContext;
     private ObjectMapper mapper;
 
     protected void setUp() {
+
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         this.mapper = new ObjectMapper();
         SecurityContextHolder.getContext().setAuthentication(new Authentication() {
@@ -78,4 +83,5 @@ public abstract class AbstractControllerTest {
         throws JsonParseException, JsonMappingException, IOException {
         return this.mapper.readValue(json, entity);
     }
+
 }

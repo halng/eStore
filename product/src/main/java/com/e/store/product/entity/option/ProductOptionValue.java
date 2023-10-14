@@ -2,7 +2,6 @@ package com.e.store.product.entity.option;
 
 import com.e.store.product.entity.AuditEntity;
 import com.e.store.product.entity.Product;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +26,6 @@ public class ProductOptionValue extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @Column(name = "option_value")
     private String value;
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)

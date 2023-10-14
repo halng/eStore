@@ -5,6 +5,7 @@ import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
+import jakarta.validation.constraints.Min;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,8 @@ public class ProductAttributeController {
     }
 
     @GetMapping()
-    public ResponseEntity<ListProductAttributeResVm> getAllAttribute(@RequestParam int page) {
-        return this.iProductAttributeService.getAllProductAttribute(page);
+    public ResponseEntity<ListProductAttributeResVm> getAttribute(@RequestParam @Min(0) int page) {
+            return this.iProductAttributeService.getAllProductAttribute(page);
     }
 
     @PutMapping("{attId}")

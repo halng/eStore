@@ -146,16 +146,16 @@
 								<goal>check</goal>
 							</goals>
 							<configuration>
-<!--								<excludes>-->
-<!--									<exclude>**/config/**</exclude>-->
-<!--									<exclude>**/entity/**</exclude>-->
-<!--									<exclude>**/viewmodel/**</exclude>-->
-<!--									<exclude>**/constant/**</exclude>-->
-<!--									<exclude>**/exceptions/**</exclude>-->
-<!--									<exclude>**/repositories/**</exclude>-->
-<!--									<exclude>**/controllers/**</exclude>-->
-<!--									<exclude>**/*ProductApplication.*</exclude>-->
-<!--								</excludes>-->
+								<excludes>
+									<exclude>**/config/**</exclude>
+									<exclude>**/entity/**</exclude>
+									<exclude>**/viewmodel/**</exclude>
+									<exclude>**/constant/**</exclude>
+									<exclude>**/exceptions/**</exclude>
+									<exclude>**/repositories/**</exclude>
+									<exclude>**/controllers/**</exclude>
+									<exclude>**/*ProductApplication.*</exclude>
+								</excludes>
 								<rules>
 									<rule>
 										<element>PACKAGE</element>
