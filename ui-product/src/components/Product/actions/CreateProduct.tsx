@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ProductAttribute, ProductBasicInfo, ProductImage, ProductPost, ProductSEO } from './child'
+import { ProductAttribute, ProductBasicInfo, ProductImage, ProductPost, ProductSEO, ProductVariation } from './child'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { ProductCreateType } from '../../../types/ProductType'
 import { MediaAPI, ProductAPI } from 'api-estore-v2'
@@ -60,12 +60,12 @@ const CreateProduct = () => {
 
     const getInputValue = (fieldName: any) => getValues(fieldName)
 
-    const tabs = ['Basic Info', 'Images', 'Blog Post', 'Product Attribute', 'SEO']
+    const tabs = ['Basic Info', 'Images', 'Blog Post', 'Product Variation', 'Product Attribute', 'SEO']
     const tabComponent = [
         <ProductBasicInfo key={'basic-info'} setFunc={onInputValueChange} getFunc={getInputValue} />,
         <ProductImage key={'image'} setFunc={setValue} getFunc={getValues} />,
         <ProductPost key={'post'} />,
-        // <ProductVariation key={'variation'} />,
+        <ProductVariation key={'variation'} />,
         <ProductAttribute key={'attribute'} setFunc={setValue} getFunc={getValues} />,
         <ProductSEO key={'seo'} setFunc={onInputValueChange} getFunc={getInputValue} />,
     ]
