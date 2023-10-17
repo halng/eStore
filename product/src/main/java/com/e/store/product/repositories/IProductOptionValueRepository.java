@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductOptionValueRepository extends JpaRepository<ProductOptionValue, String> {
+public interface IProductOptionValueRepository extends JpaRepository<ProductOptionValue, String> {
 
 }

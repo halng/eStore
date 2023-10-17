@@ -65,7 +65,7 @@ const CreateProduct = () => {
         <ProductBasicInfo key={'basic-info'} setFunc={onInputValueChange} getFunc={getInputValue} />,
         <ProductImage key={'image'} setFunc={setValue} getFunc={getValues} />,
         <ProductPost key={'post'} />,
-        <ProductVariation key={'variation'} />,
+        <ProductVariation key={'variation'} setFunc={setValue} getFunc={getValues} />,
         <ProductAttribute key={'attribute'} setFunc={setValue} getFunc={getValues} />,
         <ProductSEO key={'seo'} setFunc={onInputValueChange} getFunc={getInputValue} />,
     ]

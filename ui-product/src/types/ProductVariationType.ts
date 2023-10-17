@@ -12,11 +12,9 @@ export type OptionCombineType = {
 }
 
 export type VariationCreateType = {
-    code: string
     optionCombine: OptionCombineType[]
     name: string
     price: number
     quantity: number
-    thumbnail?: File
     images?: File[]
 }

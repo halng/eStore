@@ -13,6 +13,8 @@ import com.e.store.product.repositories.IProductAttributeRepository;
 import com.e.store.product.repositories.IProductAttributeValueRepository;
 import com.e.store.product.repositories.IProductGroupRepository;
 import com.e.store.product.repositories.IProductImageRepository;
+import com.e.store.product.repositories.IProductOptionRepository;
+import com.e.store.product.repositories.IProductOptionValueRepository;
 import com.e.store.product.repositories.IProductSEORepository;
 import com.e.store.product.repositories.ProductRepository;
 import com.e.store.product.services.impl.ProductServiceImpl;
@@ -38,6 +40,8 @@ public class ProductServiceTest {
     IProductAttributeValueRepository iProductAttributeValueRepository;
     IProductService productService;
     ProductReqVm productReqVm;
+    IProductOptionValueRepository iProductOptionValueRepository;
+    IProductOptionRepository iProductOptionRepository;
 
     @BeforeEach
     void setup() {
@@ -47,14 +51,17 @@ public class ProductServiceTest {
         iProductImageRepository = mock(IProductImageRepository.class);
         iProductSEORepository = mock(IProductSEORepository.class);
         iProductAttributeValueRepository = mock(IProductAttributeValueRepository.class);
+        iProductOptionValueRepository = mock(IProductOptionValueRepository.class);
+        iProductOptionRepository = mock(IProductOptionRepository.class);
 
         productService = new ProductServiceImpl(productRepository, iProductGroupRepository, iProductAttributeRepository,
-            iProductImageRepository, iProductSEORepository, iProductAttributeValueRepository);
+            iProductImageRepository, iProductSEORepository, iProductAttributeValueRepository, iProductOptionRepository,
+            iProductOptionValueRepository);
 
         List<ProductAttributeReqVm> attributes = Arrays.asList(new ProductAttributeReqVm("AAA-1", "", "value 1"));
         ProductSEOReqVm seo = new ProductSEOReqVm("key word", "meta data");
         productReqVm = new ProductReqVm("test 1", "test-1", 3.4, "thumbnail-id", Arrays.asList("XXX-11", "XXX-22"), 34,
-            "xxx-yyy", "1", attributes, seo);
+            "xxx-yyy", "1", attributes,null, seo);
     }
 
     void testEntityNotFoundException(ProductReqVm productReqVm, String assertMsg) {

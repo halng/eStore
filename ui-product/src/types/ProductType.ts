@@ -1,5 +1,6 @@
 import { ProductAttributeValueType } from './ProductAttributeType'
 import { ProductSEOType } from './ProductSEOType'
+import { VariationCreateType } from './ProductVariationType'
 
 export type ProductThumbnail = {
     url: string
@@ -22,4 +23,5 @@ export type ProductCreateType = {
     images: ProductImageType
     attributes: ProductAttributeValueType[]
     seo: ProductSEOType
+    variations: VariationCreateType[]
 }
