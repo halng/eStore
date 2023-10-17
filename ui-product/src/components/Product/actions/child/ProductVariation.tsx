@@ -75,7 +75,7 @@ const ProductVariation = ({ setFunc, getFunc }: props) => {
     const generateOptionVariation = () => {
         const productName = getFunc('name')
 
-        let objectNameValue = {}
+        const objectNameValue = {}
         optionValue.forEach((opV) => {
             if (opV.type?.name) {
                 objectNameValue[opV.type?.name + '_' + opV.type.id] = opV.value
