@@ -2,6 +2,7 @@ package com.e.store.product.entity;
 
 import com.e.store.product.entity.attribute.ProductAttributeValue;
 import com.e.store.product.entity.option.ProductOptionValue;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,7 +37,7 @@ public class Product extends AuditEntity{
     private String thumbnailId;
     private String blogPostId;
     private String shortDescription;
-    private boolean isParent;
+    private String parentId;
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList;
     @OneToMany(mappedBy = "product")

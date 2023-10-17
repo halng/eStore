@@ -3,12 +3,13 @@ version: "3.5"
 services:
   postgres:
     image: postgres:15.4
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init-database.sql
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      PGDATA: /data/postgres
-    volumes:
-      - postgres:/data/postgres
+      # PGDATA: /data/postgres
     ports:
       - "5432:5432"
     networks:
