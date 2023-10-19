@@ -1,0 +1,8 @@
+__mock__
+.vscode
+coverage
+.eslintignore
+.eslintrc
+.prettierrc.json
+jest.config.json
+sonar-project.properties

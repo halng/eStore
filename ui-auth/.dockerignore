@@ -1,0 +1,7 @@
+.eslintignore
+.eslintrc
+.prettierrc.json
+jestconfig.json
+sonar-project.properties
+node_modules/
+dist/

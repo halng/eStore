@@ -97,6 +97,36 @@ services:
     networks:
       - estore_app
 
+  ui-home:
+    build:
+      context: ui-home
+      dockerfile: Dockerfile
+    depends_on:
+      - ui-product
+      - ui-auth
+    ports:
+      - 3000:3000
+    networks:
+      - estore_app
+
+  ui-product:
+    build:
+      context: ui-product
+      dockerfile: Dockerfile
+    ports:
+      - 3002:3002
+    networks:
+      - estore_app
+
+  ui-auth:
+    build:
+      context: ui-auth
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    networks:
+      - estore_app
+
   pgadmin:
     container_name: pgadmin_container
     image: dpage/pgadmin4
