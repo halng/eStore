@@ -2,7 +2,10 @@ package com.e.store.product.controllers;
 
 import com.e.store.product.services.IProductService;
 import com.e.store.product.viewmodel.req.ProductReqVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductResVm;
 import com.e.store.product.viewmodel.res.ResVm;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,9 +27,9 @@ public class ProductController {
         return iProductService.createNewProduct(productReqVm);
     }
 
-    @GetMapping("/{page}")
-    public ResponseEntity<?> getProduct(@PathVariable int page){
-        return null;
+    @GetMapping("")
+    public ResponseEntity<PagingResVm<ProductResVm>> getProducts(@RequestParam @Min(1) int page){
+        return iProductService.getProducts(page);
     }
 
     @GetMapping("/{prodId}")

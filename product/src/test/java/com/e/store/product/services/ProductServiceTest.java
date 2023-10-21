@@ -16,8 +16,8 @@ import com.e.store.product.repositories.IProductGroupRepository;
 import com.e.store.product.repositories.IProductImageRepository;
 import com.e.store.product.repositories.IProductOptionRepository;
 import com.e.store.product.repositories.IProductOptionValueRepository;
+import com.e.store.product.repositories.IProductRepository;
 import com.e.store.product.repositories.IProductSEORepository;
-import com.e.store.product.repositories.ProductRepository;
 import com.e.store.product.services.impl.ProductServiceImpl;
 import com.e.store.product.viewmodel.req.OptionValueReqVm;
 import com.e.store.product.viewmodel.req.ProductAttributeReqVm;
@@ -36,7 +36,7 @@ import org.springframework.http.ResponseEntity;
 
 public class ProductServiceTest {
 
-    ProductRepository productRepository;
+    IProductRepository IProductRepository;
     IProductGroupRepository iProductGroupRepository;
     IProductAttributeRepository iProductAttributeRepository;
     IProductImageRepository iProductImageRepository;
@@ -49,7 +49,7 @@ public class ProductServiceTest {
 
     @BeforeEach
     void setup() {
-        productRepository = mock(ProductRepository.class);
+        IProductRepository = mock(IProductRepository.class);
         iProductGroupRepository = mock(IProductGroupRepository.class);
         iProductAttributeRepository = mock(IProductAttributeRepository.class);
         iProductImageRepository = mock(IProductImageRepository.class);
@@ -58,9 +58,9 @@ public class ProductServiceTest {
         iProductOptionValueRepository = mock(IProductOptionValueRepository.class);
         iProductOptionRepository = mock(IProductOptionRepository.class);
 
-        productService = new ProductServiceImpl(productRepository, iProductGroupRepository, iProductAttributeRepository,
+        productService = new ProductServiceImpl(IProductRepository, iProductGroupRepository, iProductAttributeRepository,
             iProductImageRepository, iProductSEORepository, iProductAttributeValueRepository, iProductOptionRepository,
-            iProductOptionValueRepository);
+            iProductOptionValueRepository, iProductVariationRepository);
 
         List<ProductAttributeReqVm> attributes = Arrays.asList(new ProductAttributeReqVm("AAA-1", "", "value 1"));
         List<OptionValueReqVm> optionValueReqVms = Arrays.asList(new OptionValueReqVm("xxx", "nnn", "vvv"));
@@ -107,7 +107,7 @@ public class ProductServiceTest {
         when(iProductAttributeRepository.findById(anyString())).thenReturn(Optional.of(productAttribute));
         when(this.iProductGroupRepository.findById(anyString())).thenReturn(Optional.of(productGroup));
         when(this.iProductOptionRepository.findById(anyString())).thenReturn(Optional.of(option));
-        when(this.productRepository.save(any())).thenReturn(expected);
+        when(this.IProductRepository.save(any())).thenReturn(expected);
 
         ResponseEntity<ResVm> actualResult = this.productService.createNewProduct(this.productReqVm);
 

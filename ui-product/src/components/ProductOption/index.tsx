@@ -32,10 +32,10 @@ const ProductOption = () => {
     const getAllOptions = () => {
         ProductOptionAPI.getAll(page)
             .then((res) => {
-                setOptions(res.data.options)
+                setOptions(res.data.items)
                 setTotalPage(res.data.totalPages)
-                setTotalOptions(res.data.totalOptions)
-                setTempOptions(res.data.options)
+                setTotalOptions(res.data.totalItems)
+                setTempOptions(res.data.items)
             })
             .catch(() => {
                 toast.error("Can't get all option! Try again later.")

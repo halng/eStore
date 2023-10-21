@@ -26,10 +26,10 @@ const ProductGroup = () => {
     const getAllGroup = () => {
         ProductGroupAPI.getAll(page)
             .then((res) => {
-                setGroups(res.data.groups)
-                setTempGroup(res.data.groups)
+                setGroups(res.data.items)
+                setTempGroup(res.data.items)
                 setTotalPage(res.data.totalPages)
-                setTotalGroups(res.data.totalGroup)
+                setTotalGroups(res.data.totalItems)
             })
             .catch(() => {
                 toast.error("Can't get all group! Try again later.")

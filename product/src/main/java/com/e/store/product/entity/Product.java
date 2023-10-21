@@ -37,7 +37,6 @@ public class Product extends AuditEntity{
     private String thumbnailId;
     private String blogPostId;
     private String shortDescription;
-    private String parentId;
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImageList;
     @OneToMany(mappedBy = "product")
@@ -49,4 +48,6 @@ public class Product extends AuditEntity{
     private ProductGroup productGroup;
     @OneToOne(mappedBy = "product")
     private ProductSEO productSEO;
+    @OneToMany(mappedBy = "product")
+    private List<ProductVariation> productVariationList;
 }
