@@ -8,7 +8,7 @@ import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductGroupRepository;
 import com.e.store.product.services.IProductGroupService;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductGroupResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
@@ -125,10 +125,11 @@ public class ProductGroupServiceImpl implements IProductGroupService {
     public ResponseEntity<List<CommonProductResVm>> getAllGroup() {
         LOG.info("Receive request to get all product group");
         String creator = CommonService.getUser();
-        List<ProductGroup> productGroups = this.iProductGroupRepository.findByCreateByAndStatus(creator, Status.ENABLED);
+        List<ProductGroup> productGroups = this.iProductGroupRepository.findByCreateByAndStatus(creator,
+            Status.ENABLED);
         List<CommonProductResVm> commonProductResVms = new ArrayList<>();
 
-        for(ProductGroup group:productGroups) {
+        for (ProductGroup group : productGroups) {
             commonProductResVms.add(new CommonProductResVm(group.getId(), group.getName()));
         }
 
@@ -136,18 +137,18 @@ public class ProductGroupServiceImpl implements IProductGroupService {
     }
 
     @Override
-    public ResponseEntity<ListProductGroupResVm> getAllGroup(int page) {
+    public ResponseEntity<PagingResVm<ProductGroupResVm>> getAllGroup(int page) {
         LOG.info("Receive request to get all group");
         String creator = CommonService.getUser();
         Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
 
-        Page<ProductGroup> productGroupPages = this.iProductGroupRepository.findByCreatorWithPagination(creator, pageable);
+        Page<ProductGroup> productGroupPages = this.iProductGroupRepository.findByCreatorWithPagination(creator,
+            pageable);
         List<ProductGroupResVm> productGroupResVmList = productGroupPages.getContent().stream()
             .map(ProductGroupResVm::fromModel).collect(Collectors.toList());
 
-        ListProductGroupResVm resVm = new ListProductGroupResVm(productGroupResVmList,
-            (int) productGroupPages.getTotalElements(),
-            productGroupPages.getTotalPages());
+        PagingResVm<ProductGroupResVm> resVm = new PagingResVm<>(productGroupResVmList,
+            productGroupPages.getTotalPages(), (int) productGroupPages.getTotalElements());
 
         return ResponseEntity.ok(resVm);
     }

@@ -1,7 +1,8 @@
 package com.e.store.product.services;
 
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductGroupResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ public interface IProductGroupService {
 
     ResponseEntity<ResVm> disableEnableGroup(String groupId, String action);
 
-    ResponseEntity<ListProductGroupResVm> getAllGroup(int page);
+    ResponseEntity<PagingResVm<ProductGroupResVm>> getAllGroup(int page);
 
     ResponseEntity<ResVm> deleteProductGroup(String groupId);
 

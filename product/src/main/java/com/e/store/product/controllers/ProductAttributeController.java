@@ -3,7 +3,8 @@ package com.e.store.product.controllers;
 import com.e.store.product.services.IProductAttributeService;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ProductAttributeController {
     }
 
     @GetMapping()
-    public ResponseEntity<ListProductAttributeResVm> getAttribute(@RequestParam @Min(0) int page) {
+    public ResponseEntity<PagingResVm<ProductAttributeResVm>> getAttribute(@RequestParam @Min(0) int page) {
             return this.iProductAttributeService.getAllProductAttribute(page);
     }
 

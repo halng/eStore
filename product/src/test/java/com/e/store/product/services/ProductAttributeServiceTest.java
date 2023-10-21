@@ -12,7 +12,6 @@ import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductAttributeRepository;
 import com.e.store.product.services.impl.ProductAttributeServiceImpl;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
-import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.time.Instant;
 import java.util.Arrays;

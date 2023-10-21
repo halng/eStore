@@ -3,7 +3,8 @@ package com.e.store.product.controllers;
 import com.e.store.product.services.IProductOptionService;
 import com.e.store.product.viewmodel.req.ProductOptionCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductOptionResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductOptionResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class ProductOptionController {
     }
 
     @GetMapping()
-    public ResponseEntity<ListProductOptionResVm> getOptions(@RequestParam int page) {
+    public ResponseEntity<PagingResVm<ProductOptionResVm>> getOptions(@RequestParam int page) {
         return this.iProductOptionService.getAllOption(page);
     }
 

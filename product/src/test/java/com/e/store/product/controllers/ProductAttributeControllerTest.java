@@ -3,7 +3,6 @@ package com.e.store.product.controllers;
 import com.e.store.product.constant.Action;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

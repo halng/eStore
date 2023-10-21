@@ -10,7 +10,7 @@ import com.e.store.product.repositories.IProductAttributeRepository;
 import com.e.store.product.services.IProductAttributeService;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class ProductAttributeServiceImpl implements IProductAttributeService {
     }
 
     @Override
-    public ResponseEntity<ListProductAttributeResVm> getAllProductAttribute(int page) {
+    public ResponseEntity<PagingResVm<ProductAttributeResVm>> getAllProductAttribute(int page) {
         LOG.info("Receive request to get all product attribute");
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
@@ -82,7 +82,7 @@ public class ProductAttributeServiceImpl implements IProductAttributeService {
         List<ProductAttributeResVm> productAttributeResVmList = productAttributes.getContent().stream()
             .map(ProductAttributeResVm::fromModel).collect(Collectors.toList());
 
-        ListProductAttributeResVm productAttributeResVm = new ListProductAttributeResVm(productAttributeResVmList,
+        PagingResVm<ProductAttributeResVm> productAttributeResVm = new PagingResVm<>(productAttributeResVmList,
             productAttributes.getTotalPages(), (int) productAttributes.getTotalElements());
 
         return ResponseEntity.ok(productAttributeResVm);

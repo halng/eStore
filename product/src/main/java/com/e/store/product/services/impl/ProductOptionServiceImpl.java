@@ -8,7 +8,7 @@ import com.e.store.product.repositories.IProductOptionRepository;
 import com.e.store.product.services.IProductOptionService;
 import com.e.store.product.viewmodel.req.ProductOptionCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductOptionResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductOptionResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class ProductOptionServiceImpl implements IProductOptionService {
     }
 
     @Override
-    public ResponseEntity<ListProductOptionResVm> getAllOption(int page) {
+    public ResponseEntity<PagingResVm<ProductOptionResVm>> getAllOption(int page) {
         LOG.info("Receive request to get all option");
         String creator = SecurityContextHolder.getContext().getAuthentication().getName();
         Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
@@ -62,12 +62,10 @@ public class ProductOptionServiceImpl implements IProductOptionService {
             pageable);
 
         List<ProductOptionResVm> productOptionResVmList = productOptionPage.getContent().stream()
-            .map(ProductOptionResVm::fromModel).collect(
-                Collectors.toList());
+            .map(ProductOptionResVm::fromModel).collect(Collectors.toList());
 
-        ListProductOptionResVm listProductOptionResVm = new ListProductOptionResVm(productOptionResVmList,
-            (int) productOptionPage.getTotalElements(),
-            productOptionPage.getTotalPages());
+        PagingResVm<ProductOptionResVm> listProductOptionResVm = new PagingResVm<>(productOptionResVmList,
+            productOptionPage.getTotalPages(), (int) productOptionPage.getTotalElements());
 
         return ResponseEntity.ok(listProductOptionResVm);
     }
@@ -111,7 +109,7 @@ public class ProductOptionServiceImpl implements IProductOptionService {
 
         List<ProductOption> productOptions = this.iProductOptionRepository.findByCreateBy(creator);
         List<CommonProductResVm> commonProductResVms = new ArrayList<>();
-        for (ProductOption option: productOptions) {
+        for (ProductOption option : productOptions) {
             commonProductResVms.add(new CommonProductResVm(option.getId(), option.getName()));
         }
         return ResponseEntity.ok(commonProductResVms);

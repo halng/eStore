@@ -64,6 +64,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm) {
         LOG.info("createNewProduct: receive request create product.");
+        //TODO: need to check is null for all field before get
         Product product = Product.builder().name(productReqVm.name()).price(productReqVm.price())
             .thumbnailId(productReqVm.thumbnailId()).quantity(productReqVm.quantity())
             .shortDescription(productReqVm.description()).slug(productReqVm.slug()).build();

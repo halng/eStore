@@ -2,7 +2,6 @@ package com.e.store.product.controllers;
 
 import com.e.store.product.viewmodel.req.ProductOptionCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductOptionResVm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

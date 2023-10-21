@@ -2,7 +2,8 @@ package com.e.store.product.controllers;
 
 import com.e.store.product.services.IProductGroupService;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductGroupResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
@@ -46,7 +47,7 @@ public class ProductGroupController {
     }
 
     @GetMapping()
-    public ResponseEntity<ListProductGroupResVm> getProductGroup(@RequestParam int page) {
+    public ResponseEntity<PagingResVm<ProductGroupResVm>> getProductGroup(@RequestParam int page) {
         return this.iProductGroupService.getAllGroup(page);
     }
 
