@@ -13,16 +13,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Setter
 public class AuditEntity {
 
-    @CreationTimestamp
-    private Instant createDate;
+	@CreationTimestamp
+	private Instant createDate;
 
-    @UpdateTimestamp
-    private Instant updateDate;
+	@UpdateTimestamp
+	private Instant updateDate;
 
-    @Column(name = "create_by")
-    private String createBy;
+	@Column(name = "create_by")
+	private String createBy;
 
-    @Column(name = "update_by")
-    private String updateBy;
+	@Column(name = "update_by")
+	private String updateBy;
 
 }

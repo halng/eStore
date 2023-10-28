@@ -24,14 +24,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RefreshToken {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
 
-    @Column(nullable = false, name = "expire_date")
-    private Instant expiryDate;
+	@Column(nullable = false, name = "expire_date")
+	private Instant expiryDate;
 
-    @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+	@OneToOne
+	@JoinColumn(name = "account_id", referencedColumnName = "id")
+	private Account account;
 }

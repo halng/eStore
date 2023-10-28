@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface IRefreshTokenService {
 
-    String generateRefreshToken(Account account);
+	String generateRefreshToken(Account account);
 }

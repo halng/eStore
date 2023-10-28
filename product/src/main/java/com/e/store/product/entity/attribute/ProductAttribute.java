@@ -25,13 +25,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "product_attribute")
 public class ProductAttribute extends AuditEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private String name;
-    private String description;
-    @Enumerated(EnumType.STRING)
-    private Status status;
-    @OneToMany(mappedBy = "productAttribute")
-    private List<ProductAttributeValue> productAttributeValueList;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
+
+  private String name;
+  private String description;
+
+  @Enumerated(EnumType.STRING)
+  private Status status;
+
+  @OneToMany(mappedBy = "productAttribute")
+  private List<ProductAttributeValue> productAttributeValueList;
 }

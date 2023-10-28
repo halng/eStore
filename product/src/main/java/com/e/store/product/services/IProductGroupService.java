@@ -7,17 +7,18 @@ import com.e.store.product.viewmodel.res.ResVm;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 @Service
 public interface IProductGroupService {
-    ResponseEntity<ResVm> createNewGroup(String groupName);
+  ResponseEntity<ResVm> createNewGroup(String groupName);
 
-    ResponseEntity<ResVm> updateProductGroup(String newName, String groupId);
+  ResponseEntity<ResVm> updateProductGroup(String newName, String groupId);
 
-    ResponseEntity<ResVm> disableEnableGroup(String groupId, String action);
+  ResponseEntity<ResVm> disableEnableGroup(String groupId, String action);
 
-    ResponseEntity<PagingResVm<ProductGroupResVm>> getAllGroup(int page);
+  ResponseEntity<PagingResVm<ProductGroupResVm>> getAllGroup(int page);
 
-    ResponseEntity<ResVm> deleteProductGroup(String groupId);
+  ResponseEntity<ResVm> deleteProductGroup(String groupId);
 
-    ResponseEntity<List<CommonProductResVm>> getAllGroup();
+  ResponseEntity<List<CommonProductResVm>> getAllGroup();
 }

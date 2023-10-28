@@ -20,28 +20,29 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @RequiredArgsConstructor
 public class RequestFilterConfig extends OncePerRequestFilter {
-    private static final Logger LOG = LoggerFactory.getLogger(RequestFilterConfig.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RequestFilterConfig.class);
 
-    @Override
-    protected void doFilterInternal (HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-    throws ServletException, IOException {
-        String username  = request.getHeader("username");
-        String authority = request.getHeader("authority");
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    String username = request.getHeader("username");
+    String authority = request.getHeader("authority");
 
-        UsernamePasswordAuthenticationToken authenticationToken = null;
+    UsernamePasswordAuthenticationToken authenticationToken = null;
 
-        if ( username != null && authority != null ) {
-            List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            grantedAuthorities.add(new SimpleGrantedAuthority(authority));
-            authenticationToken = new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
-            LOG.info("Validate for user %s done".formatted(username));
-        } else {
-            LOG.info("Cannot validate user!");
-        }
-
-
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-        filterChain.doFilter(request, response);
+    if (username != null && authority != null) {
+      List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+      grantedAuthorities.add(new SimpleGrantedAuthority(authority));
+      authenticationToken =
+          new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
+      LOG.info("Validate for user %s done".formatted(username));
+    } else {
+      LOG.info("Cannot validate user!");
     }
+
+    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+    filterChain.doFilter(request, response);
+  }
 }

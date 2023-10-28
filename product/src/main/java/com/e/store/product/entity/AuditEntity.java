@@ -16,13 +16,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 public class AuditEntity {
-    @CreationTimestamp
-    private Instant createDate;
-    @UpdateTimestamp
-    private Instant lastUpdate;
-    @CreatedBy
-    private String createBy;
-    @LastModifiedBy
-    private String lastUpdateBy;
-
+  @CreationTimestamp private Instant createDate;
+  @UpdateTimestamp private Instant lastUpdate;
+  @CreatedBy private String createBy;
+  @LastModifiedBy private String lastUpdateBy;
 }

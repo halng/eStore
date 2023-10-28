@@ -20,22 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product")
 public class ProductController {
 
-    @Autowired
-    IProductService iProductService;
-    @PostMapping()
-    public ResponseEntity<ResVm> createNewProduct(@RequestBody ProductReqVm productReqVm) {
-        return iProductService.createNewProduct(productReqVm);
-    }
+  @Autowired IProductService iProductService;
 
-    @GetMapping("")
-    public ResponseEntity<PagingResVm<ProductResVm>> getProducts(@RequestParam @Min(1) int page){
-        return iProductService.getProducts(page);
-    }
+  @PostMapping()
+  public ResponseEntity<ResVm> createNewProduct(@RequestBody ProductReqVm productReqVm) {
+    return iProductService.createNewProduct(productReqVm);
+  }
 
-    @GetMapping("/{prodId}")
-    public ResponseEntity<?> getDetailProductById(@PathVariable String prodId){
-        return null;
-    }
+  @GetMapping("")
+  public ResponseEntity<PagingResVm<ProductResVm>> getProducts(@RequestParam @Min(1) int page) {
+    return iProductService.getProducts(page);
+  }
 
-
- }
+  @GetMapping("/{prodId}")
+  public ResponseEntity<?> getDetailProductById(@PathVariable String prodId) {
+    return null;
+  }
+}

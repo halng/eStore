@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface IProductService {
-    ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);
+  ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);
 
-    ResponseEntity<PagingResVm<ProductResVm>> getProducts(int page);
+  ResponseEntity<PagingResVm<ProductResVm>> getProducts(int page);
 }

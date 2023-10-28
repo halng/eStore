@@ -13,21 +13,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({EntityNotFoundException.class})
-    public ResponseEntity<ErrorResVm> entityNotFoundExceptionHandler(EntityNotFoundException entityNotFoundException,
-        WebRequest webRequest) {
-        ErrorResVm errorResVm = new ErrorResVm(entityNotFoundException.getMessage(), HttpStatus.NOT_FOUND.value(), "");
-        LOG.error(errorResVm.getLogMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResVm);
-    }
+  @ExceptionHandler({EntityNotFoundException.class})
+  public ResponseEntity<ErrorResVm> entityNotFoundExceptionHandler(
+      EntityNotFoundException entityNotFoundException, WebRequest webRequest) {
+    ErrorResVm errorResVm =
+        new ErrorResVm(entityNotFoundException.getMessage(), HttpStatus.NOT_FOUND.value(), "");
+    LOG.error(errorResVm.getLogMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResVm);
+  }
 
-    @ExceptionHandler({BadRequestException.class})
-    public ResponseEntity<ErrorResVm> badRequestExceptionHandler(BadRequestException badRequestException,
-        WebRequest webRequest) {
-        ErrorResVm errorResVm = new ErrorResVm(badRequestException.getMessage(), HttpStatus.BAD_REQUEST.value(), "");
-        LOG.error(errorResVm.getLogMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResVm);
-    }
+  @ExceptionHandler({BadRequestException.class})
+  public ResponseEntity<ErrorResVm> badRequestExceptionHandler(
+      BadRequestException badRequestException, WebRequest webRequest) {
+    ErrorResVm errorResVm =
+        new ErrorResVm(badRequestException.getMessage(), HttpStatus.BAD_REQUEST.value(), "");
+    LOG.error(errorResVm.getLogMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResVm);
+  }
 }

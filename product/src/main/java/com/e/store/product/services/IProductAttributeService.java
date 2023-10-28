@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface IProductAttributeService {
-    ResponseEntity<ResVm> createNewAttribute(ProductAttributeCreateReqVm productAttributeCreateReqVm);
+  ResponseEntity<ResVm> createNewAttribute(ProductAttributeCreateReqVm productAttributeCreateReqVm);
 
-    ResponseEntity<PagingResVm<ProductAttributeResVm>> getAllProductAttribute(int page);
+  ResponseEntity<PagingResVm<ProductAttributeResVm>> getAllProductAttribute(int page);
 
-    ResponseEntity<ResVm> updateAttribute(String attId, ProductAttributeCreateReqVm updateModel);
+  ResponseEntity<ResVm> updateAttribute(String attId, ProductAttributeCreateReqVm updateModel);
 
-    ResponseEntity<ResVm> updateStatusAtt(String attId, String action);
+  ResponseEntity<ResVm> updateStatusAtt(String attId, String action);
 
-    ResponseEntity<ResVm> deleteAttribute(String attId);
+  ResponseEntity<ResVm> deleteAttribute(String attId);
 
-    ResponseEntity<List<CommonProductResVm>> getAllAttribute();
+  ResponseEntity<List<CommonProductResVm>> getAllAttribute();
 }

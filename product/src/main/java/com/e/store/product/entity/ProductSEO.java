@@ -21,14 +21,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "product_seo")
-public class ProductSEO extends AuditEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private String keyword;
-    private String metadata;
+public class ProductSEO extends AuditEntity {
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+  private String keyword;
+  private String metadata;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "product_id", referencedColumnName = "id")
+  private Product product;
 }

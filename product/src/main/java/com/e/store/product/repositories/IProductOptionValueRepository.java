@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IProductOptionValueRepository extends JpaRepository<ProductOptionValue, String> {
-    Optional<ProductOptionValue> findByProduct(Product product);
+  Optional<ProductOptionValue> findByProduct(Product product);
 }
