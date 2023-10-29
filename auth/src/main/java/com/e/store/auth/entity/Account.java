@@ -32,73 +32,74 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @Table(name = "account")
 public class Account extends AuditEntity implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
 
-    @Column(name = "username")
-    private String username;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
 
-    @Column(name = "password")
-    private String password;
+	@Column(name = "username")
+	private String username;
 
-    @Column(name = "email")
-    private String email;
+	@Column(name = "password")
+	private String password;
 
-    @Column(name = "account_status")
-    @Enumerated(EnumType.STRING)
-    private AccountStatus status;
+	@Column(name = "email")
+	private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+	@Column(name = "account_status")
+	@Enumerated(EnumType.STRING)
+	private AccountStatus status;
 
-    @OneToOne(mappedBy = "account")
-    private AccountInfo accountInfo;
+	@ManyToOne
+	@JoinColumn(name = "role_id", nullable = false)
+	private Role role;
 
-    @OneToOne(mappedBy = "account")
-    private AccountPayment accountPayment;
+	@OneToOne(mappedBy = "account")
+	private AccountInfo accountInfo;
 
-    @OneToOne(mappedBy = "account")
-    private RefreshToken refreshToken;
+	@OneToOne(mappedBy = "account")
+	private AccountPayment accountPayment;
 
-    @OneToOne(mappedBy = "account")
-    private VerifyAccount verifyAccount;
+	@OneToOne(mappedBy = "account")
+	private RefreshToken refreshToken;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities () {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(this.role.getRoleName().toString()));
-        return grantedAuthorities;
-    }
+	@OneToOne(mappedBy = "account")
+	private VerifyAccount verifyAccount;
 
-    @Override
-    public String getPassword () {
-        return this.password;
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+		grantedAuthorities.add(new SimpleGrantedAuthority(this.role.getRoleName().toString()));
+		return grantedAuthorities;
+	}
 
-    @Override
-    public String getUsername () {
-        return this.username;
-    }
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
 
-    @Override
-    public boolean isAccountNonExpired () {
-        return true;
-    }
+	@Override
+	public String getUsername() {
+		return this.username;
+	}
 
-    @Override
-    public boolean isAccountNonLocked () {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired () {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @Override
-    public boolean isEnabled () {
-        return true;
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }

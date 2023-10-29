@@ -24,14 +24,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductAttributeValue extends AuditEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
-    private String value;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-    @ManyToOne
-    @JoinColumn(name = "attribute_id", nullable = false)
-    private ProductAttribute productAttribute;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
+
+  private String value;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "product_id", nullable = false)
+  private Product product;
+
+  @ManyToOne
+  @JoinColumn(name = "attribute_id", nullable = false)
+  private ProductAttribute productAttribute;
 }

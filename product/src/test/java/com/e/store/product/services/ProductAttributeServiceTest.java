@@ -12,11 +12,13 @@ import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductAttributeRepository;
 import com.e.store.product.services.impl.ProductAttributeServiceImpl;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
-import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -178,7 +180,7 @@ public class ProductAttributeServiceTest {
             @Override
             public List<ProductAttribute> getContent() {
                 productAttribute.setLastUpdate(Instant.now());
-                return Arrays.asList(productAttribute);
+                return Collections.singletonList(productAttribute);
             }
 
             @Override
@@ -229,14 +231,15 @@ public class ProductAttributeServiceTest {
 
         when(this.iProductAttributeRepository.findByCreatorWithPagination(any(), any())).thenReturn(productAttributes);
 
-        ResponseEntity<ListProductAttributeResVm> response = this.iProductAttributeService.getAllProductAttribute(1);
+        ResponseEntity<PagingResVm<ProductAttributeResVm>> response =
+            this.iProductAttributeService.getAllProductAttribute(1);
 
         Assertions.assertNotNull(response);
         Assertions.assertNotNull(response.getBody());
 
-        ListProductAttributeResVm expected = response.getBody();
+        PagingResVm<ProductAttributeResVm> expected = response.getBody();
         Assertions.assertEquals(2, expected.totalPages());
-        Assertions.assertEquals(13, expected.totalAttributes());
+        Assertions.assertEquals(13, expected.totalItems());
 
     }
 

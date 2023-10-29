@@ -3,9 +3,9 @@ INSERT INTO product_group (id, create_by, create_date, last_update, last_update_
 INSERT INTO product_group (id, create_by, create_date, last_update, last_update_by, name, status) VALUES ('g2', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Group 2', 'DISABLED');
 INSERT INTO product_group (id, create_by, create_date, last_update, last_update_by, name, status) VALUES	('g3', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Group 3', 'ENABLED');
 
-INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id, parent_id, name, price, quantity, short_description, slug, thumbnail_id, group_id) VALUES ('p1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '', '', 'Product 1', 22.22, 3, '', 'product-1', 'thumb-1', 'g1');
-INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id, parent_id, name, price, quantity, short_description, slug, thumbnail_id, group_id) VALUES	('p2', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '', '', 'Product 2', 22.22, 3, '', 'product-2', 'thumb-2', 'g2');
-INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id, parent_id, name, price, quantity, short_description, slug, thumbnail_id, group_id) VALUES	('p3', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '', '', 'Product 3', 22.22, 3, '', 'product-3', 'thumb-3', 'g2');
+INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id,  name, price, quantity, is_sales, short_description, slug, thumbnail_id, group_id) VALUES ('p1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '',  'Product 1', 22.22, 3, true, '', 'product-1', 'thumb-1', 'g1');
+INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id,  name, price, quantity, is_sales, short_description, slug, thumbnail_id, group_id) VALUES	('p2', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '',  'Product 2', 22.22, 3, true, '', 'product-2', 'thumb-2', 'g2');
+INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id,  name, price, quantity, is_sales, short_description, slug, thumbnail_id, group_id) VALUES	('p3', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '',  'Product 3', 22.22, 3, true, '', 'product-3', 'thumb-3', 'g2');
 
 
 INSERT INTO public.product_attribute (id, create_by, create_date, last_update, last_update_by, description, name, status) VALUES	('att1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Product Attribute 1', 'Att - 1', 'ENABLED');

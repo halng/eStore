@@ -29,10 +29,10 @@ const ProductAttribute = () => {
     const getAllAttribute = () => {
         ProductAttributeAPI.getAll(page)
             .then((res) => {
-                setAttributes(res.data.attributes)
-                setTempAttributes(res.data.attributes)
+                setAttributes(res.data.items)
+                setTempAttributes(res.data.items)
                 setTotalPage(res.data.totalPages)
-                setTotalAttribute(res.data.totalAttributes)
+                setTotalAttribute(res.data.totalItems)
             })
             .catch(() => {
                 toast.error("Can't get all attribute! Try again later.")

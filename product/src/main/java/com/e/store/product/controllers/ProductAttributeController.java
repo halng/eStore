@@ -3,7 +3,8 @@ package com.e.store.product.controllers;
 import com.e.store.product.services.IProductAttributeService;
 import com.e.store.product.viewmodel.req.ProductAttributeCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductAttributeResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import jakarta.validation.constraints.Min;
 import java.util.List;
@@ -23,37 +24,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/product/attribute")
 public class ProductAttributeController {
-    @Autowired
-    IProductAttributeService iProductAttributeService;
+  @Autowired IProductAttributeService iProductAttributeService;
 
-    @PostMapping()
-    public ResponseEntity<ResVm> createNewAttribute(@RequestBody ProductAttributeCreateReqVm reqVm) {
-        return this.iProductAttributeService.createNewAttribute(reqVm);
-    }
+  @PostMapping()
+  public ResponseEntity<ResVm> createNewAttribute(@RequestBody ProductAttributeCreateReqVm reqVm) {
+    return this.iProductAttributeService.createNewAttribute(reqVm);
+  }
 
-    @GetMapping()
-    public ResponseEntity<ListProductAttributeResVm> getAttribute(@RequestParam @Min(0) int page) {
-            return this.iProductAttributeService.getAllProductAttribute(page);
-    }
+  @GetMapping()
+  public ResponseEntity<PagingResVm<ProductAttributeResVm>> getAttribute(
+      @RequestParam @Min(0) int page) {
+    return this.iProductAttributeService.getAllProductAttribute(page);
+  }
 
-    @PutMapping("{attId}")
-    public ResponseEntity<ResVm> updateAttribute(@RequestBody ProductAttributeCreateReqVm updateModel, @PathVariable String attId) {
-        return this.iProductAttributeService.updateAttribute(attId, updateModel);
-    }
+  @PutMapping("{attId}")
+  public ResponseEntity<ResVm> updateAttribute(
+      @RequestBody ProductAttributeCreateReqVm updateModel, @PathVariable String attId) {
+    return this.iProductAttributeService.updateAttribute(attId, updateModel);
+  }
 
-    @PatchMapping()
-    public ResponseEntity<ResVm> updateStatusAtt(@RequestParam String action, @RequestParam String attId){
-        return this.iProductAttributeService.updateStatusAtt(attId, action);
-    }
+  @PatchMapping()
+  public ResponseEntity<ResVm> updateStatusAtt(
+      @RequestParam String action, @RequestParam String attId) {
+    return this.iProductAttributeService.updateStatusAtt(attId, action);
+  }
 
-    @DeleteMapping("{attId}")
-    public ResponseEntity<ResVm> deleteAttribute(@PathVariable String attId) {
-        return this.iProductAttributeService.deleteAttribute(attId);
-    }
+  @DeleteMapping("{attId}")
+  public ResponseEntity<ResVm> deleteAttribute(@PathVariable String attId) {
+    return this.iProductAttributeService.deleteAttribute(attId);
+  }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<CommonProductResVm>> getAllAttribute(){
-        return this.iProductAttributeService.getAllAttribute();
-    }
-
+  @GetMapping("/all")
+  public ResponseEntity<List<CommonProductResVm>> getAllAttribute() {
+    return this.iProductAttributeService.getAllAttribute();
+  }
 }

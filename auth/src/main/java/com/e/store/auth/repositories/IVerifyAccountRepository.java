@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IVerifyAccountRepository extends JpaRepository<VerifyAccount, Long> {
-    Optional<VerifyAccount> findByToken(String token);
+
+	Optional<VerifyAccount> findByToken(String token);
 }

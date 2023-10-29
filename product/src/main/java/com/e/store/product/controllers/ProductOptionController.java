@@ -3,7 +3,8 @@ package com.e.store.product.controllers;
 import com.e.store.product.services.IProductOptionService;
 import com.e.store.product.viewmodel.req.ProductOptionCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductOptionResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductOptionResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,30 +22,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/product/option")
 public class ProductOptionController {
-    @Autowired
-    IProductOptionService iProductOptionService;
+  @Autowired IProductOptionService iProductOptionService;
 
-    @PostMapping()
-    public ResponseEntity<ResVm> createNewOption(@RequestBody ProductOptionCreateReqVm req) {
-        return this.iProductOptionService.createNewProductOption(req);
-    }
+  @PostMapping()
+  public ResponseEntity<ResVm> createNewOption(@RequestBody ProductOptionCreateReqVm req) {
+    return this.iProductOptionService.createNewProductOption(req);
+  }
 
-    @GetMapping()
-    public ResponseEntity<ListProductOptionResVm> getOptions(@RequestParam int page) {
-        return this.iProductOptionService.getAllOption(page);
-    }
+  @GetMapping()
+  public ResponseEntity<PagingResVm<ProductOptionResVm>> getOptions(@RequestParam int page) {
+    return this.iProductOptionService.getAllOption(page);
+  }
 
-    @PutMapping("{optionId}")
-    public ResponseEntity<ResVm> updateOption(@PathVariable String optionId, @RequestBody ProductOptionCreateReqVm req) {
-        return this.iProductOptionService.updateOption(optionId, req);
-    }
+  @PutMapping("{optionId}")
+  public ResponseEntity<ResVm> updateOption(
+      @PathVariable String optionId, @RequestBody ProductOptionCreateReqVm req) {
+    return this.iProductOptionService.updateOption(optionId, req);
+  }
 
-    @DeleteMapping("{optionId}")
-    public ResponseEntity<ResVm> deleteOption(@PathVariable String optionId) {
-        return this.iProductOptionService.deleteOption(optionId);
-    }
-    @GetMapping("all")
-    public ResponseEntity<List<CommonProductResVm>> getAllOption() {
-        return this.iProductOptionService.getAllOption();
-    }
+  @DeleteMapping("{optionId}")
+  public ResponseEntity<ResVm> deleteOption(@PathVariable String optionId) {
+    return this.iProductOptionService.deleteOption(optionId);
+  }
+
+  @GetMapping("all")
+  public ResponseEntity<List<CommonProductResVm>> getAllOption() {
+    return this.iProductOptionService.getAllOption();
+  }
 }
