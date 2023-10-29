@@ -6,7 +6,7 @@ public record ProductResVm(
     String id,
     String name,
     int quantity,
-    int price,
+    double price,
     String lastUpdateDate,
     List<ProductOptionListResVm> optionList,
     List<ProductVariationsResVm> variations) {}

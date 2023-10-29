@@ -12,4 +12,10 @@ public interface IProductService {
   ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);
 
   ResponseEntity<PagingResVm<ProductResVm>> getProducts(int page);
+
+  ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm);
+
+  ResponseEntity<ResVm> updateStatus(String productId, String action);
+
+  ResponseEntity<ResVm> getDetailProductById(String productId);
 }

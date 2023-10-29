@@ -1,5 +1,6 @@
 package com.e.store.product.services.impl;
 
+import com.e.store.product.constant.Action;
 import com.e.store.product.constant.Constant;
 import com.e.store.product.entity.Product;
 import com.e.store.product.entity.ProductGroup;
@@ -84,7 +85,6 @@ public class ProductServiceImpl implements IProductService {
   @Override
   public ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm) {
     LOG.info("createNewProduct: receive request create product.");
-    // TODO: need to check is null for all field before get
     Product product =
         Product.builder()
             .name(productReqVm.name())
@@ -93,6 +93,7 @@ public class ProductServiceImpl implements IProductService {
             .quantity(productReqVm.quantity())
             .shortDescription(productReqVm.description())
             .slug(productReqVm.slug())
+            .isSales(true)
             .build();
 
     // product image
@@ -104,15 +105,16 @@ public class ProductServiceImpl implements IProductService {
     product.setProductImageList(productImageList);
 
     // seo
-    ProductSEO productSEO =
-        ProductSEO.builder()
-            .keyword(productReqVm.seo().keyword())
-            .metadata(productReqVm.seo().metadata())
-            .product(product)
-            .build();
-    ProductSEO newProdSEO = iProductSEORepository.save(productSEO);
-    product.setProductSEO(newProdSEO);
-
+    if (productReqVm.seo() != null) {
+      ProductSEO productSEO =
+          ProductSEO.builder()
+              .keyword(productReqVm.seo().keyword())
+              .metadata(productReqVm.seo().metadata())
+              .product(product)
+              .build();
+      ProductSEO newProdSEO = iProductSEORepository.save(productSEO);
+      product.setProductSEO(newProdSEO);
+    }
     // attribute
     List<ProductAttributeValue> productAttributeValueList = new ArrayList<>();
     for (ProductAttributeReqVm att : productReqVm.attributes()) {
@@ -207,16 +209,48 @@ public class ProductServiceImpl implements IProductService {
               product.getId(),
               product.getName(),
               product.getQuantity(),
-              (int) product.getPrice(),
+              product.getPrice(),
               product.getLastUpdate().toString(),
               productOptionListResVms,
               productVariationsResVms));
     }
 
     PagingResVm<ProductResVm> result =
-        new PagingResVm<>(
-            productResVmList, products.getTotalPages(), (int) products.getTotalElements());
+        new PagingResVm<>(productResVmList, products.getTotalPages(), products.getTotalElements());
 
     return ResponseEntity.ok(result);
+  }
+
+  private Product getProductById(String id) {
+    return this.iProductRepository
+        .findById(id)
+        .orElseThrow(
+            () -> new EntityNotFoundException(String.format("Product with id  {0} not found", id)));
+  }
+
+  @Override
+  public ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm) {
+    return null;
+  }
+
+  @Override
+  public ResponseEntity<ResVm> updateStatus(String productId, String action) {
+    LOG.info(
+        String.format(
+            "Receive a request to {0} product have id: {1} from user: {2} ",
+            action, productId, CommonService.getUser()));
+
+    Product product = this.getProductById(productId);
+	  product.setSales(!Action.ENABLE.toString().toLowerCase().equals(action));
+    this.iProductRepository.save(product);
+    ResVm res =
+        new ResVm(
+            HttpStatus.OK, String.format("Product with id: {} is disable for now", productId));
+    return ResponseEntity.ok(res);
+  }
+
+  @Override
+  public ResponseEntity<ResVm> getDetailProductById(String productId) {
+    return null;
   }
 }
