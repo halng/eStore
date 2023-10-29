@@ -1,7 +1,7 @@
 package com.e.store.product.controllers;
 
 import com.e.store.product.viewmodel.res.CommonProductResVm;
-import com.e.store.product.viewmodel.res.ListProductGroupResVm;
+import com.e.store.product.viewmodel.res.PagingResVm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -107,9 +107,9 @@ class ProductGroupControllerTest extends AbstractControllerTest {
             .accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON)).andReturn();
 
         Assertions.assertEquals(200, result.getResponse().getStatus());
-        ListProductGroupResVm listProductGroupResVm = this.mapFromJson(result.getResponse().getContentAsString(),
-            ListProductGroupResVm.class);
-        Assertions.assertEquals(3, listProductGroupResVm.totalGroup());
+        PagingResVm listProductGroupResVm = this.mapFromJson(result.getResponse().getContentAsString(),
+            PagingResVm.class);
+        Assertions.assertEquals(3, listProductGroupResVm.totalItems());
         Assertions.assertEquals(1, listProductGroupResVm.totalPages());
     }
 

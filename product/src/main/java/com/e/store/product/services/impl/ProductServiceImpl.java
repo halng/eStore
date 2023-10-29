@@ -26,7 +26,10 @@ import com.e.store.product.viewmodel.req.OptionValueReqVm;
 import com.e.store.product.viewmodel.req.ProductAttributeReqVm;
 import com.e.store.product.viewmodel.req.ProductReqVm;
 import com.e.store.product.viewmodel.req.ProductVariationReqVm;
+import com.e.store.product.viewmodel.res.CommonProductResVm;
+import com.e.store.product.viewmodel.res.CommonProductValueResVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductDetailResVm;
 import com.e.store.product.viewmodel.res.ProductOptionListResVm;
 import com.e.store.product.viewmodel.res.ProductResVm;
 import com.e.store.product.viewmodel.res.ProductVariationsResVm;
@@ -241,16 +244,55 @@ public class ProductServiceImpl implements IProductService {
             action, productId, CommonService.getUser()));
 
     Product product = this.getProductById(productId);
-	  product.setSales(!Action.ENABLE.toString().toLowerCase().equals(action));
+    product.setSales(!Action.ENABLE.toString().toLowerCase().equals(action));
     this.iProductRepository.save(product);
-    ResVm res =
-        new ResVm(
-            HttpStatus.OK, String.format("Product with id: {} is disable for now", productId));
+    ResVm res = new ResVm(HttpStatus.OK, "Product with id: " + productId + " is disable for now");
     return ResponseEntity.ok(res);
   }
 
   @Override
-  public ResponseEntity<ResVm> getDetailProductById(String productId) {
-    return null;
+  public ResponseEntity<ProductDetailResVm> getDetailProductById(String productId) {
+    Product product = getProductById(productId);
+    CommonProductResVm group =
+        new CommonProductResVm(
+            product.getProductGroup().getId(), product.getProductGroup().getName());
+
+    List<CommonProductValueResVm> productAttributeValues = new ArrayList<>();
+    List<CommonProductValueResVm> productOptionValues = new ArrayList<>();
+    for (var attVal : product.getProductAttributeValueList()) {
+      productAttributeValues.add(
+          new CommonProductValueResVm(
+              attVal.getId(), attVal.getProductAttribute().getName(), attVal.getValue()));
+    }
+
+    for (var optionValue : product.getProductOptionValueList()) {
+      productOptionValues.add(
+          new CommonProductValueResVm(
+              optionValue.getId(),
+              optionValue.getProductOption().getName(),
+              optionValue.getValue()));
+    }
+
+    List<ProductVariationsResVm> productVariationsResVms = new ArrayList<>();
+    for (var variation : product.getProductVariationList()) {
+      productVariationsResVms.add(ProductVariationsResVm.fromModel(variation));
+    }
+
+    ProductDetailResVm productDetailResVm =
+        new ProductDetailResVm(
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            product.getQuantity(),
+            product.isSales(),
+            "",
+            null,
+            product.getShortDescription(),
+            group,
+            productAttributeValues,
+            productOptionValues,
+            productVariationsResVms);
+
+    return ResponseEntity.ok(productDetailResVm);
   }
 }

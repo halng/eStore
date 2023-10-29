@@ -3,6 +3,7 @@ package com.e.store.product.controllers;
 import com.e.store.product.services.IProductService;
 import com.e.store.product.viewmodel.req.ProductReqVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductDetailResVm;
 import com.e.store.product.viewmodel.res.ProductResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import jakarta.validation.constraints.Min;
@@ -36,17 +37,19 @@ public class ProductController {
   }
 
   @GetMapping("/{prodId}")
-  public ResponseEntity<?> getDetailProductById(@PathVariable String prodId) {
-    return null;
+  public ResponseEntity<ProductDetailResVm> getDetailProductById(@PathVariable String prodId) {
+    return this.iProductService.getDetailProductById(prodId);
   }
 
   @PutMapping("/{prodId}")
-  public ResponseEntity<?> updateProductById(@PathVariable String prodId, @RequestBody ProductReqVm productReqVm ) {
+  public ResponseEntity<?> updateProductById(
+      @PathVariable String prodId, @RequestBody ProductReqVm productReqVm) {
     return null;
   }
 
   @PatchMapping("/{prodId}/{action}")
-  public ResponseEntity<?> deleteProduct(@PathVariable String prodId, @PathVariable String action) {
-    return null;
+  public ResponseEntity<ResVm> updateStatus(
+      @PathVariable String prodId, @PathVariable String action) {
+    return this.iProductService.updateStatus(prodId, action);
   }
 }

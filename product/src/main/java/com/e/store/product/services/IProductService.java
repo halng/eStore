@@ -2,6 +2,7 @@ package com.e.store.product.services;
 
 import com.e.store.product.viewmodel.req.ProductReqVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductDetailResVm;
 import com.e.store.product.viewmodel.res.ProductResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import org.springframework.http.ResponseEntity;
@@ -17,5 +18,5 @@ public interface IProductService {
 
   ResponseEntity<ResVm> updateStatus(String productId, String action);
 
-  ResponseEntity<ResVm> getDetailProductById(String productId);
+  ResponseEntity<ProductDetailResVm> getDetailProductById(String productId);
 }
