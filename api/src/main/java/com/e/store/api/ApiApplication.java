@@ -8,8 +8,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @EnableWebFlux
 public class ApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ApiApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(ApiApplication.class, args);
+  }
 }

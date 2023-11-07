@@ -52,242 +52,282 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class ProductServiceTest {
 
-    IProductRepository iProductRepository;
-    IProductGroupRepository iProductGroupRepository;
-    IProductAttributeRepository iProductAttributeRepository;
-    IProductImageRepository iProductImageRepository;
-    IProductSEORepository iProductSEORepository;
-    IProductAttributeValueRepository iProductAttributeValueRepository;
-    IProductService productService;
-    ProductReqVm productReqVm;
-    IProductOptionValueRepository iProductOptionValueRepository;
-    IProductOptionRepository iProductOptionRepository;
+  IProductRepository iProductRepository;
+  IProductGroupRepository iProductGroupRepository;
+  IProductAttributeRepository iProductAttributeRepository;
+  IProductImageRepository iProductImageRepository;
+  IProductSEORepository iProductSEORepository;
+  IProductAttributeValueRepository iProductAttributeValueRepository;
+  IProductService productService;
+  ProductReqVm productReqVm;
+  IProductOptionValueRepository iProductOptionValueRepository;
+  IProductOptionRepository iProductOptionRepository;
 
-    IProductVariationRepository iProductVariationRepository;
+  IProductVariationRepository iProductVariationRepository;
 
-    @BeforeEach
-    void setup() {
-        iProductRepository = mock(IProductRepository.class);
-        iProductGroupRepository = mock(IProductGroupRepository.class);
-        iProductAttributeRepository = mock(IProductAttributeRepository.class);
-        iProductImageRepository = mock(IProductImageRepository.class);
-        iProductSEORepository = mock(IProductSEORepository.class);
-        iProductAttributeValueRepository = mock(IProductAttributeValueRepository.class);
-        iProductOptionValueRepository = mock(IProductOptionValueRepository.class);
-        iProductOptionRepository = mock(IProductOptionRepository.class);
-        iProductVariationRepository = mock(IProductVariationRepository.class);
+  @BeforeEach
+  void setup() {
+    iProductRepository = mock(IProductRepository.class);
+    iProductGroupRepository = mock(IProductGroupRepository.class);
+    iProductAttributeRepository = mock(IProductAttributeRepository.class);
+    iProductImageRepository = mock(IProductImageRepository.class);
+    iProductSEORepository = mock(IProductSEORepository.class);
+    iProductAttributeValueRepository = mock(IProductAttributeValueRepository.class);
+    iProductOptionValueRepository = mock(IProductOptionValueRepository.class);
+    iProductOptionRepository = mock(IProductOptionRepository.class);
+    iProductVariationRepository = mock(IProductVariationRepository.class);
 
-        productService = new ProductServiceImpl(iProductRepository, iProductGroupRepository, iProductAttributeRepository,
-            iProductImageRepository, iProductSEORepository, iProductAttributeValueRepository, iProductOptionRepository,
-            iProductOptionValueRepository, iProductVariationRepository);
+    productService =
+        new ProductServiceImpl(
+            iProductRepository,
+            iProductGroupRepository,
+            iProductAttributeRepository,
+            iProductImageRepository,
+            iProductSEORepository,
+            iProductAttributeValueRepository,
+            iProductOptionRepository,
+            iProductOptionValueRepository,
+            iProductVariationRepository);
 
-        List<ProductAttributeReqVm> attributes = List.of(new ProductAttributeReqVm("AAA-1", "", "value 1"));
-        List<OptionValueReqVm> optionValueReqVms = List.of(new OptionValueReqVm("xxx", "nnn", "vvv"));
-        List<ProductVariationReqVm> variationReqVms = new ArrayList<>();
-        variationReqVms.add(new ProductVariationReqVm("test", 12.0, 2, optionValueReqVms));
+    List<ProductAttributeReqVm> attributes =
+        List.of(new ProductAttributeReqVm("AAA-1", "", "value 1"));
+    List<OptionValueReqVm> optionValueReqVms = List.of(new OptionValueReqVm("xxx", "nnn", "vvv"));
+    List<ProductVariationReqVm> variationReqVms = new ArrayList<>();
+    variationReqVms.add(new ProductVariationReqVm("test", 12.0, 2, optionValueReqVms));
 
-        ProductSEOReqVm seo = new ProductSEOReqVm("key word", "meta data");
-        productReqVm = new ProductReqVm("test 1", "test-1", 3.4, "thumbnail-id", Arrays.asList("XXX-11", "XXX-22"), 34,
-            "xxx-yyy", "1", attributes, variationReqVms, seo);
+    ProductSEOReqVm seo = new ProductSEOReqVm("key word", "meta data");
+    productReqVm =
+        new ProductReqVm(
+            "test 1",
+            "test-1",
+            3.4,
+            "thumbnail-id",
+            Arrays.asList("XXX-11", "XXX-22"),
+            34,
+            "xxx-yyy",
+            "1",
+            attributes,
+            variationReqVms,
+            seo);
 
-        SecurityContextHolder.getContext().setAuthentication(new Authentication() {
-            @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() {
+    SecurityContextHolder.getContext()
+        .setAuthentication(
+            new Authentication() {
+              @Override
+              public Collection<? extends GrantedAuthority> getAuthorities() {
                 return null;
-            }
+              }
 
-            @Override
-            public Object getCredentials() {
+              @Override
+              public Object getCredentials() {
                 return null;
-            }
+              }
 
-            @Override
-            public Object getDetails() {
+              @Override
+              public Object getDetails() {
                 return null;
-            }
+              }
 
-            @Override
-            public Object getPrincipal() {
+              @Override
+              public Object getPrincipal() {
                 return null;
-            }
+              }
 
-            @Override
-            public boolean isAuthenticated() {
+              @Override
+              public boolean isAuthenticated() {
                 return false;
-            }
+              }
 
-            @Override
-            public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+              @Override
+              public void setAuthenticated(boolean isAuthenticated)
+                  throws IllegalArgumentException {}
 
-            }
-
-            @Override
-            public String getName() {
+              @Override
+              public String getName() {
                 return "SYSTEM";
-            }
-        });
-    }
+              }
+            });
+  }
 
-    void testEntityNotFoundException(ProductReqVm productReqVm, String assertMsg) {
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            productService.createNewProduct(productReqVm);
-        });
+  void testEntityNotFoundException(ProductReqVm productReqVm, String assertMsg) {
+    EntityNotFoundException exception =
+        Assertions.assertThrows(
+            EntityNotFoundException.class,
+            () -> {
+              productService.createNewProduct(productReqVm);
+            });
 
-        Assertions.assertEquals(assertMsg, exception.getMessage());
-    }
+    Assertions.assertEquals(assertMsg, exception.getMessage());
+  }
 
-    @Test
-    void createNewProduct_shouldThrowException_whenInvalidProductGroup() {
-        ProductAttribute productAttribute = ProductAttribute.builder().id("attId").build();
+  @Test
+  void createNewProduct_shouldThrowException_whenInvalidProductGroup() {
+    ProductAttribute productAttribute = ProductAttribute.builder().id("attId").build();
 
-        when(iProductAttributeRepository.findById(anyString())).thenReturn(Optional.of(productAttribute));
-        when(iProductGroupRepository.findById("xxx-yyy")).thenReturn(Optional.empty());
+    when(iProductAttributeRepository.findById(anyString()))
+        .thenReturn(Optional.of(productAttribute));
+    when(iProductGroupRepository.findById("xxx-yyy")).thenReturn(Optional.empty());
 
-        testEntityNotFoundException(productReqVm, "Product group with id: " + productReqVm.group() + " not founded");
-    }
+    testEntityNotFoundException(
+        productReqVm, "Product group with id: " + productReqVm.group() + " not founded");
+  }
 
-    @Test
-    void createNewProduct_shouldThrowException_whenInvalidAttribute() {
-        when(iProductAttributeRepository.findById(anyString())).thenReturn(Optional.empty());
+  @Test
+  void createNewProduct_shouldThrowException_whenInvalidAttribute() {
+    when(iProductAttributeRepository.findById(anyString())).thenReturn(Optional.empty());
 
-        testEntityNotFoundException(productReqVm, "Product Attribute with id AAA-1 not found");
-    }
+    testEntityNotFoundException(productReqVm, "Product Attribute with id AAA-1 not found");
+  }
 
-    @Test
-    void createNewProductOption_shouldSuccess_whenDataValid() {
-        ProductAttribute productAttribute = ProductAttribute.builder().id("attId").build();
-        ProductGroup productGroup = ProductGroup.builder().id("1").build();
-        Product expected = Product.builder().id("xxx-111").build();
-        ProductOptionValue productOptionValue = ProductOptionValue.builder().id("111").build();
-        ProductOption option = ProductOption.builder().build();
+  @Test
+  void createNewProductOption_shouldSuccess_whenDataValid() {
+    ProductAttribute productAttribute = ProductAttribute.builder().id("attId").build();
+    ProductGroup productGroup = ProductGroup.builder().id("1").build();
+    Product expected = Product.builder().id("xxx-111").build();
+    ProductOptionValue productOptionValue = ProductOptionValue.builder().id("111").build();
+    ProductOption option = ProductOption.builder().build();
 
-        when(iProductAttributeRepository.findById(anyString())).thenReturn(Optional.of(productAttribute));
-        when(this.iProductGroupRepository.findById(anyString())).thenReturn(Optional.of(productGroup));
-        when(this.iProductOptionRepository.findById(anyString())).thenReturn(Optional.of(option));
-        when(iProductOptionValueRepository.save(any())).thenReturn(productOptionValue);
-        when(this.iProductRepository.save(any())).thenReturn(expected);
+    when(iProductAttributeRepository.findById(anyString()))
+        .thenReturn(Optional.of(productAttribute));
+    when(this.iProductGroupRepository.findById(anyString())).thenReturn(Optional.of(productGroup));
+    when(this.iProductOptionRepository.findById(anyString())).thenReturn(Optional.of(option));
+    when(iProductOptionValueRepository.save(any())).thenReturn(productOptionValue);
+    when(this.iProductRepository.save(any())).thenReturn(expected);
 
-        ResponseEntity<ResVm> actualResult = this.productService.createNewProduct(this.productReqVm);
+    ResponseEntity<ResVm> actualResult = this.productService.createNewProduct(this.productReqVm);
 
-        Assertions.assertEquals(201, actualResult.getStatusCode().value());
-        Assertions.assertEquals("New product created. Id: xxx-111. And 1 child product", actualResult.getBody().message());
-    }
+    Assertions.assertEquals(201, actualResult.getStatusCode().value());
+    Assertions.assertEquals(
+        "New product created. Id: xxx-111. And 1 child product", actualResult.getBody().message());
+  }
 
-    @Test
-    void getProductWithPaging(){
-        Page<Product> expected = new Page<Product>() {
-            @Override
-            public int getTotalPages() {
-                return 1;
-            }
+  @Test
+  void getProductWithPaging() {
+    Page<Product> expected =
+        new Page<Product>() {
+          @Override
+          public int getTotalPages() {
+            return 1;
+          }
 
-            @Override
-            public long getTotalElements() {
-                return 1;
-            }
+          @Override
+          public long getTotalElements() {
+            return 1;
+          }
 
-            @Override
-            public <U> Page<U> map(Function<? super Product, ? extends U> converter) {
-                return null;
-            }
+          @Override
+          public <U> Page<U> map(Function<? super Product, ? extends U> converter) {
+            return null;
+          }
 
-            @Override
-            public int getNumber() {
-                return 0;
-            }
+          @Override
+          public int getNumber() {
+            return 0;
+          }
 
-            @Override
-            public int getSize() {
-                return 0;
-            }
+          @Override
+          public int getSize() {
+            return 0;
+          }
 
-            @Override
-            public int getNumberOfElements() {
-                return 0;
-            }
+          @Override
+          public int getNumberOfElements() {
+            return 0;
+          }
 
-            @Override
-            public List<Product> getContent() {
-                ProductVariation productVariation =
-                    ProductVariation.builder().price(1).quantity(1).id("xxx").optionValueIds(Arrays.asList("XX1",
-                        "XX2")).build();
-                ProductOption productOption = ProductOption.builder().name("option name").id("id").build();
-                ProductOptionValue productOptionValue =
-                    ProductOptionValue.builder().id("ii").productOption(productOption).value("val").build();
-                Product product =
-                    Product.builder().id("piid").productVariationList(Collections.singletonList(productVariation)).productOptionValueList(
-						Collections.singletonList(productOptionValue)).build();
-                product.setLastUpdate(Instant.now());
-                return List.of(product);
-            }
+          @Override
+          public List<Product> getContent() {
+            ProductVariation productVariation =
+                ProductVariation.builder()
+                    .price(1)
+                    .quantity(1)
+                    .id("xxx")
+                    .optionValueIds(Arrays.asList("XX1", "XX2"))
+                    .build();
+            ProductOption productOption =
+                ProductOption.builder().name("option name").id("id").build();
+            ProductOptionValue productOptionValue =
+                ProductOptionValue.builder()
+                    .id("ii")
+                    .productOption(productOption)
+                    .value("val")
+                    .build();
+            Product product =
+                Product.builder()
+                    .id("piid")
+                    .productVariationList(Collections.singletonList(productVariation))
+                    .productOptionValueList(Collections.singletonList(productOptionValue))
+                    .build();
+            product.setLastUpdate(Instant.now());
+            return List.of(product);
+          }
 
-            @Override
-            public boolean hasContent() {
-                return false;
-            }
+          @Override
+          public boolean hasContent() {
+            return false;
+          }
 
-            @Override
-            public Sort getSort() {
-                return null;
-            }
+          @Override
+          public Sort getSort() {
+            return null;
+          }
 
-            @Override
-            public boolean isFirst() {
-                return false;
-            }
+          @Override
+          public boolean isFirst() {
+            return false;
+          }
 
-            @Override
-            public boolean isLast() {
-                return false;
-            }
+          @Override
+          public boolean isLast() {
+            return false;
+          }
 
-            @Override
-            public boolean hasNext() {
-                return false;
-            }
+          @Override
+          public boolean hasNext() {
+            return false;
+          }
 
-            @Override
-            public boolean hasPrevious() {
-                return false;
-            }
+          @Override
+          public boolean hasPrevious() {
+            return false;
+          }
 
-            @Override
-            public Pageable nextPageable() {
-                return null;
-            }
+          @Override
+          public Pageable nextPageable() {
+            return null;
+          }
 
-            @Override
-            public Pageable previousPageable() {
-                return null;
-            }
+          @Override
+          public Pageable previousPageable() {
+            return null;
+          }
 
-            @Override
-            public Iterator<Product> iterator() {
-                return null;
-            }
+          @Override
+          public Iterator<Product> iterator() {
+            return null;
+          }
         };
 
-        when(iProductRepository.findAllProductWithPaging(anyString(), any())).thenReturn(expected);
-        ResponseEntity<PagingResVm<ProductResVm>> actualResult = this.productService.getProducts(1);
+    when(iProductRepository.findAllProductWithPaging(anyString(), any())).thenReturn(expected);
+    ResponseEntity<PagingResVm<ProductResVm>> actualResult = this.productService.getProducts(1);
 
-        Assertions.assertNotNull(actualResult);
-        Assertions.assertNotNull(actualResult.getBody());
+    Assertions.assertNotNull(actualResult);
+    Assertions.assertNotNull(actualResult.getBody());
 
-        PagingResVm<ProductResVm> resultBody = actualResult.getBody();
-        Assertions.assertEquals(1, resultBody.totalItems());
-        Assertions.assertEquals(1, resultBody.totalPages());
-        Assertions.assertEquals(1, resultBody.items().size());
-    }
+    PagingResVm<ProductResVm> resultBody = actualResult.getBody();
+    Assertions.assertEquals(1, resultBody.totalItems());
+    Assertions.assertEquals(1, resultBody.totalPages());
+    Assertions.assertEquals(1, resultBody.items().size());
+  }
 
-    @Test
-    void updateStatus_shouldSuccess_whenDataValid(){
-        Product product = Product.builder().id("XXXX").build();
-        when(iProductRepository.findById(anyString())).thenReturn(Optional.of(product));
+  @Test
+  void updateStatus_shouldSuccess_whenDataValid() {
+    Product product = Product.builder().id("XXXX").build();
+    when(iProductRepository.findById(anyString())).thenReturn(Optional.of(product));
 
-        ResponseEntity<ResVm> res = this.productService.updateStatus("XXXX", "diable");
-        Assertions.assertNotNull(res);
-        Assertions.assertEquals(200, res.getStatusCode().value());
-        Assertions.assertEquals("Product with id: XXXX is disable for now",res.getBody().message());
-    }
-
+    ResponseEntity<ResVm> res = this.productService.updateStatus("XXXX", "diable");
+    Assertions.assertNotNull(res);
+    Assertions.assertEquals(200, res.getStatusCode().value());
+    Assertions.assertEquals("Product with id: XXXX is disable for now", res.getBody().message());
+  }
 }

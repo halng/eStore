@@ -21,26 +21,27 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class RequestFilterConfig extends OncePerRequestFilter {
 
-	private static final Logger LOG = LoggerFactory.getLogger(RequestFilterConfig.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RequestFilterConfig.class);
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-		throws ServletException, IOException {
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
 
-		String username = request.getHeader("username");
-		String authority = request.getHeader("authority");
+    String username = request.getHeader("username");
+    String authority = request.getHeader("authority");
 
-		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = null;
-		if (username != null && authority != null) {
-			List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
-			grantedAuthorityList.add(new SimpleGrantedAuthority(authority));
-			usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, null,
-				grantedAuthorityList);
-		}
+    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = null;
+    if (username != null && authority != null) {
+      List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
+      grantedAuthorityList.add(new SimpleGrantedAuthority(authority));
+      usernamePasswordAuthenticationToken =
+          new UsernamePasswordAuthenticationToken(username, null, grantedAuthorityList);
+    }
 
-		LOG.info(String.format("Receive a request %s from %s", request.getRequestURI(), username));
+    LOG.info(String.format("Receive a request %s from %s", request.getRequestURI(), username));
 
-		SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-		filterChain.doFilter(request, response);
-	}
+    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+    filterChain.doFilter(request, response);
+  }
 }

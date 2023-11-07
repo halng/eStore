@@ -17,41 +17,49 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 class RefreshTokenServiceTest {
 
-    RefreshTokenServiceImpl refreshTokenService;
-    IRefreshTokenRepository iRefreshTokenRepository;
-    Account account;
-    Long refreshTokenExpiration = 864000L;
+  RefreshTokenServiceImpl refreshTokenService;
+  IRefreshTokenRepository iRefreshTokenRepository;
+  Account account;
+  Long refreshTokenExpiration = 864000L;
 
-    @BeforeEach
-    void setUp() {
-        iRefreshTokenRepository = mock(IRefreshTokenRepository.class);
-        account = mock(Account.class);
-        refreshTokenService = new RefreshTokenServiceImpl(iRefreshTokenRepository);
-        ReflectionTestUtils.setField(refreshTokenService, "refreshTokenExpiration", 86400000L);
-    }
+  @BeforeEach
+  void setUp() {
+    iRefreshTokenRepository = mock(IRefreshTokenRepository.class);
+    account = mock(Account.class);
+    refreshTokenService = new RefreshTokenServiceImpl(iRefreshTokenRepository);
+    ReflectionTestUtils.setField(refreshTokenService, "refreshTokenExpiration", 86400000L);
+  }
 
-    @Test
-    void generateRefreshTokenTest() {
-        RefreshToken refreshToken = RefreshToken.builder().id("abc-xyz").account(account)
-            .expiryDate(Instant.now().plusMillis(refreshTokenExpiration)).build();
+  @Test
+  void generateRefreshTokenTest() {
+    RefreshToken refreshToken =
+        RefreshToken.builder()
+            .id("abc-xyz")
+            .account(account)
+            .expiryDate(Instant.now().plusMillis(refreshTokenExpiration))
+            .build();
 
-        when(iRefreshTokenRepository.findByAccount(any())).thenReturn(Optional.empty());
-        when(iRefreshTokenRepository.save(any())).thenReturn(refreshToken);
+    when(iRefreshTokenRepository.findByAccount(any())).thenReturn(Optional.empty());
+    when(iRefreshTokenRepository.save(any())).thenReturn(refreshToken);
 
-        String token = refreshTokenService.generateRefreshToken(account);
-        assertEquals("abc-xyz", token);
-    }
+    String token = refreshTokenService.generateRefreshToken(account);
+    assertEquals("abc-xyz", token);
+  }
 
-    @Test
-    void generateRefreshToken_whenAccountHaveExistToken() {
-        RefreshToken refreshToken = RefreshToken.builder().id("abc-xyz").account(account)
-                                                .expiryDate(Instant.now().plusMillis(refreshTokenExpiration)).build();
-        RefreshToken oldRefreshToken = RefreshToken.builder().id("nnn-mmm").account(account).build();
+  @Test
+  void generateRefreshToken_whenAccountHaveExistToken() {
+    RefreshToken refreshToken =
+        RefreshToken.builder()
+            .id("abc-xyz")
+            .account(account)
+            .expiryDate(Instant.now().plusMillis(refreshTokenExpiration))
+            .build();
+    RefreshToken oldRefreshToken = RefreshToken.builder().id("nnn-mmm").account(account).build();
 
-        when(iRefreshTokenRepository.findByAccount(any())).thenReturn(Optional.of(oldRefreshToken));
-        when(iRefreshTokenRepository.save(any())).thenReturn(refreshToken);
+    when(iRefreshTokenRepository.findByAccount(any())).thenReturn(Optional.of(oldRefreshToken));
+    when(iRefreshTokenRepository.save(any())).thenReturn(refreshToken);
 
-        String token = refreshTokenService.generateRefreshToken(account);
-        assertEquals("abc-xyz", token);
-    }
+    String token = refreshTokenService.generateRefreshToken(account);
+    assertEquals("abc-xyz", token);
+  }
 }

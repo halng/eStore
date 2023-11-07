@@ -13,24 +13,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class RefreshTokenServiceImpl implements IRefreshTokenService {
 
-	private final IRefreshTokenRepository iRefreshTokenRepository;
+  private final IRefreshTokenRepository iRefreshTokenRepository;
 
-	@Value("${jwt.refresh.expiration}")
-	private Long refreshTokenExpiration;
+  @Value("${jwt.refresh.expiration}")
+  private Long refreshTokenExpiration;
 
-	@Autowired
-	public RefreshTokenServiceImpl(IRefreshTokenRepository iRefreshTokenRepository) {
-		this.iRefreshTokenRepository = iRefreshTokenRepository;
-	}
+  @Autowired
+  public RefreshTokenServiceImpl(IRefreshTokenRepository iRefreshTokenRepository) {
+    this.iRefreshTokenRepository = iRefreshTokenRepository;
+  }
 
-	@Override
-	public String generateRefreshToken(Account account) {
-		Optional<RefreshToken> refreshToken = this.iRefreshTokenRepository.findByAccount(account);
-		refreshToken.ifPresent(this.iRefreshTokenRepository::delete);
+  @Override
+  public String generateRefreshToken(Account account) {
+    Optional<RefreshToken> refreshToken = this.iRefreshTokenRepository.findByAccount(account);
+    refreshToken.ifPresent(this.iRefreshTokenRepository::delete);
 
-		RefreshToken newRefreshToken = RefreshToken.builder().account(account).expiryDate(
-			Instant.now().plusMillis(refreshTokenExpiration)).build();
-		RefreshToken savedRefreshToken = iRefreshTokenRepository.save(newRefreshToken);
-		return savedRefreshToken.getId();
-	}
+    RefreshToken newRefreshToken =
+        RefreshToken.builder()
+            .account(account)
+            .expiryDate(Instant.now().plusMillis(refreshTokenExpiration))
+            .build();
+    RefreshToken savedRefreshToken = iRefreshTokenRepository.save(newRefreshToken);
+    return savedRefreshToken.getId();
+  }
 }

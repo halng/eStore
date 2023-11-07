@@ -71,7 +71,10 @@ class ProductAttributeControllerTest extends AbstractControllerTest {
     int statusCode = result.getResponse().getStatus();
     Assertions.assertEquals(400, statusCode);
     Assertions.assertEquals(
-        "{\"msg\":\"Attribute removed. Please try again!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message: Attribute removed. Please try again!\\nStatus Code: 400\"}",
+        "{\"msg\":\"Attribute removed. Please try"
+            + " again!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
+            + " Attribute removed. Please try again!\\n"
+            + "Status Code: 400\"}",
         result.getResponse().getContentAsString());
   }
 
@@ -89,7 +92,8 @@ class ProductAttributeControllerTest extends AbstractControllerTest {
     int statusCode = result.getResponse().getStatus();
     Assertions.assertEquals(200, statusCode);
     Assertions.assertEquals(
-        "{\"status\":\"OK\",\"message\":\"Update attribute successfully\",\"logMessage\":\"200 OK - Update attribute successfully\"}",
+        "{\"status\":\"OK\",\"message\":\"Update attribute successfully\",\"logMessage\":\"200 OK -"
+            + " Update attribute successfully\"}",
         result.getResponse().getContentAsString());
   }
 
@@ -108,7 +112,8 @@ class ProductAttributeControllerTest extends AbstractControllerTest {
     int statusCode = result.getResponse().getStatus();
     Assertions.assertEquals(200, statusCode);
     Assertions.assertEquals(
-        "{\"status\":\"OK\",\"message\":\"Update status successfully\",\"logMessage\":\"200 OK - Update status successfully\"}",
+        "{\"status\":\"OK\",\"message\":\"Update status successfully\",\"logMessage\":\"200 OK -"
+            + " Update status successfully\"}",
         result.getResponse().getContentAsString());
   }
 
@@ -125,7 +130,8 @@ class ProductAttributeControllerTest extends AbstractControllerTest {
     int statusCode = result.getResponse().getStatus();
     Assertions.assertEquals(200, statusCode);
     Assertions.assertEquals(
-        "{\"status\":\"OK\",\"message\":\"Delete attribute successfully\",\"logMessage\":\"200 OK - Delete attribute successfully\"}",
+        "{\"status\":\"OK\",\"message\":\"Delete attribute successfully\",\"logMessage\":\"200 OK -"
+            + " Delete attribute successfully\"}",
         result.getResponse().getContentAsString());
   }
 
@@ -143,7 +149,10 @@ class ProductAttributeControllerTest extends AbstractControllerTest {
     int statusCode = result.getResponse().getStatus();
     Assertions.assertEquals(400, statusCode);
     Assertions.assertEquals(
-        "{\"msg\":\"Product Attribute with name Att - 1 already exists!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message: Product Attribute with name Att - 1 already exists!\\nStatus Code: 400\"}",
+        "{\"msg\":\"Product Attribute with name Att - 1 already"
+            + " exists!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
+            + " Product Attribute with name Att - 1 already exists!\\n"
+            + "Status Code: 400\"}",
         result.getResponse().getContentAsString());
   }
 

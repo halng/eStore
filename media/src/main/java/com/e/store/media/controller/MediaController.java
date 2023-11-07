@@ -23,38 +23,35 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/media")
 public class MediaController {
 
-	private final IImageService iImageService;
+  private final IImageService iImageService;
 
-	@Autowired
-	public MediaController(IImageService iImageService) {
-		this.iImageService = iImageService;
-	}
+  @Autowired
+  public MediaController(IImageService iImageService) {
+    this.iImageService = iImageService;
+  }
 
+  @PostMapping(
+      path = "images",
+      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ResponseEntity<ResVm> uploadMultiImage(
+      @RequestParam("files") List<MultipartFile> files,
+      @RequestParam(value = "caption") String caption) {
+    return this.iImageService.uploadImage(files, caption);
+  }
 
-	@PostMapping(path = "images", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ResponseEntity<ResVm> uploadMultiImage(@RequestParam("files") List<MultipartFile> files,
-		@RequestParam(value = "caption") String caption) {
-		return this.iImageService.uploadImage(files, caption);
-	}
+  @GetMapping("images")
+  public ResponseEntity<List<ImagesResVm>> getImages(@RequestBody ImagesReqVm imagesReqVm) {
+    return this.iImageService.getImages(imagesReqVm);
+  }
 
-	@GetMapping("images")
-	public ResponseEntity<List<ImagesResVm>> getImages(@RequestBody ImagesReqVm imagesReqVm) {
-		return this.iImageService.getImages(imagesReqVm);
-	}
+  @GetMapping("image/{id}")
+  public ResponseEntity<byte[]> getImages(@PathVariable("id") String id) {
+    return this.iImageService.getImage(id);
+  }
 
-	@GetMapping("image/{id}")
-	public ResponseEntity<byte[]> getImages(@PathVariable("id") String id) {
-		return this.iImageService.getImage(id);
-	}
+  @PostMapping("blog")
+  void createBlog(@RequestBody BlogReqVm blogReqVm) {}
 
-	@PostMapping("blog")
-	void createBlog(@RequestBody BlogReqVm blogReqVm) {
-
-	}
-
-	@GetMapping("blog")
-	void getBlog(@NotBlank @RequestParam("blogId") String blogId) {
-
-	}
-
+  @GetMapping("blog")
+  void getBlog(@NotBlank @RequestParam("blogId") String blogId) {}
 }

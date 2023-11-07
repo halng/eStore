@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.e.store.email.viewmodel.res.AuthMessageVm;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,39 +15,36 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.thymeleaf.TemplateEngine;
 
-import com.e.store.email.viewmodel.res.AuthMessageVm;
-
 public class EmailServiceTest {
 
-    @Autowired
-    EmailService emailService;
-    @Autowired
-    JavaMailSender javaMailSender;
+  @Autowired EmailService emailService;
+  @Autowired JavaMailSender javaMailSender;
 
-    TemplateEngine templateEngine;
+  TemplateEngine templateEngine;
 
-    AuthMessageVm authMessageVm;
+  AuthMessageVm authMessageVm;
 
-    @BeforeEach
-    void setUp(){
-//        javaMailSender = mock(JavaMailSender.class);
-        templateEngine = mock(TemplateEngine.class);
-        emailService = new EmailServiceImpl(javaMailSender, templateEngine);
-        ReflectionTestUtils.setField(emailService, "sender", "me");
-        authMessageVm = new AuthMessageVm("email", "username", "123-344", 10000L);
-    }
+  @BeforeEach
+  void setUp() {
+    //        javaMailSender = mock(JavaMailSender.class);
+    templateEngine = mock(TemplateEngine.class);
+    emailService = new EmailServiceImpl(javaMailSender, templateEngine);
+    ReflectionTestUtils.setField(emailService, "sender", "me");
+    authMessageVm = new AuthMessageVm("email", "username", "123-344", 10000L);
+  }
 
-    @Test
-    public void sendEmail_shouldThrowException() {
+  @Test
+  public void sendEmail_shouldThrowException() {
 
-        when(templateEngine.process(anyString(), any())).thenReturn("<p></p>");
+    when(templateEngine.process(anyString(), any())).thenReturn("<p></p>");
 
-        Exception exception = Assert.assertThrows(Exception.class, () -> {
-            emailService.sendEmail(authMessageVm);
-        });
+    Exception exception =
+        Assert.assertThrows(
+            Exception.class,
+            () -> {
+              emailService.sendEmail(authMessageVm);
+            });
 
-        Assertions.assertNotNull(exception);
-
-    }
-
+    Assertions.assertNotNull(exception);
+  }
 }
