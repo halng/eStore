@@ -18,9 +18,9 @@ import org.springframework.messaging.handler.annotation.Payload;
 @Constraint(validatedBy = RePassConstraintValidator.class)
 public @interface RePassword {
 
-	String message() default "Password And Repeat Password Not Identical";
+  String message() default "Password And Repeat Password Not Identical";
 
-	Class<?>[] groups() default {};
+  Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+  Class<? extends Payload>[] payload() default {};
 }

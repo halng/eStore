@@ -1,17 +1,13 @@
 package com.e.store.product.controllers;
 
 import com.e.store.product.ProductApplication;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,8 +75,7 @@ public abstract class AbstractControllerTest {
     return this.mapper.writeValueAsString(obj);
   }
 
-  protected <T> T mapFromJson(String json, Class<T> entity)
-      throws IOException {
+  protected <T> T mapFromJson(String json, Class<T> entity) throws IOException {
     return this.mapper.readValue(json, entity);
   }
 }

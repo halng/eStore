@@ -1,6 +1,5 @@
 package com.e.store.product.viewmodel.res;
 
-import com.e.store.product.entity.Product;
 import java.util.List;
 
 public record ProductDetailResVm(
