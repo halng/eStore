@@ -3,8 +3,25 @@ name: Format
 on:
   push:
     branches: [ master ]
+    paths:
+      - "auth/**"
+      - "product/**"
+      - "media/**"
+      - "cart/**"
+      - "email/**"
+      - "payment/**"
+      - ".github/workflows/ci-format.yaml"
   pull_request:
     branches: ["main"]
+    paths:
+      - "auth/**"
+      - "product/**"
+      - "media/**"
+      - "cart/**"
+      - "email/**"
+      - "payment/**"
+      - ".github/workflows/ci-format.yaml"
+
 jobs:
 
   formatting:
