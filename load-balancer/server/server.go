@@ -76,8 +76,8 @@ func lbHandler(w http.ResponseWriter, r *http.Request) {
 	reverseProxy.ServeHTTP(w, r)
 }
 
-// isAlive checks if the backend is alive
-func isAlive(url *url.URL) bool {
+// pingBackend checks if the backend is alive
+func pingBackend(url *url.URL) bool {
 	conn, err := net.DialTimeout("tcp", url.Host, time.Minute*1)
 	if err != nil {
 		log.Printf("Unreachable to %v, error: %v", url.Host, err.Error())
@@ -96,10 +96,10 @@ func healthCHeck() {
 				if err != nil {
 					log.Fatal(err.Error())
 				}
-				_isAlive := isAlive(pingURL)
-				backend.SetDead(!_isAlive)
+				isAlive := pingBackend(pingURL)
+				backend.SetDead(!isAlive)
 				msg := "ok"
-				if !_isAlive {
+				if !isAlive {
 					msg = "dead"
 				}
 
