@@ -1,4 +1,8 @@
 # eStore
+> Architecture
+
+![image](https://github.com/tanhaok/eStore/assets/101847895/94eac0c9-2936-482e-a282-7b372036c65c)
+
 
 ## Components
 |Component|Language|Framework|Unittest|Comment|
