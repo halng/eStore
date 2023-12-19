@@ -1,7 +1,8 @@
 # eStore
-> Architecture
+> [Architecture](https://drive.google.com/file/d/1wbXkCoW1Cp1-LE5fbcnRx1MuTrOiz_Zq/view?usp=sharing)
 
-![image](https://github.com/tanhaok/eStore/assets/101847895/94eac0c9-2936-482e-a282-7b372036c65c)
+![image](https://github.com/tanhaok/eStore/assets/101847895/f62301d5-09fa-4689-81bd-1076a4d80501)
+
 
 
 ## Components
