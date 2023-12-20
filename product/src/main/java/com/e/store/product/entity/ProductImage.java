@@ -22,13 +22,14 @@ import lombok.Setter;
 @Entity
 @Table(name = "product_image")
 public class ProductImage extends AuditEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
 
-  private String imageId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "product_id", nullable = false)
-  private Product product;
+    private String imageId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 }

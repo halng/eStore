@@ -10,10 +10,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IProductOptionRepository extends JpaRepository<ProductOption, String> {
-  boolean existsByNameAndCreateBy(String name, String createBy);
 
-  List<ProductOption> findByCreateBy(String createBy);
+    boolean existsByNameAndCreateBy(String name, String createBy);
 
-  @Query("SELECT g FROM ProductOption g WHERE g.createBy=?1")
-  Page<ProductOption> findByCreatorWithPagination(String creator, Pageable pageable);
+    List<ProductOption> findByCreateBy(String createBy);
+
+    @Query("SELECT g FROM ProductOption g WHERE g.createBy=?1")
+    Page<ProductOption> findByCreatorWithPagination(String creator, Pageable pageable);
 }

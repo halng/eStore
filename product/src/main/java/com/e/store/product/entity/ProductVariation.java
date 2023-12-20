@@ -22,15 +22,16 @@ import lombok.Setter;
 @Builder
 @Table(name = "product_variation")
 public class ProductVariation extends AuditEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
 
-  private int quantity;
-  private double price;
-  private List<String> optionValueIds;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-  @ManyToOne
-  @JoinColumn(name = "parent_id", nullable = false)
-  private Product product;
+    private int quantity;
+    private double price;
+    private List<String> optionValueIds;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id", nullable = false)
+    private Product product;
 }

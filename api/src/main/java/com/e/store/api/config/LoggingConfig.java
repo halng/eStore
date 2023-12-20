@@ -17,23 +17,22 @@ import reactor.core.publisher.Mono;
 
 public class LoggingConfig implements GlobalFilter {
 
-  private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  @Override
-  public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-    try {
-      Set<URI> uris =
-          exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR, Collections.emptySet());
-      String originalUri = (uris.isEmpty()) ? "Unknown" : uris.iterator().next().toString();
-      Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
-      URI routeUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
-      log.info(
-          "Incoming request {0} is routed to id: {1}, uri: {2}",
-          originalUri, route.getId(), routeUri);
-      return chain.filter(exchange);
-    } catch (NullPointerException e) {
-      log.error(e.getMessage());
+    @Override
+    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        try {
+            Set<URI> uris = exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR,
+                Collections.emptySet());
+            String originalUri = (uris.isEmpty()) ? "Unknown" : uris.iterator().next().toString();
+            Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
+            URI routeUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
+            log.info("Incoming request %s is routed to id: %s, uri: %s".formatted(originalUri,
+                route.getId(), routeUri));
+            return chain.filter(exchange);
+        } catch (NullPointerException e) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
-    return null;
-  }
 }

@@ -23,37 +23,38 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product/group")
 public class ProductGroupController {
 
-  @Autowired IProductGroupService iProductGroupService;
+    @Autowired
+    IProductGroupService iProductGroupService;
 
-  @PostMapping()
-  public ResponseEntity<ResVm> createNewGroup(@RequestParam String groupName) {
-    return this.iProductGroupService.createNewGroup(groupName);
-  }
+    @PostMapping()
+    public ResponseEntity<ResVm> createNewGroup(@RequestParam String groupName) {
+        return this.iProductGroupService.createNewGroup(groupName);
+    }
 
-  @PutMapping("{groupId}")
-  public ResponseEntity<ResVm> updateProductGroup(
-      @NotBlank @RequestParam String newName, @PathVariable String groupId) {
-    return this.iProductGroupService.updateProductGroup(newName, groupId);
-  }
+    @PutMapping("{groupId}")
+    public ResponseEntity<ResVm> updateProductGroup(@NotBlank @RequestParam String newName,
+        @PathVariable String groupId) {
+        return this.iProductGroupService.updateProductGroup(newName, groupId);
+    }
 
-  @PatchMapping("{groupId}/{action}")
-  public ResponseEntity<ResVm> disableEnableGroup(
-      @PathVariable String groupId, @PathVariable String action) {
-    return this.iProductGroupService.disableEnableGroup(groupId, action);
-  }
+    @PatchMapping("{groupId}/{action}")
+    public ResponseEntity<ResVm> disableEnableGroup(@PathVariable String groupId,
+        @PathVariable String action) {
+        return this.iProductGroupService.disableEnableGroup(groupId, action);
+    }
 
-  @DeleteMapping("{groupId}")
-  public ResponseEntity<ResVm> deleteProductGroup(@PathVariable String groupId) {
-    return this.iProductGroupService.deleteProductGroup(groupId);
-  }
+    @DeleteMapping("{groupId}")
+    public ResponseEntity<ResVm> deleteProductGroup(@PathVariable String groupId) {
+        return this.iProductGroupService.deleteProductGroup(groupId);
+    }
 
-  @GetMapping()
-  public ResponseEntity<PagingResVm<ProductGroupResVm>> getProductGroup(@RequestParam int page) {
-    return this.iProductGroupService.getAllGroup(page);
-  }
+    @GetMapping()
+    public ResponseEntity<PagingResVm<ProductGroupResVm>> getProductGroup(@RequestParam int page) {
+        return this.iProductGroupService.getAllGroup(page);
+    }
 
-  @GetMapping("all")
-  public ResponseEntity<List<CommonProductResVm>> getAllProductGroup() {
-    return this.iProductGroupService.getAllGroup();
-  }
+    @GetMapping("all")
+    public ResponseEntity<List<CommonProductResVm>> getAllProductGroup() {
+        return this.iProductGroupService.getAllGroup();
+    }
 }

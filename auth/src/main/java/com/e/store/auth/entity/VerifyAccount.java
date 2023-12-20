@@ -23,17 +23,17 @@ import lombok.Setter;
 @Table(name = "verify_account")
 public class VerifyAccount {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "verify_token")
-  private String token;
+    @Column(name = "verify_token")
+    private String token;
 
-  @Column(name = "expiry_date")
-  private Long expiryDate;
+    @Column(name = "expiry_date")
+    private Long expiryDate;
 
-  @OneToOne
-  @JoinColumn(name = "account_id", referencedColumnName = "id")
-  private Account account;
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
 }

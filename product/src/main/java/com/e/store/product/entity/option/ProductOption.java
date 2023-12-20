@@ -23,16 +23,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductOption extends AuditEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
 
-  @NotBlank(message = "Name not be null or blank")
-  private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
-  private String displayType;
-  private String description;
+    @NotBlank(message = "Name not be null or blank")
+    private String name;
 
-  @OneToMany(mappedBy = "productOption")
-  private List<ProductOptionValue> productOptionValueList;
+    private String displayType;
+    private String description;
+
+    @OneToMany(mappedBy = "productOption")
+    private List<ProductOptionValue> productOptionValueList;
 }

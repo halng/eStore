@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface IProductGroupService {
-  ResponseEntity<ResVm> createNewGroup(String groupName);
 
-  ResponseEntity<ResVm> updateProductGroup(String newName, String groupId);
+    ResponseEntity<ResVm> createNewGroup(String groupName);
 
-  ResponseEntity<ResVm> disableEnableGroup(String groupId, String action);
+    ResponseEntity<ResVm> updateProductGroup(String newName, String groupId);
 
-  ResponseEntity<PagingResVm<ProductGroupResVm>> getAllGroup(int page);
+    ResponseEntity<ResVm> disableEnableGroup(String groupId, String action);
 
-  ResponseEntity<ResVm> deleteProductGroup(String groupId);
+    ResponseEntity<PagingResVm<ProductGroupResVm>> getAllGroup(int page);
 
-  ResponseEntity<List<CommonProductResVm>> getAllGroup();
+    ResponseEntity<ResVm> deleteProductGroup(String groupId);
+
+    ResponseEntity<List<CommonProductResVm>> getAllGroup();
 }

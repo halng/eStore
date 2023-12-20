@@ -17,4 +17,6 @@ public record ProductReqVm(
     @NotNull String description,
     List<ProductAttributeReqVm> attributes,
     List<ProductVariationReqVm> variations,
-    ProductSEOReqVm seo) {}
+    ProductSEOReqVm seo) {
+
+}
