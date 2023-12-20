@@ -22,6 +22,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "product_seo")
 public class ProductSEO extends AuditEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;

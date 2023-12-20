@@ -24,6 +24,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "product_group")
 public class ProductGroup extends AuditEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;

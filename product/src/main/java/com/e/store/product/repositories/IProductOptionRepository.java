@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IProductOptionRepository extends JpaRepository<ProductOption, String> {
+
   boolean existsByNameAndCreateBy(String name, String createBy);
 
   List<ProductOption> findByCreateBy(String createBy);

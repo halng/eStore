@@ -26,6 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product extends AuditEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;

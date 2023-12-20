@@ -23,6 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductOption extends AuditEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;

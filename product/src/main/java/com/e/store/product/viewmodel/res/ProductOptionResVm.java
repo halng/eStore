@@ -9,6 +9,7 @@ public record ProductOptionResVm(
     String description,
     String createdDate,
     String updatedDate) {
+
   public static ProductOptionResVm fromModel(ProductOption productOption) {
     return new ProductOptionResVm(
         productOption.getId(),

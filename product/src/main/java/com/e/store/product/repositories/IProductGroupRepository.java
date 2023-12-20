@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IProductGroupRepository extends JpaRepository<ProductGroup, String> {
+
   boolean existsByName(String name);
 
   List<ProductGroup> findByCreateByAndStatus(String createBy, Status status);

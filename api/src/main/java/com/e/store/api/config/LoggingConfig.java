@@ -28,8 +28,8 @@ public class LoggingConfig implements GlobalFilter {
       Route route = exchange.getAttribute(GATEWAY_ROUTE_ATTR);
       URI routeUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
       log.info(
-          "Incoming request {0} is routed to id: {1}, uri: {2}",
-          originalUri, route.getId(), routeUri);
+          "Incoming request %s is routed to id: %s, uri: %s"
+              .formatted(originalUri, route.getId(), routeUri));
       return chain.filter(exchange);
     } catch (NullPointerException e) {
       log.error(e.getMessage());

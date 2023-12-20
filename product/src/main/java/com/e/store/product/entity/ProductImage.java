@@ -22,6 +22,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "product_image")
 public class ProductImage extends AuditEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

@@ -6,10 +6,9 @@ import com.e.store.product.viewmodel.res.ProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface IProductGroupService {
+
   ResponseEntity<ResVm> createNewGroup(String groupName);
 
   ResponseEntity<ResVm> updateProductGroup(String newName, String groupId);

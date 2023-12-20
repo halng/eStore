@@ -25,6 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "product_attribute")
 public class ProductAttribute extends AuditEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;

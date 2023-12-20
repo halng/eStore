@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,9 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
               .formatted(originalUri, route.getId(), routeUri));
 
       if (ExcludeUrlConfig.isSecure(path, method)) {
-        String bearerToken = request.getHeaders().get("authorization").get(0);
+        String bearerToken =
+            Objects.requireNonNull(request.getHeaders().get("authorization")).get(0);
+
         if (bearerToken == null) {
           LOG.error("Can not access to secure end point with null token");
           return onError(

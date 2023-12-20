@@ -23,7 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product/group")
 public class ProductGroupController {
 
-  @Autowired IProductGroupService iProductGroupService;
+  private final IProductGroupService iProductGroupService;
+
+  @Autowired
+  public ProductGroupController(IProductGroupService iProductGroupService) {
+    this.iProductGroupService = iProductGroupService;
+  }
 
   @PostMapping()
   public ResponseEntity<ResVm> createNewGroup(@RequestParam String groupName) {

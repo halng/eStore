@@ -20,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 @RequiredArgsConstructor
 public class RequestFilterConfig extends OncePerRequestFilter {
+
   private static final Logger LOG = LoggerFactory.getLogger(RequestFilterConfig.class);
 
   @Override

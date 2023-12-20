@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IProductAttributeRepository extends JpaRepository<ProductAttribute, String> {
+
   boolean existsByName(String name);
 
   List<ProductAttribute> findByCreateByAndStatus(String createBy, Status status);
