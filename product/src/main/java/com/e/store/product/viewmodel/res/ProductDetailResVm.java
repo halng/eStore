@@ -14,6 +14,4 @@ public record ProductDetailResVm(
     CommonProductResVm group,
     List<CommonProductValueResVm> productAttributeValues,
     List<CommonProductValueResVm> productOptionValues,
-    List<ProductVariationsResVm> productVariations) {
-
-}
+    List<ProductVariationsResVm> productVariations) {}

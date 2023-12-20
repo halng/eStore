@@ -23,15 +23,13 @@ import org.hibernate.annotations.CreationTimestamp;
 @AllArgsConstructor
 public class Image {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    private String caption;
-    private String uploadBy;
-    @Lob
-    private byte[] data;
-    private String fileType;
-    @CreationTimestamp
-    private Date uploadDate;
+  private String caption;
+  private String uploadBy;
+  @Lob private byte[] data;
+  private String fileType;
+  @CreationTimestamp private Date uploadDate;
 }

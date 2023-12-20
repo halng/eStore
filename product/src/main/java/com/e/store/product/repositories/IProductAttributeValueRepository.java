@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IProductAttributeValueRepository
-    extends JpaRepository<ProductAttributeValue, String> {
-
-}
+    extends JpaRepository<ProductAttributeValue, String> {}

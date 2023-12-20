@@ -25,66 +25,64 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Slf4j
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(
-                auth ->
-                    auth.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**",
-                            "/error")
-                        .permitAll()
-                        .requestMatchers(
-                            "/api/v1/auth/register",
-                            "/api/v1/auth/login",
-                            "/api/v1/auth/hello",
-                            "/api/v1/auth/active-account/**")
-                        .permitAll()
-                        .requestMatchers("/api/v1/auth/grant")
-                        .hasAuthority("ADMIN")
-                        .anyRequest()
-                        .authenticated());
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    httpSecurity
+        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(
+            auth ->
+                auth.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**", "/error")
+                    .permitAll()
+                    .requestMatchers(
+                        "/api/v1/auth/register",
+                        "/api/v1/auth/login",
+                        "/api/v1/auth/hello",
+                        "/api/v1/auth/active-account/**")
+                    .permitAll()
+                    .requestMatchers("/api/v1/auth/grant")
+                    .hasAuthority("ADMIN")
+                    .anyRequest()
+                    .authenticated());
 
-        httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);
+    httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);
 
-        httpSecurity.addFilterBefore(
-            jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return httpSecurity.build();
-    }
+    httpSecurity.addFilterBefore(
+        jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    return httpSecurity.build();
+  }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web ->
-            web.ignoring()
-                .requestMatchers(
-                    "/actuator/prometheus",
-                    "/swagger-ui",
-                    "/swagger-ui/**",
-                    "/error",
-                    "/v3/api-docs/**");
-    }
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return web ->
+        web.ignoring()
+            .requestMatchers(
+                "/actuator/prometheus",
+                "/swagger-ui",
+                "/swagger-ui/**",
+                "/error",
+                "/v3/api-docs/**");
+  }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedMethods("*").allowedOrigins("*")
-                    .allowedHeaders("*");
-            }
-        };
-    }
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("*").allowedOrigins("*").allowedHeaders("*");
+      }
+    };
+  }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  public PasswordEncoder encoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
-        throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+      throws Exception {
+    return configuration.getAuthenticationManager();
+  }
 }

@@ -24,17 +24,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "blog_details")
 public class Blog {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    @Column(length = 65535)
-    private String content;
+  @Column(length = 65535)
+  private String content;
 
-    private String caption;
+  private String caption;
 
-    @CreationTimestamp
-    private Date createDate;
-    @UpdateTimestamp
-    private Date updateDate;
+  @CreationTimestamp private Date createDate;
+  @UpdateTimestamp private Date updateDate;
 }

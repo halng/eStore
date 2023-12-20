@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface IMessageProducer {
 
-    void sendMessage(AuthMessageVm authMessageVm);
+  void sendMessage(AuthMessageVm authMessageVm);
 }

@@ -12,10 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IProductGroupRepository extends JpaRepository<ProductGroup, String> {
 
-    boolean existsByName(String name);
+  boolean existsByName(String name);
 
-    List<ProductGroup> findByCreateByAndStatus(String createBy, Status status);
+  List<ProductGroup> findByCreateByAndStatus(String createBy, Status status);
 
-    @Query("SELECT g FROM ProductGroup g WHERE g.createBy=?1")
-    Page<ProductGroup> findByCreatorWithPagination(String creator, Pageable pageable);
+  @Query("SELECT g FROM ProductGroup g WHERE g.createBy=?1")
+  Page<ProductGroup> findByCreatorWithPagination(String creator, Pageable pageable);
 }

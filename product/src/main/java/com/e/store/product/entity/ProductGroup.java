@@ -25,15 +25,15 @@ import lombok.Setter;
 @Table(name = "product_group")
 public class ProductGroup extends AuditEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
 
-    private String name;
+  private String name;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+  @Enumerated(EnumType.STRING)
+  private Status status;
 
-    @OneToMany(mappedBy = "productGroup")
-    private List<Product> productList;
+  @OneToMany(mappedBy = "productGroup")
+  private List<Product> productList;
 }

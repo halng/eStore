@@ -25,24 +25,24 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AccountInfo extends AuditEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auto_id")
-    private Long autoId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "auto_id")
+  private Long autoId;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Account account;
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "account_id", referencedColumnName = "id")
+  private Account account;
 
-    @Column(name = "address")
-    private String address;
+  @Column(name = "address")
+  private String address;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+  @Column(name = "phone_number")
+  private String phoneNumber;
 
-    @Column(name = "name")
-    private String name;
+  @Column(name = "name")
+  private String name;
 
-    @Column(name = "photo_url")
-    private String photoUrl;
+  @Column(name = "photo_url")
+  private String photoUrl;
 }

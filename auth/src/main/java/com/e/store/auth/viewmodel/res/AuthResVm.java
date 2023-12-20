@@ -10,13 +10,13 @@ public record AuthResVm(
     String username,
     String role) {
 
-    public static AuthResVm fromAccount(String accessToken, String refreshToken, Account account) {
-        return new AuthResVm(
-            accessToken,
-            refreshToken,
-            account.getId(),
-            account.getEmail(),
-            account.getUsername(),
-            account.getRole().getRoleName().toString());
-    }
+  public static AuthResVm fromAccount(String accessToken, String refreshToken, Account account) {
+    return new AuthResVm(
+        accessToken,
+        refreshToken,
+        account.getId(),
+        account.getEmail(),
+        account.getUsername(),
+        account.getRole().getRoleName().toString());
+  }
 }

@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 @Service
 public interface IProductService {
 
-    ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);
+  ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);
 
-    ResponseEntity<PagingResVm<ProductResVm>> getProducts(int page);
+  ResponseEntity<PagingResVm<ProductResVm>> getProducts(int page);
 
-    ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm);
+  ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm);
 
-    ResponseEntity<ResVm> updateStatus(String productId, String action);
+  ResponseEntity<ResVm> updateStatus(String productId, String action);
 
-    ResponseEntity<ProductDetailResVm> getDetailProductById(String productId);
+  ResponseEntity<ProductDetailResVm> getDetailProductById(String productId);
 }

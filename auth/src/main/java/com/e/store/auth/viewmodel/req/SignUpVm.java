@@ -10,6 +10,4 @@ public record SignUpVm(
     @ValidPassword String password,
     @RePassword String rePassword,
     Long role,
-    @Email String email) {
-
-}
+    @Email String email) {}

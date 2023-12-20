@@ -23,33 +23,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product")
 public class ProductController {
 
-    @Autowired
-    IProductService iProductService;
+  @Autowired IProductService iProductService;
 
-    @PostMapping()
-    public ResponseEntity<ResVm> createNewProduct(@RequestBody ProductReqVm productReqVm) {
-        return iProductService.createNewProduct(productReqVm);
-    }
+  @PostMapping()
+  public ResponseEntity<ResVm> createNewProduct(@RequestBody ProductReqVm productReqVm) {
+    return iProductService.createNewProduct(productReqVm);
+  }
 
-    @GetMapping("")
-    public ResponseEntity<PagingResVm<ProductResVm>> getProducts(@RequestParam @Min(1) int page) {
-        return iProductService.getProducts(page);
-    }
+  @GetMapping("")
+  public ResponseEntity<PagingResVm<ProductResVm>> getProducts(@RequestParam @Min(1) int page) {
+    return iProductService.getProducts(page);
+  }
 
-    @GetMapping("/{prodId}")
-    public ResponseEntity<ProductDetailResVm> getDetailProductById(@PathVariable String prodId) {
-        return this.iProductService.getDetailProductById(prodId);
-    }
+  @GetMapping("/{prodId}")
+  public ResponseEntity<ProductDetailResVm> getDetailProductById(@PathVariable String prodId) {
+    return this.iProductService.getDetailProductById(prodId);
+  }
 
-    @PutMapping("/{prodId}")
-    public ResponseEntity<?> updateProductById(
-        @PathVariable String prodId, @RequestBody ProductReqVm productReqVm) {
-        return null;
-    }
+  @PutMapping("/{prodId}")
+  public ResponseEntity<?> updateProductById(
+      @PathVariable String prodId, @RequestBody ProductReqVm productReqVm) {
+    return null;
+  }
 
-    @PatchMapping("/{prodId}/{action}")
-    public ResponseEntity<ResVm> updateStatus(
-        @PathVariable String prodId, @PathVariable String action) {
-        return this.iProductService.updateStatus(prodId, action);
-    }
+  @PatchMapping("/{prodId}/{action}")
+  public ResponseEntity<ResVm> updateStatus(
+      @PathVariable String prodId, @PathVariable String action) {
+    return this.iProductService.updateStatus(prodId, action);
+  }
 }

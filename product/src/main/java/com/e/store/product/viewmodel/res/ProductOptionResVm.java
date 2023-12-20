@@ -10,13 +10,13 @@ public record ProductOptionResVm(
     String createdDate,
     String updatedDate) {
 
-    public static ProductOptionResVm fromModel(ProductOption productOption) {
-        return new ProductOptionResVm(
-            productOption.getId(),
-            productOption.getName(),
-            productOption.getDisplayType(),
-            productOption.getDescription(),
-            productOption.getCreateDate().toString(),
-            productOption.getLastUpdate().toString());
-    }
+  public static ProductOptionResVm fromModel(ProductOption productOption) {
+    return new ProductOptionResVm(
+        productOption.getId(),
+        productOption.getName(),
+        productOption.getDisplayType(),
+        productOption.getDescription(),
+        productOption.getCreateDate().toString(),
+        productOption.getLastUpdate().toString());
+  }
 }

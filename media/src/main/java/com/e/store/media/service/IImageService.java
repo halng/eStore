@@ -11,9 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public interface IImageService {
 
-    ResponseEntity<ResVm> uploadImage(List<MultipartFile> files, String caption);
+  ResponseEntity<ResVm> uploadImage(List<MultipartFile> files, String caption);
 
-    ResponseEntity<List<ImagesResVm>> getImages(ImagesReqVm imagesReqVm);
+  ResponseEntity<List<ImagesResVm>> getImages(ImagesReqVm imagesReqVm);
 
-    ResponseEntity<byte[]> getImage(String id);
+  ResponseEntity<byte[]> getImage(String id);
 }
