@@ -25,8 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product/attribute")
 public class ProductAttributeController {
 
-  @Autowired
-  IProductAttributeService iProductAttributeService;
+  @Autowired IProductAttributeService iProductAttributeService;
 
   @PostMapping()
   public ResponseEntity<ResVm> createNewAttribute(@RequestBody ProductAttributeCreateReqVm reqVm) {
