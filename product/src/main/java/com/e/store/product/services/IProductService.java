@@ -6,9 +6,7 @@ import com.e.store.product.viewmodel.res.ProductDetailResVm;
 import com.e.store.product.viewmodel.res.ProductResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface IProductService {
 
   ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);

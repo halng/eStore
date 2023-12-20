@@ -23,7 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product")
 public class ProductController {
 
-  @Autowired IProductService iProductService;
+  private final IProductService iProductService;
+
+  @Autowired
+  public ProductController(IProductService iProductService) {
+    this.iProductService = iProductService;
+  }
 
   @PostMapping()
   public ResponseEntity<ResVm> createNewProduct(@RequestBody ProductReqVm productReqVm) {

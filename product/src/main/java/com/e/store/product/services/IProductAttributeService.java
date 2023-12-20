@@ -7,9 +7,7 @@ import com.e.store.product.viewmodel.res.ProductAttributeResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface IProductAttributeService {
 
   ResponseEntity<ResVm> createNewAttribute(ProductAttributeCreateReqVm productAttributeCreateReqVm);

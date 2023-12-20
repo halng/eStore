@@ -23,7 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product/option")
 public class ProductOptionController {
 
-  @Autowired IProductOptionService iProductOptionService;
+  private final IProductOptionService iProductOptionService;
+
+  @Autowired
+  public ProductOptionController(IProductOptionService iProductOptionService) {
+    this.iProductOptionService = iProductOptionService;
+  }
 
   @PostMapping()
   public ResponseEntity<ResVm> createNewOption(@RequestBody ProductOptionCreateReqVm req) {
