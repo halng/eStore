@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import com.e.store.auth.constant.AccountRole;
 import com.e.store.auth.entity.Account;
 import com.e.store.auth.entity.Role;
+import com.e.store.auth.exception.NotFoundException;
 import com.e.store.auth.repositories.IAuthRepository;
 import com.e.store.auth.services.impl.UserDetailsServiceImpl;
 import java.util.Optional;
@@ -15,7 +16,6 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 class UserDetailsServiceTest {
 
@@ -30,9 +30,9 @@ class UserDetailsServiceTest {
 
   @Test
   void loadUserByUsername_shouldThrowException_whenDataInvalid() {
-    UsernameNotFoundException usernameNotFoundException =
+    NotFoundException usernameNotFoundException =
         Assert.assertThrows(
-            UsernameNotFoundException.class,
+            NotFoundException.class,
             () -> {
               userDetailsService.loadUserByUsername("admin");
             });

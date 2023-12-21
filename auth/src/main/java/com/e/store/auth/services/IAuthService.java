@@ -7,9 +7,7 @@ import com.e.store.auth.viewmodel.res.AuthResVm;
 import com.e.store.auth.viewmodel.res.ValidateAuthVm;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface IAuthService {
 
   ResponseEntity<HttpStatus> signUp(SignUpVm signUpData);

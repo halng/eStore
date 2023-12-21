@@ -1,12 +1,12 @@
 package com.e.store.auth.services.impl;
 
 import com.e.store.auth.entity.Account;
+import com.e.store.auth.exception.NotFoundException;
 import com.e.store.auth.repositories.IAuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     Account account =
         authRepository
             .findByUsername(username)
-            .orElseThrow(
-                () -> new UsernameNotFoundException("Username " + username + " not found"));
+            .orElseThrow(() -> new NotFoundException("Username " + username + " not found"));
     return new User(account.getUsername(), account.getPassword(), account.getAuthorities());
   }
 }
