@@ -17,8 +17,8 @@ import org.thymeleaf.TemplateEngine;
 
 public class EmailServiceTest {
 
-  @Autowired EmailService emailService;
-  @Autowired JavaMailSender javaMailSender;
+  EmailService emailService;
+  JavaMailSender javaMailSender;
 
   TemplateEngine templateEngine;
 
