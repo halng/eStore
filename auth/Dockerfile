@@ -17,6 +17,8 @@ FROM eclipse-temurin:17-jre-focal
 EXPOSE 9090
 VOLUME /tmp
 ARG DEPENDENCY=/workdir/server/target/dependency
+ARG JWT_SECRET
+ENV JWT_SECRET=${JWT_SECRET}
 
 COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=prepare-production ${DEPENDENCY}/META-INF /app/META-INF

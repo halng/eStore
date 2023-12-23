@@ -17,8 +17,13 @@ FROM eclipse-temurin:17-jre-focal
 EXPOSE 9090
 VOLUME /tmp
 ARG DEPENDENCY=/workdir/server/target/dependency
+ARG SPRING_EMAIL_USERNAME
+ARG SPRING_EMAIL_PASSWORD
+ENV SPRING_EMAIL_USERNAME=${SPRING_EMAIL_USERNAME}
+ENV SPRING_EMAIL_PASSWORD=${SPRING_EMAIL_PASSWORD}
 
 COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=prepare-production ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=prepare-production ${DEPENDENCY}/BOOT-INF/classes /app
+
 ENTRYPOINT ["java","-cp","app:app/lib/*","com.e.store.email.EmailApplication"]
