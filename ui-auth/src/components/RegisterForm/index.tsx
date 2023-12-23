@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -7,6 +7,8 @@ import { Auth } from 'api-estore-v2'
 import { UserRegister } from '../../model'
 
 import '../LoginForm/style.css'
+import { LoadingStatus, MESSAGE } from '../../model/Constants'
+import { toast } from 'react-toastify'
 
 const schema = yup.object({
     username: yup.string().min(4).max(20).required('Please enter your username'),
@@ -29,9 +31,22 @@ const RegisterForm = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<UserRegister | any>({
         resolver: yupResolver(schema),
     })
+
+    const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(LoadingStatus.NOPE)
+
+    useEffect(() => {
+        reset({
+            username: '',
+            password: '',
+            rePassword: '',
+            role: 0,
+            email: '',
+        })
+    }, [loadingStatus])
 
     const handleFormSubmit = async (data: UserRegister) => {
         const resData = {
@@ -41,16 +56,29 @@ const RegisterForm = () => {
             rePassword: data.rePassword,
             role: 2,
         }
-
         Auth.register(resData)
-            .then((res) => {
-                console.log(res)
+            .then(() => {
+                toast.success(MESSAGE.REGISTER.SUCCESS)
+                setLoadingStatus(LoadingStatus.SUCCESS)
             })
             .catch((err) => {
                 console.log(err)
+                if (err.response.status === 400) {
+                    setLoadingStatus(LoadingStatus.INVALID)
+                    toast.error(err.response.data.message)
+                }
             })
     }
 
+    if (loadingStatus === LoadingStatus.ERROR) {
+        return (
+            <div className='background-active-account w-100 h-100'>
+                <div className='alert alert-danger w-50' role='alert'>
+                    {MESSAGE.REGISTER.ERROR}
+                </div>
+            </div>
+        )
+    }
     return (
         <div className='background-radial-gradient overflow-hidden h-100'>
             <div className='container px-4 py-5 px-md-5 text-center text-lg-start h-100 d-flex'>
@@ -76,6 +104,9 @@ const RegisterForm = () => {
                                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                                     <div className='mb-3 text-center'>
                                         <h3>Welcome</h3>
+                                        {loadingStatus === LoadingStatus.INVALID && (
+                                            <p className='text-danger'>{MESSAGE.REGISTER.INVALID}</p>
+                                        )}
                                     </div>
 
                                     {/* <!-- Username input --> */}
