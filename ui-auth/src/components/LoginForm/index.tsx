@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { Auth } from 'api-estore-v2'
 import { UserLogin } from '../../model'
 
 import './style.css'
+import { Auth } from 'api-estore-v2'
+import { LoadingStatus, MESSAGE } from '../../model/Constants'
+import { toast } from 'react-toastify'
 
 const schema = yup.object({
     username: yup.string().required(),
@@ -16,6 +18,8 @@ const schema = yup.object({
 
 const LogInForm = () => {
     const [isRemember, setIsRemember] = useState(false)
+    const [status, setStatus] = useState<LoadingStatus>(LoadingStatus.NOPE)
+
     const {
         register,
         handleSubmit,
@@ -30,12 +34,16 @@ const LogInForm = () => {
             password: data.password,
         }
         Auth.login(resData)
-            .then((res) => {
-                console.log(res)
+            .then(() => {
+                toast.success(MESSAGE.LOGIN.SUCCESS)
                 window.location.replace('http://localhost:3000/')
             })
             .catch((err) => {
-                console.log(err)
+                if (err.response.status === 401) {
+                    setStatus(LoadingStatus.INVALID)
+                } else {
+                    setStatus(LoadingStatus.ERROR)
+                }
             })
     }
 
@@ -64,6 +72,9 @@ const LogInForm = () => {
                                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                                     <div className='mb-3 text-center'>
                                         <h3>Welcome</h3>
+                                        {status === LoadingStatus.INVALID && (
+                                            <p className='text-danger'>{MESSAGE.LOGIN.INVALID}</p>
+                                        )}
                                     </div>
 
                                     {/* <!-- username input --> */}
