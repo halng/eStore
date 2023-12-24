@@ -207,6 +207,16 @@ public class ProductServiceImpl implements IProductService {
           product.getProductVariationList().stream()
               .map(ProductVariationsResVm::fromModel)
               .collect(Collectors.toList());
+
+      List<CommonProductValueResVm> attributes = new ArrayList<>();
+      for (var att : product.getProductAttributeValueList()) {
+        attributes.add(
+            new CommonProductValueResVm(
+                att.getProductAttribute().getId(),
+                att.getProductAttribute().getName(),
+                att.getValue()));
+      }
+
       productResVmList.add(
           new ProductResVm(
               product.getId(),
@@ -215,7 +225,8 @@ public class ProductServiceImpl implements IProductService {
               product.getPrice(),
               product.getLastUpdate().toString(),
               productOptionListResVms,
-              productVariationsResVms));
+              productVariationsResVms,
+              attributes));
     }
 
     PagingResVm<ProductResVm> result =
