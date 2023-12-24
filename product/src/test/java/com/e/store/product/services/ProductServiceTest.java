@@ -9,6 +9,7 @@ import com.e.store.product.entity.Product;
 import com.e.store.product.entity.ProductGroup;
 import com.e.store.product.entity.ProductVariation;
 import com.e.store.product.entity.attribute.ProductAttribute;
+import com.e.store.product.entity.attribute.ProductAttributeValue;
 import com.e.store.product.entity.option.ProductOption;
 import com.e.store.product.entity.option.ProductOptionValue;
 import com.e.store.product.exceptions.EntityNotFoundException;
@@ -252,11 +253,21 @@ public class ProductServiceTest {
                     .productOption(productOption)
                     .value("val")
                     .build();
+            ProductAttribute productAttribute =
+                ProductAttribute.builder().name("type").id("id").build();
+            ProductAttributeValue productAttributeValue =
+                ProductAttributeValue.builder()
+                    .productAttribute(productAttribute)
+                    .value("XXM")
+                    .id("ipav")
+                    .productAttribute(productAttribute)
+                    .build();
             Product product =
                 Product.builder()
                     .id("piid")
                     .productVariationList(Collections.singletonList(productVariation))
                     .productOptionValueList(Collections.singletonList(productOptionValue))
+                    .productAttributeValueList(Collections.singletonList(productAttributeValue))
                     .build();
             product.setLastUpdate(Instant.now());
             return List.of(product);

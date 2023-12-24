@@ -9,4 +9,5 @@ public record ProductResVm(
     double price,
     String lastUpdateDate,
     List<ProductOptionListResVm> optionList,
-    List<ProductVariationsResVm> variations, List<CommonProductValueResVm> attributes) {}
+    List<ProductVariationsResVm> variations,
+    List<CommonProductValueResVm> attributes) {}
