@@ -16,6 +16,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.route.Route;
@@ -38,6 +39,9 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
   private final WebClient.Builder webClientBuilder;
   @Autowired private ObjectMapper objectMapper;
 
+  @Value("${gateway.auth}")
+  private String AUTH_URI;
+
   public AuthFilterConfig(WebClient.Builder webClientBuilder) {
     super(Config.class);
     this.webClientBuilder = webClientBuilder;
@@ -45,6 +49,7 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
 
   @Override
   public GatewayFilter apply(Config config) {
+    String validateUrl = AUTH_URI + "/api/v1/auth/validate";
     return (exchange, chain) -> {
       ServerHttpRequest request = exchange.getRequest();
       String path = request.getURI().getPath();
@@ -74,7 +79,7 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
         return webClientBuilder
             .build()
             .get()
-            .uri("http://localhost:9091/api/v1/auth/validate")
+            .uri(validateUrl)
             .header("Authorization", bearerToken)
             .retrieve()
             .bodyToMono(AuthValidateVm.class)

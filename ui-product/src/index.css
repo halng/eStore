@@ -37,3 +37,8 @@ td {
 .pagination {
   --bs-pagination-active-bg: auto;
 }
+
+.product-main-board{
+  height: 50rem;
+  overflow-y: scroll;
+}

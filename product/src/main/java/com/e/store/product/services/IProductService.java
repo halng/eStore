@@ -11,7 +11,7 @@ public interface IProductService {
 
   ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);
 
-  ResponseEntity<PagingResVm<ProductResVm>> getProducts(int page);
+  ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(int page);
 
   ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm);
 

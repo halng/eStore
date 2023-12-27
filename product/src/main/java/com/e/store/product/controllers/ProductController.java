@@ -36,8 +36,9 @@ public class ProductController {
   }
 
   @GetMapping("")
-  public ResponseEntity<PagingResVm<ProductResVm>> getProducts(@RequestParam @Min(1) int page) {
-    return iProductService.getProducts(page);
+  public ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(
+      @RequestParam @Min(1) int page) {
+    return iProductService.getProductsWithPaging(page);
   }
 
   @GetMapping("/{prodId}")
