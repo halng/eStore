@@ -65,6 +65,7 @@ public class ProductServiceTest {
   IProductOptionRepository iProductOptionRepository;
 
   IProductVariationRepository iProductVariationRepository;
+  Product product;
 
   @BeforeEach
   void setup() {
@@ -148,6 +149,35 @@ public class ProductServiceTest {
                 return "SYSTEM";
               }
             });
+
+    ProductVariation productVariation =
+        ProductVariation.builder()
+            .price(1)
+            .quantity(1)
+            .id("xxx")
+            .optionValueIds(Arrays.asList("XX1", "XX2"))
+            .build();
+    ProductOption productOption = ProductOption.builder().name("option name").id("id").build();
+    ProductOptionValue productOptionValue =
+        ProductOptionValue.builder().id("ii").productOption(productOption).value("val").build();
+    ProductAttribute productAttribute = ProductAttribute.builder().name("type").id("id").build();
+    ProductAttributeValue productAttributeValue =
+        ProductAttributeValue.builder()
+            .productAttribute(productAttribute)
+            .value("XXM")
+            .id("ipav")
+            .productAttribute(productAttribute)
+            .build();
+    ProductGroup productGroup = ProductGroup.builder().name("this is name").build();
+    product =
+        Product.builder()
+            .id("piid")
+            .productVariationList(Collections.singletonList(productVariation))
+            .productOptionValueList(Collections.singletonList(productOptionValue))
+            .productAttributeValueList(Collections.singletonList(productAttributeValue))
+            .productGroup(productGroup)
+            .build();
+    product.setLastUpdate(Instant.now());
   }
 
   void testEntityNotFoundException(ProductReqVm productReqVm, String assertMsg) {
@@ -238,38 +268,7 @@ public class ProductServiceTest {
 
           @Override
           public List<Product> getContent() {
-            ProductVariation productVariation =
-                ProductVariation.builder()
-                    .price(1)
-                    .quantity(1)
-                    .id("xxx")
-                    .optionValueIds(Arrays.asList("XX1", "XX2"))
-                    .build();
-            ProductOption productOption =
-                ProductOption.builder().name("option name").id("id").build();
-            ProductOptionValue productOptionValue =
-                ProductOptionValue.builder()
-                    .id("ii")
-                    .productOption(productOption)
-                    .value("val")
-                    .build();
-            ProductAttribute productAttribute =
-                ProductAttribute.builder().name("type").id("id").build();
-            ProductAttributeValue productAttributeValue =
-                ProductAttributeValue.builder()
-                    .productAttribute(productAttribute)
-                    .value("XXM")
-                    .id("ipav")
-                    .productAttribute(productAttribute)
-                    .build();
-            Product product =
-                Product.builder()
-                    .id("piid")
-                    .productVariationList(Collections.singletonList(productVariation))
-                    .productOptionValueList(Collections.singletonList(productOptionValue))
-                    .productAttributeValueList(Collections.singletonList(productAttributeValue))
-                    .build();
-            product.setLastUpdate(Instant.now());
+
             return List.of(product);
           }
 
@@ -320,7 +319,8 @@ public class ProductServiceTest {
         };
 
     when(iProductRepository.findAllProductWithPaging(anyString(), any())).thenReturn(expected);
-    ResponseEntity<PagingResVm<ProductResVm>> actualResult = this.productService.getProducts(1);
+    ResponseEntity<PagingResVm<ProductResVm>> actualResult =
+        this.productService.getProductsWithPaging(1);
 
     Assertions.assertNotNull(actualResult);
     Assertions.assertNotNull(actualResult.getBody());
