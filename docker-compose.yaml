@@ -84,7 +84,7 @@ services:
       - estore_app
 
   api:
-    image: tanhaoke/estore-api:latest
+    # image: tanhaoke/estore-api:latest
     build:
       context: api
       dockerfile: Dockerfile
@@ -93,6 +93,10 @@ services:
     #   - postgres
     #   - media
     #   - auth
+    environment:
+      GATEWAY_AUTH: http://auth:9091
+      GATEWAY_PRODUCT: http://product:9094
+      GATEWAY_MEDIA: http://media:9095
     ports:
       - 9090:9090
     networks:
