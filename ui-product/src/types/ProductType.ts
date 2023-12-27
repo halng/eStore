@@ -25,3 +25,13 @@ export type ProductCreateType = {
     seo: ProductSEOType
     variations: VariationCreateType[]
 }
+
+export type ProductType = {
+    slug: string
+    thumbnail: string
+    name: string
+    price: number
+    quantity: string
+    variations: number
+    groupName: string
+}

@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
+import '@fontsource/inter'
 import './index.css'
 import '../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import { Product, ProductAttribute, ProductGroup, ProductOption } from './components'

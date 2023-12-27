@@ -30,13 +30,11 @@ import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.CommonProductValueResVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductDetailResVm;
-import com.e.store.product.viewmodel.res.ProductOptionListResVm;
 import com.e.store.product.viewmodel.res.ProductResVm;
 import com.e.store.product.viewmodel.res.ProductVariationsResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,7 +188,7 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public ResponseEntity<PagingResVm<ProductResVm>> getProducts(int page) {
+  public ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(int page) {
     LOG.info("Receive request to get all product with page  = " + page);
     String creator = CommonService.getUser();
     Pageable pageable =
@@ -199,34 +197,15 @@ public class ProductServiceImpl implements IProductService {
 
     List<ProductResVm> productResVmList = new ArrayList<>();
     for (Product product : products.getContent()) {
-      List<ProductOptionListResVm> productOptionListResVms =
-          product.getProductOptionValueList().stream()
-              .map(ProductOptionListResVm::fromModel)
-              .collect(Collectors.toList());
-      List<ProductVariationsResVm> productVariationsResVms =
-          product.getProductVariationList().stream()
-              .map(ProductVariationsResVm::fromModel)
-              .collect(Collectors.toList());
-
-      List<CommonProductValueResVm> attributes = new ArrayList<>();
-      for (var att : product.getProductAttributeValueList()) {
-        attributes.add(
-            new CommonProductValueResVm(
-                att.getProductAttribute().getId(),
-                att.getProductAttribute().getName(),
-                att.getValue()));
-      }
-
       productResVmList.add(
           new ProductResVm(
-              product.getId(),
+              product.getSlug(),
               product.getName(),
               product.getQuantity(),
               product.getPrice(),
-              product.getLastUpdate().toString(),
-              productOptionListResVms,
-              productVariationsResVms,
-              attributes));
+              product.getProductGroup().getName(),
+              product.getThumbnailId(),
+              product.getProductVariationList().size()));
     }
 
     PagingResVm<ProductResVm> result =

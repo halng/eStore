@@ -38,6 +38,7 @@ public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterCon
   private static final Logger LOG = LoggerFactory.getLogger(AuthFilterConfig.class);
   private final WebClient.Builder webClientBuilder;
   @Autowired private ObjectMapper objectMapper;
+
   @Value("${gateway.auth}")
   private String AUTH_URI;
 

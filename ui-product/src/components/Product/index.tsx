@@ -1,8 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../../common/Navbar'
 import CreateProduct from './actions/CreateProduct'
+import { ProductAPI } from 'api-estore-v2'
+import { toast } from 'react-toastify'
+import Pagination from '../../common/pagination'
+import ProductCard from '../../common/ProductCard'
+import { ProductType } from '../../types/ProductType'
+import Grid from '@mui/joy/Grid'
 
 const Product = () => {
+    const [products, setProducts] = useState<ProductType[]>([])
+    const [page, setPage] = useState<number>(1)
+    const [totalProduct, setTotalProduct] = useState<number>(0)
+    const [totalPage, setTotalPage] = useState<number>(0)
+    const getAllProduct = () => {
+        ProductAPI.getAll(page)
+            .then((res) => {
+                setProducts(res.data.items)
+                setTotalPage(res.data.totalPages)
+                setTotalProduct(res.data.totalItems)
+            })
+            .catch((err) => {
+                toast.error('Cannot get all product. Please try again later')
+                console.log(err)
+            })
+    }
+    useEffect(() => {
+        getAllProduct()
+    }, [page])
+
     return (
         <div className='product-board'>
             <Navbar />
@@ -58,6 +84,16 @@ const Product = () => {
                     </div>
                 </div>
             </div>
+            <div className='product-main-board'>
+                <Grid container spacing={{ xs: 2 }} sx={{ flexGrow: 1 }}>
+                    {(products || []).map((item) => (
+                        <ProductCard key={item.slug} item={item} />
+                    ))}
+                </Grid>
+            </div>
+            {totalPage > 1 && (
+                <Pagination total={totalProduct} currentPage={page} totalPage={totalPage} setPage={setPage} />
+            )}
         </div>
     )
 }

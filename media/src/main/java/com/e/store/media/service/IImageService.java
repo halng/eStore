@@ -5,10 +5,8 @@ import com.e.store.media.viewmodel.res.ImagesResVm;
 import com.e.store.media.viewmodel.res.ResVm;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service
 public interface IImageService {
 
   ResponseEntity<ResVm> uploadImage(List<MultipartFile> files, String caption);

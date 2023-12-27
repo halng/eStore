@@ -1,3 +1,0 @@
-[Product] read all product,,Product Service
-[ui-Product] show all product and product variation,,UI
-[Integrate] between ui and backend service,,api

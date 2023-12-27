@@ -7,7 +7,7 @@ const MediaAPI = {
                 'Content-Type': 'multipart/form-data',
             },
         }),
-    get: (id: string) => api.get(`/media/${id}`),
+    get: (id: string) => api.get(`/media/image/${id}`),
 }
 
 export default MediaAPI
