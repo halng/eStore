@@ -7,6 +7,10 @@ import Pagination from '../../common/pagination'
 import ProductCard from '../../common/ProductCard'
 import { ProductType } from '../../types/ProductType'
 import Grid from '@mui/joy/Grid'
+import AspectRatio from '@mui/joy/AspectRatio'
+import Card from '@mui/joy/Card'
+import Skeleton from '@mui/joy/Skeleton'
+import Typography from '@mui/joy/Typography'
 
 const Product = () => {
     const [products, setProducts] = useState<ProductType[]>([])
@@ -86,9 +90,28 @@ const Product = () => {
             </div>
             <div className='product-main-board'>
                 <Grid container spacing={{ xs: 2 }} sx={{ flexGrow: 1 }}>
-                    {(products || []).map((item) => (
-                        <ProductCard key={item.slug} item={item} />
-                    ))}
+                    {products.length > 0
+                        ? (products || []).map((item) => <ProductCard key={item.slug} item={item} />)
+                        : [...Array(12).keys()].map((index) => (
+                              <div key={index} className='p-2'>
+                                  <Card variant='outlined' sx={{ width: 343, display: 'flex', gap: 2 }}>
+                                      <AspectRatio ratio='21/9'>
+                                          <Skeleton variant='overlay'>
+                                              <img
+                                                  alt=''
+                                                  src='data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
+                                              />
+                                          </Skeleton>
+                                      </AspectRatio>
+                                      <Typography>
+                                          <Skeleton>
+                                              Lorem ipsum is placeholder text commonly used in the graphic, print, and
+                                              publishing industries.
+                                          </Skeleton>
+                                      </Typography>
+                                  </Card>
+                              </div>
+                          ))}
                 </Grid>
             </div>
             {totalPage > 1 && (

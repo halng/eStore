@@ -47,6 +47,7 @@
         "@fontsource/inter": "^5.0.16",
         "@mui/icons-material": "^5.15.2",
         "@mui/joy": "^5.0.0-beta.20",
+        "@mui/material": "^5.15.2",
         "@typescript-eslint/eslint-plugin": "^6.4.0",
         "@typescript-eslint/parser": "^6.4.0",
         "api-estore-v2": "^0.0.11",

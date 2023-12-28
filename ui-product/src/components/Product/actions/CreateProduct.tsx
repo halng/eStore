@@ -6,17 +6,22 @@ import { MediaAPI, ProductAPI } from 'api-estore-v2'
 import * as _ from 'lodash'
 import { convertStandardSlug } from '../../../utils'
 import { toast } from 'react-toastify'
+import Backdrop from '@mui/material/Backdrop'
+import CircularProgress from '@mui/material/CircularProgress'
+import { Link } from '@mui/joy'
 
 const CreateProduct = () => {
     const [currentTab, setCurrentTab] = useState<number>(0)
-    const [progress, setProgress] = useState<number>(0)
     const { handleSubmit, setValue, getValues } = useForm<ProductCreateType>()
+    const [openBackdrop, setOpenBackdrop] = useState<boolean>(false)
 
     const uploadFile = async (data: any) => {
         const res = await MediaAPI.uploadImages(data)
-        return await res.data['itemIds']
+        return await res.data['items']
     }
+
     const onSubmitHandler: SubmitHandler<ProductCreateType> = async (data) => {
+        setOpenBackdrop(true)
         const form: any = new FormData()
         form.append('caption', `thumbnail${getValues('name')}`)
         const thumbnail = getValues('thumbnail.file')
@@ -30,7 +35,6 @@ const CreateProduct = () => {
         })
 
         Promise.all([uploadFile(form), uploadFile(form2)]).then((values) => {
-            setProgress(66)
             const slug = data.slug ? convertStandardSlug(data.slug) : convertStandardSlug(data.name)
             const excludedData = _.omit(data, ['thumbnail', 'images', 'slug']) // exclude file field
             const bodyData = {
@@ -47,7 +51,7 @@ const CreateProduct = () => {
                     console.log(err)
                     toast.error('Create product failed. Please try again later!')
                 })
-            setProgress(100)
+            setOpenBackdrop(false)
         })
     }
 
@@ -87,15 +91,6 @@ const CreateProduct = () => {
                     ))}
                 </ul>
             </div>
-            <div className='progress'>
-                <div
-                    className={`progress-bar progress-bar-striped progress-bar-animated w-${progress}`}
-                    role='progressbar'
-                    aria-valuenow={progress}
-                    aria-valuemin='0'
-                    aria-valuemax='100'
-                ></div>
-            </div>
             <div className='create-product-body pt-3  d-flex justify-content-center'>{tabComponent[currentTab]}</div>
 
             {/* create-product-footer */}
@@ -131,6 +126,11 @@ const CreateProduct = () => {
                     </button>
                 </div>
             </div>
+            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={openBackdrop}>
+                <Link component='button' variant='plain' startDecorator={<CircularProgress />} sx={{ p: 1 }}>
+                    Creating...
+                </Link>
+            </Backdrop>
         </form>
     )
 }

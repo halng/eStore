@@ -90,7 +90,7 @@ public class ProductServiceImpl implements IProductService {
         Product.builder()
             .name(productReqVm.name())
             .price(productReqVm.price())
-            .thumbnailId(productReqVm.thumbnailId())
+            .thumbnailUrl(productReqVm.thumbnailId())
             .quantity(productReqVm.quantity())
             .shortDescription(productReqVm.description())
             .slug(productReqVm.slug())
@@ -100,7 +100,7 @@ public class ProductServiceImpl implements IProductService {
     // product image
     List<ProductImage> productImageList = new ArrayList<>();
     for (String imageId : productReqVm.imagesIds()) {
-      ProductImage productImage = ProductImage.builder().imageId(imageId).product(product).build();
+      ProductImage productImage = ProductImage.builder().imageUrl(imageId).product(product).build();
       productImageList.add(iProductImageRepository.save(productImage));
     }
     product.setProductImageList(productImageList);
@@ -204,7 +204,7 @@ public class ProductServiceImpl implements IProductService {
               product.getQuantity(),
               product.getPrice(),
               product.getProductGroup().getName(),
-              product.getThumbnailId(),
+              product.getThumbnailUrl(),
               product.getProductVariationList().size()));
     }
 

@@ -79,7 +79,9 @@ services:
     ports:
       - 9095:9095
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/media
+      BUCKET_NAME: "bucket name"
+      PROJECT_ID: "project id"
+      GOOGLE_APPLICATION_CREDENTIALS: "path/to/file"
     networks:
       - estore_app
 
