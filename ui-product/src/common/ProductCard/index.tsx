@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import AspectRatio from '@mui/joy/AspectRatio'
 import Button from '@mui/joy/Button'
 import Card from '@mui/joy/Card'
@@ -8,7 +8,6 @@ import Chip from '@mui/joy/Chip'
 import Link from '@mui/joy/Link'
 import Typography from '@mui/joy/Typography'
 import { ProductType } from '../../types/ProductType'
-import { MediaAPI } from 'api-estore-v2'
 import Grid from '@mui/joy/Grid'
 // Refer: https://mui.com/joy-ui/react-card/
 
@@ -17,22 +16,12 @@ interface props {
 }
 
 const ProductCard = ({ item }: props) => {
-    const [imageUrl, setImageUrl] = useState<string>('')
-    useEffect(() => {
-        MediaAPI.get(item.thumbnail)
-            .then((res) => res.data)
-            .then((data) => {
-                const url = URL.createObjectURL(new Blob([data], { type: 'image/jpg' }))
-                setImageUrl(url)
-            })
-            .catch((err) => console.log(err))
-    }, [])
     return (
         <Grid xs={3}>
             <Card sx={{ width: 320, boxShadow: 'lg', height: '28rem' }}>
                 <CardOverflow>
                     <AspectRatio sx={{ minWidth: 200 }}>
-                        <img src={imageUrl} alt='' />
+                        <img src={item.thumbnail} alt='' />
                     </AspectRatio>
                 </CardOverflow>
                 <CardContent>

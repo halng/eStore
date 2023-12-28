@@ -27,7 +27,7 @@ public class ProductImage extends AuditEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String imageId;
+  private String imageUrl;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "product_id", nullable = false)
