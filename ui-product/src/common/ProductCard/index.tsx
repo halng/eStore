@@ -1,6 +1,5 @@
 import React from 'react'
 import AspectRatio from '@mui/joy/AspectRatio'
-import Button from '@mui/joy/Button'
 import Card from '@mui/joy/Card'
 import CardContent from '@mui/joy/CardContent'
 import CardOverflow from '@mui/joy/CardOverflow'
@@ -18,7 +17,7 @@ interface props {
 const ProductCard = ({ item }: props) => {
     return (
         <Grid xs={3}>
-            <Card sx={{ width: 320, boxShadow: 'lg', height: '28rem' }}>
+            <Card sx={{ width: 320, boxShadow: 'lg', height: '23rem' }}>
                 <CardOverflow>
                     <AspectRatio sx={{ minWidth: 200 }}>
                         <img src={item.thumbnail} alt='' />
@@ -26,7 +25,7 @@ const ProductCard = ({ item }: props) => {
                 </CardOverflow>
                 <CardContent>
                     <Typography level='body-xs'>{item.groupName}</Typography>
-                    <Link href={item.slug} fontWeight='md' color='neutral' textColor='text.primary' overlay>
+                    <Link href={`detail/${item.slug}`} fontWeight='md' color='neutral' textColor='text.primary' overlay>
                         {item.name}
                     </Link>
 
@@ -48,11 +47,6 @@ const ProductCard = ({ item }: props) => {
                         (Have <b>{item.variations}</b> product variations)
                     </Typography>
                 </CardContent>
-                <CardOverflow>
-                    <Button variant='solid' color='danger' size='lg'>
-                        View Detail
-                    </Button>
-                </CardOverflow>
             </Card>
         </Grid>
     )

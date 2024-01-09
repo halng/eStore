@@ -35,6 +35,7 @@ import com.e.store.product.viewmodel.res.ProductVariationsResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -268,6 +269,11 @@ public class ProductServiceImpl implements IProductService {
       productVariationsResVms.add(ProductVariationsResVm.fromModel(variation));
     }
 
+    List<String> imageUrls =
+        product.getProductImageList().stream()
+            .map(ProductImage::getImageUrl)
+            .collect(Collectors.toList());
+
     ProductDetailResVm productDetailResVm =
         new ProductDetailResVm(
             product.getId(),
@@ -275,8 +281,8 @@ public class ProductServiceImpl implements IProductService {
             product.getPrice(),
             product.getQuantity(),
             product.isSales(),
-            "",
-            null,
+            product.getThumbnailUrl(),
+            imageUrls,
             product.getShortDescription(),
             group,
             productAttributeValues,
