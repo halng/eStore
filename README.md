@@ -6,8 +6,6 @@
 
 
 ## Components
-> will have a component named `cmd`. This component was written by Rust. Will have some simple func (init data, run destination service, scraping data and insert into db, validation order component if can...)
-
 
 |Component|Language|Unittest|Framework|Comment|
 |--|--|--|--|--|
@@ -26,6 +24,7 @@
 |Ui Auth| Typescript | 0 | ReactJs | auth service for ui|
 |Ui Home| Typescript | 0 | ReactJs | home base|
 |Ui Product| Typescript | 0 | ReactJs | handle ui for product| 
+|Fake-data| Rust | 0 | | Crawl data and insert into db|
 
 ## CI Status
 
