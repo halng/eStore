@@ -1,5 +1,8 @@
 package com.e.store.media.service;
 
+import com.e.store.media.service.utils.AWSBucketUtils;
+import com.e.store.media.service.utils.GCPBucketUtils;
+import com.e.store.media.service.utils.UploadToBucketUtils;
 import com.e.store.media.viewmodel.res.ResVm;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageServiceImpl implements IImageService {
 
   private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
-  private final GCPBucketUtils gcpBucketUtils;
+  private final AWSBucketUtils aws;
 
   @Autowired
-  public ImageServiceImpl(GCPBucketUtils g) {
-    this.gcpBucketUtils = g;
+  public ImageServiceImpl(AWSBucketUtils g) {
+    this.aws = g;
   }
 
   @Override
@@ -34,7 +37,7 @@ public class ImageServiceImpl implements IImageService {
 
     for (MultipartFile file : files) {
       String finalCaption = UUID.randomUUID().toString();
-      String url = gcpBucketUtils.uploadFile(file, finalCaption, file.getContentType());
+      String url = aws.uploadFile(file, finalCaption, file.getContentType());
       urls.add(url);
     }
 
