@@ -1,8 +1,6 @@
 package com.e.store.media.service;
 
 import com.e.store.media.service.utils.AWSBucketUtils;
-import com.e.store.media.service.utils.GCPBucketUtils;
-import com.e.store.media.service.utils.UploadToBucketUtils;
 import com.e.store.media.viewmodel.res.ResVm;
 import java.util.ArrayList;
 import java.util.List;
