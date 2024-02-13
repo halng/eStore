@@ -70,7 +70,10 @@ public class AWSBucketUtils extends UploadToBucketUtils {
       long end = System.currentTimeMillis();
       LOGGER.info("Complete Multipart Uploading {}s", (end - start) / 1000);
     } catch (InterruptedException e) {
-      throw new InternalServiceException("Encountering error: " + e.getMessage());
+      LOGGER.error("Encountering error: {}", e.getMessage());
+      // follow
+      // https://stackoverflow.com/questions/54434976/either-re-interrupt-this-method-or-rethrow-the-interruptedexception-issue-in-so
+      Thread.currentThread().interrupt();
     }
   }
 
