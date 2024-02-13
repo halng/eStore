@@ -80,8 +80,12 @@ public class AWSBucketUtils extends UploadToBucketUtils {
       long end = System.currentTimeMillis();
       LOGGER.info("Complete Multipart Uploading {}s", (end - start) / 1000);
 
-    } catch (IOException | InterruptedException e) {
+    } catch (IOException e) {
       LOGGER.error("Can not upload media file with error: {}", e.getMessage());
+      throw new RuntimeException(e.getMessage());
+    } catch (InterruptedException exe) {
+      LOGGER.error("Can not upload media file with interrupt error: {}", exe.getMessage());
+      throw new RuntimeException(exe.getMessage());
     }
     return fileUrl;
   }
