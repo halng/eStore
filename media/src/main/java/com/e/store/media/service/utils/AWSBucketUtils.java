@@ -74,18 +74,17 @@ public class AWSBucketUtils extends UploadToBucketUtils {
               .withMultipartUploadThreshold((long) (50 * 1024 * 1025))
               .build();
 
-      long start = System.currentTimeMillis();
-      Upload result = transferManager.upload(awsBucket, finalFileName, file);
-      result.waitForCompletion();
-      long end = System.currentTimeMillis();
-      LOGGER.info("Complete Multipart Uploading {}s", (end - start) / 1000);
-
+      try {
+        long start = System.currentTimeMillis();
+        Upload result = transferManager.upload(awsBucket, finalFileName, file);
+        result.waitForCompletion();
+        long end = System.currentTimeMillis();
+        LOGGER.info("Complete Multipart Uploading {}s", (end - start) / 1000);
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
     } catch (IOException e) {
-      LOGGER.error("Can not upload media file with error: {}", e.getMessage());
-      throw new RuntimeException(e.getMessage());
-    } catch (InterruptedException exe) {
-      LOGGER.error("Can not upload media file with interrupt error: {}", exe.getMessage());
-      throw new RuntimeException(exe.getMessage());
+      throw new RuntimeException("Can not upload media file with error: " + e.getMessage());
     }
     return fileUrl;
   }
