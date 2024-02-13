@@ -1,25 +1,20 @@
-package com.e.store.media.service;
+package com.e.store.media.service.utils;
 
-import com.e.store.media.exception.BadRequestException;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-@Component
-public class GCPBucketUtils {
+// @Component
+public class GCPBucketUtils extends UploadToBucketUtils {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(GCPBucketUtils.class);
-  private static final List<String> SUPPORTED_EXTENSION = Arrays.asList(".jpeg", ".jpg", ".png");
 
   @Value("${ggcloud.bucket.name}")
   private String BUCKET_NAME;
@@ -27,6 +22,7 @@ public class GCPBucketUtils {
   @Value("${ggcloud.project-id}")
   private String PROJECT_ID;
 
+  @Override
   public String uploadFile(MultipartFile multipartFile, String fileName, String contentType) {
     try {
       String fileExe = getFileExtension(multipartFile.getOriginalFilename());
@@ -50,16 +46,5 @@ public class GCPBucketUtils {
       return "";
     }
     return "";
-  }
-
-  private String getFileExtension(String fileName) {
-    if (fileName != null && fileName.contains(".")) {
-      for (var e : SUPPORTED_EXTENSION) {
-        if (fileName.endsWith(e)) {
-          return e;
-        }
-      }
-    }
-    throw new BadRequestException("File extension not supported " + fileName);
   }
 }
