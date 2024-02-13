@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
+import com.e.store.media.exception.InternalServiceException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -60,6 +61,19 @@ public class AWSBucketUtils extends UploadToBucketUtils {
     return file;
   }
 
+  private void putObjectToS3(TransferManager transferManager, String fileName, File file) {
+
+    try {
+      long start = System.currentTimeMillis();
+      Upload result = transferManager.upload(awsBucket, fileName, file);
+      result.waitForCompletion();
+      long end = System.currentTimeMillis();
+      LOGGER.info("Complete Multipart Uploading {}s", (end - start) / 1000);
+    } catch (InterruptedException e) {
+      throw new InternalServiceException("Encountering error: " + e.getMessage());
+    }
+  }
+
   @Override
   public String uploadFile(MultipartFile multipartFile, String fileName, String contentType) {
     String fileUrl = "";
@@ -74,17 +88,9 @@ public class AWSBucketUtils extends UploadToBucketUtils {
               .withMultipartUploadThreshold((long) (50 * 1024 * 1025))
               .build();
 
-      try {
-        long start = System.currentTimeMillis();
-        Upload result = transferManager.upload(awsBucket, finalFileName, file);
-        result.waitForCompletion();
-        long end = System.currentTimeMillis();
-        LOGGER.info("Complete Multipart Uploading {}s", (end - start) / 1000);
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-      }
+      putObjectToS3(transferManager, finalFileName, file);
     } catch (IOException e) {
-      throw new RuntimeException("Can not upload media file with error: " + e.getMessage());
+      throw new InternalServiceException("Can not upload media file with error: " + e.getMessage());
     }
     return fileUrl;
   }
