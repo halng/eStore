@@ -23,4 +23,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     LOG.error(errorResVm.getLogMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResVm);
   }
+
+  @ExceptionHandler({InternalServiceException.class})
+  public ResponseEntity<ErrorResVm> internalServiceErrorException(
+      InternalServiceException e, WebRequest w) {
+    ErrorResVm errorResVm =
+        new ErrorResVm(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR.value(), "");
+    LOG.error(errorResVm.getLogMessage());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResVm);
+  }
 }

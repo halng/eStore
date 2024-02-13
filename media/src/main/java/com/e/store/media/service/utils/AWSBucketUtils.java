@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
+import com.e.store.media.exception.InternalServiceException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -60,6 +61,22 @@ public class AWSBucketUtils extends UploadToBucketUtils {
     return file;
   }
 
+  private void putObjectToS3(TransferManager transferManager, String fileName, File file) {
+
+    try {
+      long start = System.currentTimeMillis();
+      Upload result = transferManager.upload(awsBucket, fileName, file);
+      result.waitForCompletion();
+      long end = System.currentTimeMillis();
+      LOGGER.info("Complete Multipart Uploading {}s", (end - start) / 1000);
+    } catch (InterruptedException e) {
+      LOGGER.error("Encountering error: {}", e.getMessage());
+      // follow
+      // https://stackoverflow.com/questions/54434976/either-re-interrupt-this-method-or-rethrow-the-interruptedexception-issue-in-so
+      Thread.currentThread().interrupt();
+    }
+  }
+
   @Override
   public String uploadFile(MultipartFile multipartFile, String fileName, String contentType) {
     String fileUrl = "";
@@ -74,14 +91,9 @@ public class AWSBucketUtils extends UploadToBucketUtils {
               .withMultipartUploadThreshold((long) (50 * 1024 * 1025))
               .build();
 
-      long start = System.currentTimeMillis();
-      Upload result = transferManager.upload(awsBucket, finalFileName, file);
-      result.waitForCompletion();
-      long end = System.currentTimeMillis();
-      LOGGER.info("Complete Multipart Uploading {}s", (end - start) / 1000);
-
-    } catch (IOException | InterruptedException e) {
-      LOGGER.error("Can not upload media file with error: {}", e.getMessage());
+      putObjectToS3(transferManager, finalFileName, file);
+    } catch (IOException e) {
+      throw new InternalServiceException("Can not upload media file with error: " + e.getMessage());
     }
     return fileUrl;
   }
