@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ProductAttribute, ProductBasicInfo, ProductImage, ProductPost, ProductSEO, ProductVariation } from './child'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { ProductCreateType } from '../../../types/ProductType'
@@ -10,10 +10,30 @@ import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
 import { Link } from '@mui/joy'
 
-const CreateProduct = () => {
+interface Props {
+    productSlug: string
+}
+
+const ProductAction = {
+    CREATE: 'create',
+    UPDATE: 'update',
+    VIEW: 'view',
+    DELETE: 'delete',
+}
+
+const CreateProduct = ({ productSlug }: Props) => {
     const [currentTab, setCurrentTab] = useState<number>(0)
     const { handleSubmit, setValue, getValues } = useForm<ProductCreateType>()
     const [openBackdrop, setOpenBackdrop] = useState<boolean>(false)
+    const [action, setAction] = useState<string>('')
+
+    useEffect(() => {
+        if (productSlug) {
+            setAction(ProductAction.VIEW)
+        } else {
+            setAction(ProductAction.CREATE)
+        }
+    }, [productSlug])
 
     const uploadFile = async (data: any) => {
         const res = await MediaAPI.uploadImages(data)
@@ -66,7 +86,12 @@ const CreateProduct = () => {
 
     const tabs = ['Basic Info', 'Images', 'Blog Post', 'Product Variation', 'Product Attribute', 'SEO']
     const tabComponent = [
-        <ProductBasicInfo key={'basic-info'} setFunc={onInputValueChange} getFunc={getInputValue} />,
+        <ProductBasicInfo
+            key={'basic-info'}
+            setFunc={onInputValueChange}
+            getFunc={getInputValue}
+            isDisable={action === ProductAction.VIEW}
+        />,
         <ProductImage key={'image'} setFunc={setValue} getFunc={getValues} />,
         <ProductPost key={'post'} />,
         <ProductVariation key={'variation'} setFunc={setValue} getFunc={getValues} />,
@@ -105,16 +130,35 @@ const CreateProduct = () => {
                         Previous
                     </button>
                 </div>
-                <div>
-                    <button type='button' className='me-3 btn btn-warning'>
-                        Cancel
-                    </button>
-                </div>
-                <div>
-                    <button type='submit' className='me-3 btn btn-primary'>
-                        Save
-                    </button>
-                </div>
+                {action === ProductAction.VIEW && (
+                    <>
+                        <div>
+                            <button type='button' className='me-3 btn btn-warning'>
+                                Edit
+                            </button>
+                        </div>
+                        <div>
+                            <button type='button' className='me-3 btn btn-danger'>
+                                Delete
+                            </button>
+                        </div>
+                    </>
+                )}
+                {[ProductAction.CREATE, ProductAction.UPDATE].includes(action) && (
+                    <>
+                        <div>
+                            <button type='submit' className='me-3 btn btn-primary'>
+                                Save
+                            </button>
+                        </div>
+                        <div>
+                            <button type='button' className='me-3 btn btn-warning'>
+                                Cancel
+                            </button>
+                        </div>
+                    </>
+                )}
+
                 <div>
                     <button
                         type='button'

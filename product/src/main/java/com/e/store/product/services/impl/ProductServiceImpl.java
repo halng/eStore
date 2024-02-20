@@ -35,6 +35,7 @@ import com.e.store.product.viewmodel.res.ProductVariationsResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -219,7 +220,14 @@ public class ProductServiceImpl implements IProductService {
     return this.iProductRepository
         .findById(id)
         .orElseThrow(
-            () -> new EntityNotFoundException(String.format("Product with id  {0} not found", id)));
+            () -> new EntityNotFoundException(String.format("Product with id %s not found", id)));
+  }
+
+  private Product getProductBySlug(String slug) {
+    return this.iProductRepository
+        .findBySlug(slug)
+        .orElseThrow(
+            () -> new EntityNotFoundException(String.format("Product with slug %s not found", slug)));
   }
 
   @Override
@@ -231,7 +239,7 @@ public class ProductServiceImpl implements IProductService {
   public ResponseEntity<ResVm> updateStatus(String productId, String action) {
     LOG.info(
         String.format(
-            "Receive a request to {0} product have id: {1} from user: {2} ",
+            "Receive a request to %s product have id: %s from user: %s ",
             action, productId, CommonService.getUser()));
 
     Product product = this.getProductById(productId);
@@ -242,8 +250,8 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public ResponseEntity<ProductDetailResVm> getDetailProductById(String productId) {
-    Product product = getProductById(productId);
+  public ResponseEntity<ProductDetailResVm> getDetailProductBySlug(String slug) {
+    Product product = getProductBySlug(slug);
     CommonProductResVm group =
         new CommonProductResVm(
             product.getProductGroup().getId(), product.getProductGroup().getName());

@@ -38,6 +38,7 @@ const ProductGroup = () => {
 
     useEffect(() => {
         getAllGroup()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page])
 
     const deleteGroup = (e: any, groupId: string) => {

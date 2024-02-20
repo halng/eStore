@@ -33,6 +33,7 @@ public class Product extends AuditEntity {
   private String id;
 
   private String name;
+  @Column(name = "slug", unique = true)
   private String slug;
   private double price;
   private int quantity;

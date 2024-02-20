@@ -50,7 +50,7 @@
         "@mui/material": "^5.15.2",
         "@typescript-eslint/eslint-plugin": "^6.4.0",
         "@typescript-eslint/parser": "^6.4.0",
-        "api-estore-v2": "^0.0.11",
+        "api-estore-v2": "^0.0.13",
         "bootstrap": "^5.3.1",
         "eslint": "^8.47.0",
         "eslint-config-prettier": "^9.0.0",
