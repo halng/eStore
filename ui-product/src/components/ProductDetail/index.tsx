@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 
 const ProductDetail = () => {
+    // get data form product api base on slug
     const params = useParams()
     return (
         <div className='product-detail'>

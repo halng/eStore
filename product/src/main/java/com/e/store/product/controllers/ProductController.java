@@ -41,9 +41,9 @@ public class ProductController {
     return iProductService.getProductsWithPaging(page);
   }
 
-  @GetMapping("/{prodId}")
-  public ResponseEntity<ProductDetailResVm> getDetailProductById(@PathVariable String prodId) {
-    return this.iProductService.getDetailProductById(prodId);
+  @GetMapping("/{slug}")
+  public ResponseEntity<ProductDetailResVm> getDetailProductById(@PathVariable String slug) {
+    return this.iProductService.getDetailProductBySlug(slug);
   }
 
   @PutMapping("/{prodId}")
