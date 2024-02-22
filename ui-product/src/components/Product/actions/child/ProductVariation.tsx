@@ -9,27 +9,30 @@ import * as _ from 'lodash'
 interface props {
     setFunc: UseFormSetValue<ProductCreateType>
     getFunc: UseFormGetValues<ProductCreateType>
+    isDisable: boolean
 }
 
-const ProductVariation = ({ setFunc, getFunc }: props) => {
+const ProductVariation = ({ setFunc, getFunc, isDisable }: props) => {
     const [options, setOptions] = useState<CommonType[]>([])
     const [currentOptionId, setCurrentOptionId] = useState<string>('')
     const [optionValue, setOptionValue] = useState<OptionValueType[]>([])
     const [productVariation, setProductVariation] = useState<VariationCreateType[]>([])
 
     useEffect(() => {
-        ProductOptionAPI.getOption()
-            .then((res) => {
-                setOptions(res.data)
-            })
-            .catch(() => {
-                toast.error('Cannot get all option! Please try again later')
-            })
+        if (!isDisable) {
+            ProductOptionAPI.getOption()
+                .then((res) => {
+                    setOptions(res.data)
+                })
+                .catch(() => {
+                    toast.error('Cannot get all option! Please try again later')
+                })
+        }
         const old = getFunc('variations')
         if (old) {
             setProductVariation([...old])
         }
-    }, [])
+    }, [isDisable, getFunc])
 
     const onAddOptionHandler = () => {
         if (currentOptionId !== '') {
@@ -182,42 +185,44 @@ const ProductVariation = ({ setFunc, getFunc }: props) => {
 
     return (
         <div className='product-variation w-75'>
-            <div className='row mb-3'>
-                <label className='col-sm-2 col-form-label' htmlFor='selectOption'>
-                    Options
-                </label>
-                <div className='col-sm-8'>
-                    <select
-                        className='form-control me-3'
-                        id='selectOption'
-                        value={currentOptionId}
-                        onChange={(e) => setCurrentOptionId(e.target.value)}
-                    >
-                        <option value='' hidden>
-                            Choose Option
-                        </option>
-                        {(options || []).map((att) => (
-                            <option value={att.id} key={att.id}>
-                                {att.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className='col-sm-2'>
-                    <button type='button' className='btn btn-info' onClick={onAddOptionHandler}>
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            width='16'
-                            height='16'
-                            fill='currentColor'
-                            className='bi bi-plus'
-                            viewBox='0 0 16 16'
+            {!isDisable && (
+                <div className='row mb-3'>
+                    <label className='col-sm-2 col-form-label' htmlFor='selectOption'>
+                        Options
+                    </label>
+                    <div className='col-sm-8'>
+                        <select
+                            className='form-control me-3'
+                            id='selectOption'
+                            value={currentOptionId}
+                            onChange={(e) => setCurrentOptionId(e.target.value)}
                         >
-                            <path d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z' />
-                        </svg>
-                    </button>
+                            <option value='' hidden>
+                                Choose Option
+                            </option>
+                            {(options || []).map((att) => (
+                                <option value={att.id} key={att.id}>
+                                    {att.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className='col-sm-2'>
+                        <button type='button' className='btn btn-info' onClick={onAddOptionHandler}>
+                            <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                width='16'
+                                height='16'
+                                fill='currentColor'
+                                className='bi bi-plus'
+                                viewBox='0 0 16 16'
+                            >
+                                <path d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z' />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* generate input field to add value for product variation*/}
             {(optionValue || []).map((item) => (
@@ -275,6 +280,8 @@ const ProductVariation = ({ setFunc, getFunc }: props) => {
                                 type='text'
                                 placeholder='Price'
                                 className='form-control'
+                                value={getFunc('price')}
+                                disabled={isDisable}
                                 onChange={(e) => onUpdatePriceVariationHandler(item.name, e)}
                             />
                         </div>
@@ -283,6 +290,8 @@ const ProductVariation = ({ setFunc, getFunc }: props) => {
                                 type='text'
                                 placeholder='Quantity'
                                 className='form-control'
+                                value={getFunc('quantity')}
+                                disabled={isDisable}
                                 onChange={(e) => onUpdateQuantityVariationHandler(item.name, e)}
                             />
                         </div>
@@ -296,24 +305,26 @@ const ProductVariation = ({ setFunc, getFunc }: props) => {
                                 onChange={(e) => onUploadImageVariationHandler(item.name, e)}
                             />
                         </div> */}
-                        <div className='col-sm-2'>
-                            <button
-                                type='button'
-                                className='btn btn-outline-danger '
-                                onClick={() => onRemoveVariationHandler(item.name)}
-                            >
-                                <svg
-                                    xmlns='http://www.w3.org/2000/svg'
-                                    width='16'
-                                    height='16'
-                                    fill='currentColor'
-                                    className='bi bi-x-lg'
-                                    viewBox='0 0 16 16'
+                        {!isDisable && (
+                            <div className='col-sm-2'>
+                                <button
+                                    type='button'
+                                    className='btn btn-outline-danger '
+                                    onClick={() => onRemoveVariationHandler(item.name)}
                                 >
-                                    <path d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z' />
-                                </svg>
-                            </button>
-                        </div>
+                                    <svg
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        width='16'
+                                        height='16'
+                                        fill='currentColor'
+                                        className='bi bi-x-lg'
+                                        viewBox='0 0 16 16'
+                                    >
+                                        <path d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z' />
+                                    </svg>
+                                </button>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

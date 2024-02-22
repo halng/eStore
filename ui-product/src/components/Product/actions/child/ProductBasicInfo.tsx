@@ -88,6 +88,7 @@ const ProductBasicInfo = ({ setFunc, getFunc, isDisable }: any) => {
                         className='form-control'
                         id='selectGroup'
                         defaultValue={getFunc('group')}
+                        value={getFunc('group')}
                         onChange={(e) => setFunc('group', e)}
                     >
                         <option selected hidden>

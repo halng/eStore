@@ -31,6 +31,7 @@ import com.e.store.product.viewmodel.res.CommonProductValueResVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductDetailResVm;
 import com.e.store.product.viewmodel.res.ProductResVm;
+import com.e.store.product.viewmodel.res.ProductSEOResVm;
 import com.e.store.product.viewmodel.res.ProductVariationsResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
@@ -257,13 +258,15 @@ public class ProductServiceImpl implements IProductService {
             product.getProductGroup().getId(), product.getProductGroup().getName());
 
     List<CommonProductValueResVm> productAttributeValues = new ArrayList<>();
-    List<CommonProductValueResVm> productOptionValues = new ArrayList<>();
     for (var attVal : product.getProductAttributeValueList()) {
       productAttributeValues.add(
           new CommonProductValueResVm(
-              attVal.getId(), attVal.getProductAttribute().getName(), attVal.getValue()));
+              attVal.getProductAttribute().getId(),
+              attVal.getProductAttribute().getName(),
+              attVal.getValue()));
     }
 
+    List<CommonProductValueResVm> productOptionValues = new ArrayList<>();
     for (var optionValue : product.getProductOptionValueList()) {
       productOptionValues.add(
           new CommonProductValueResVm(
@@ -282,6 +285,10 @@ public class ProductServiceImpl implements IProductService {
             .map(ProductImage::getImageUrl)
             .collect(Collectors.toList());
 
+    ProductSEOResVm seoResVm =
+        new ProductSEOResVm(
+            product.getProductSEO().getKeyword(), product.getProductSEO().getMetadata());
+
     ProductDetailResVm productDetailResVm =
         new ProductDetailResVm(
             product.getId(),
@@ -295,7 +302,8 @@ public class ProductServiceImpl implements IProductService {
             group,
             productAttributeValues,
             productOptionValues,
-            productVariationsResVms);
+            productVariationsResVms,
+            seoResVm);
 
     return ResponseEntity.ok(productDetailResVm);
   }
