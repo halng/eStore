@@ -31,6 +31,7 @@ import com.e.store.product.viewmodel.res.CommonProductValueResVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductDetailResVm;
 import com.e.store.product.viewmodel.res.ProductResVm;
+import com.e.store.product.viewmodel.res.ProductSEOResVm;
 import com.e.store.product.viewmodel.res.ProductVariationsResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
@@ -219,7 +220,15 @@ public class ProductServiceImpl implements IProductService {
     return this.iProductRepository
         .findById(id)
         .orElseThrow(
-            () -> new EntityNotFoundException(String.format("Product with id  {0} not found", id)));
+            () -> new EntityNotFoundException(String.format("Product with id %s not found", id)));
+  }
+
+  private Product getProductBySlug(String slug) {
+    return this.iProductRepository
+        .findBySlug(slug)
+        .orElseThrow(
+            () ->
+                new EntityNotFoundException(String.format("Product with slug %s not found", slug)));
   }
 
   @Override
@@ -231,7 +240,7 @@ public class ProductServiceImpl implements IProductService {
   public ResponseEntity<ResVm> updateStatus(String productId, String action) {
     LOG.info(
         String.format(
-            "Receive a request to {0} product have id: {1} from user: {2} ",
+            "Receive a request to %s product have id: %s from user: %s ",
             action, productId, CommonService.getUser()));
 
     Product product = this.getProductById(productId);
@@ -242,20 +251,22 @@ public class ProductServiceImpl implements IProductService {
   }
 
   @Override
-  public ResponseEntity<ProductDetailResVm> getDetailProductById(String productId) {
-    Product product = getProductById(productId);
+  public ResponseEntity<ProductDetailResVm> getDetailProductBySlug(String slug) {
+    Product product = getProductBySlug(slug);
     CommonProductResVm group =
         new CommonProductResVm(
             product.getProductGroup().getId(), product.getProductGroup().getName());
 
     List<CommonProductValueResVm> productAttributeValues = new ArrayList<>();
-    List<CommonProductValueResVm> productOptionValues = new ArrayList<>();
     for (var attVal : product.getProductAttributeValueList()) {
       productAttributeValues.add(
           new CommonProductValueResVm(
-              attVal.getId(), attVal.getProductAttribute().getName(), attVal.getValue()));
+              attVal.getProductAttribute().getId(),
+              attVal.getProductAttribute().getName(),
+              attVal.getValue()));
     }
 
+    List<CommonProductValueResVm> productOptionValues = new ArrayList<>();
     for (var optionValue : product.getProductOptionValueList()) {
       productOptionValues.add(
           new CommonProductValueResVm(
@@ -274,6 +285,10 @@ public class ProductServiceImpl implements IProductService {
             .map(ProductImage::getImageUrl)
             .collect(Collectors.toList());
 
+    ProductSEOResVm seoResVm =
+        new ProductSEOResVm(
+            product.getProductSEO().getKeyword(), product.getProductSEO().getMetadata());
+
     ProductDetailResVm productDetailResVm =
         new ProductDetailResVm(
             product.getId(),
@@ -287,7 +302,8 @@ public class ProductServiceImpl implements IProductService {
             group,
             productAttributeValues,
             productOptionValues,
-            productVariationsResVms);
+            productVariationsResVms,
+            seoResVm);
 
     return ResponseEntity.ok(productDetailResVm);
   }

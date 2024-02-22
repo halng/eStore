@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ProductSEO = ({ setFunc, getFunc }: any) => {
+const ProductSEO = ({ setFunc, getFunc, isDisable }: any) => {
     return (
         <div className='product-seo w-75'>
             <div className='row mb-3'>
@@ -14,6 +14,7 @@ const ProductSEO = ({ setFunc, getFunc }: any) => {
                         id='inputKeywordSEO'
                         value={getFunc('seo.keyword')}
                         onChange={(e) => setFunc('seo.keyword', e)}
+                        disabled={isDisable}
                     />
                 </div>
             </div>
@@ -28,6 +29,7 @@ const ProductSEO = ({ setFunc, getFunc }: any) => {
                         id='inputMateDataSEO'
                         value={getFunc('seo.metadata')}
                         onChange={(e) => setFunc('seo.metadata', e)}
+                        disabled={isDisable}
                     />
                 </div>
             </div>

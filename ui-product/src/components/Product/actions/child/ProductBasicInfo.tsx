@@ -3,7 +3,7 @@ import { CommonType } from '../../../../types/CommonType'
 import { ProductGroupAPI } from 'api-estore-v2'
 import { toast } from 'react-toastify'
 
-const ProductBasicInfo = ({ setFunc, getFunc }: any) => {
+const ProductBasicInfo = ({ setFunc, getFunc, isDisable }: any) => {
     const [groups, setGroups] = useState<CommonType[]>([])
 
     useEffect(() => {
@@ -24,6 +24,7 @@ const ProductBasicInfo = ({ setFunc, getFunc }: any) => {
                 </label>
                 <div className='col-sm-10'>
                     <input
+                        disabled={isDisable}
                         type='text'
                         className='form-control'
                         id='inputProductName'
@@ -38,6 +39,7 @@ const ProductBasicInfo = ({ setFunc, getFunc }: any) => {
                 </label>
                 <div className='col-sm-10'>
                     <input
+                        disabled={isDisable}
                         type='text'
                         className='form-control'
                         id='inputProductSlug'
@@ -52,6 +54,7 @@ const ProductBasicInfo = ({ setFunc, getFunc }: any) => {
                 </label>
                 <div className='col-sm-10'>
                     <input
+                        disabled={isDisable}
                         type='number'
                         className='form-control'
                         id='inputPrice'
@@ -66,6 +69,7 @@ const ProductBasicInfo = ({ setFunc, getFunc }: any) => {
                 </label>
                 <div className='col-sm-10'>
                     <input
+                        disabled={isDisable}
                         type='number'
                         className='form-control'
                         id='inputQuantity'
@@ -80,9 +84,11 @@ const ProductBasicInfo = ({ setFunc, getFunc }: any) => {
                 </label>
                 <div className='col-sm-10'>
                     <select
+                        disabled={isDisable}
                         className='form-control'
                         id='selectGroup'
                         defaultValue={getFunc('group')}
+                        value={getFunc('group')}
                         onChange={(e) => setFunc('group', e)}
                     >
                         <option selected hidden>
@@ -102,6 +108,7 @@ const ProductBasicInfo = ({ setFunc, getFunc }: any) => {
                 </label>
                 <div className='col-sm-10'>
                     <textarea
+                        disabled={isDisable}
                         rows={5}
                         className='form-control'
                         id='inputDescription'

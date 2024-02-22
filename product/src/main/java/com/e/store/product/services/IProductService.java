@@ -17,5 +17,5 @@ public interface IProductService {
 
   ResponseEntity<ResVm> updateStatus(String productId, String action);
 
-  ResponseEntity<ProductDetailResVm> getDetailProductById(String productId);
+  ResponseEntity<ProductDetailResVm> getDetailProductBySlug(String slug);
 }

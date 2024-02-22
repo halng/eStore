@@ -4,19 +4,23 @@ import CreateProduct from './actions/CreateProduct'
 import { ProductAPI } from 'api-estore-v2'
 import { toast } from 'react-toastify'
 import Pagination from '../../common/pagination'
-import ProductCard from '../../common/ProductCard'
 import { ProductType } from '../../types/ProductType'
 import Grid from '@mui/joy/Grid'
 import AspectRatio from '@mui/joy/AspectRatio'
 import Card from '@mui/joy/Card'
 import Skeleton from '@mui/joy/Skeleton'
 import Typography from '@mui/joy/Typography'
+import CardContent from '@mui/joy/CardContent'
+import CardOverflow from '@mui/joy/CardOverflow'
+import Chip from '@mui/joy/Chip'
 
 const Product = () => {
     const [products, setProducts] = useState<ProductType[]>([])
     const [page, setPage] = useState<number>(1)
     const [totalProduct, setTotalProduct] = useState<number>(0)
     const [totalPage, setTotalPage] = useState<number>(0)
+    const [productSelected, setProductSelected] = useState<any>(null)
+
     const getAllProduct = () => {
         ProductAPI.getAll(page)
             .then((res) => {
@@ -60,38 +64,58 @@ const Product = () => {
                             data-bs-toggle='offcanvas'
                             data-bs-target='#offcanvasRight'
                             aria-controls='offcanvasRight'
+                            onClick={() => setProductSelected(null)}
                         >
                             Create new product
                         </button>
-
-                        <div
-                            className='offcanvas offcanvas-end w-75'
-                            tabIndex={-1}
-                            id='offcanvasRight'
-                            aria-labelledby='offcanvasRightLabel'
-                        >
-                            <div className='offcanvas-header'>
-                                <h5 className='offcanvas-title' id='offcanvasRightLabel'>
-                                    Create New Product:
-                                </h5>
-                                <button
-                                    type='button'
-                                    className='btn-close'
-                                    data-bs-dismiss='offcanvas'
-                                    aria-label='Close'
-                                ></button>
-                            </div>
-                            <div className='offcanvas-body d-flex flex-column align-content-center'>
-                                <CreateProduct />
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
             <div className='product-main-board'>
                 <Grid container spacing={{ xs: 2 }} sx={{ flexGrow: 1 }}>
                     {products.length > 0
-                        ? (products || []).map((item) => <ProductCard key={item.slug} item={item} />)
+                        ? (products || []).map((item) => (
+                              <Grid xs={3} key={item.slug}>
+                                  <Card sx={{ width: 320, boxShadow: 'lg', height: '23rem' }}>
+                                      <CardOverflow>
+                                          <AspectRatio sx={{ minWidth: 200 }}>
+                                              <img src={item.thumbnail} alt='' />
+                                          </AspectRatio>
+                                      </CardOverflow>
+                                      <CardContent>
+                                          <Typography level='body-xs'>{item.groupName}</Typography>
+                                          <button
+                                              type='button'
+                                              className='btn btn-outline-primary'
+                                              data-bs-toggle='offcanvas'
+                                              data-bs-target='#offcanvasRight'
+                                              aria-controls='offcanvasRight'
+                                              onClick={() => setProductSelected({ slug: item.slug, name: item.name })}
+                                          >
+                                              {item.name}
+                                          </button>
+
+                                          <Typography
+                                              level='title-lg'
+                                              sx={{ mt: 1, fontWeight: 'xl' }}
+                                              endDecorator={
+                                                  <Chip component='span' size='sm' variant='soft' color='success'>
+                                                      <b>{item.quantity}</b> left in stock!
+                                                  </Chip>
+                                              }
+                                          >
+                                              {item.price.toLocaleString('en-US', {
+                                                  style: 'currency',
+                                                  currency: 'USD',
+                                              })}
+                                          </Typography>
+                                          <Typography level='body-sm'>
+                                              (Have <b>{item.variations}</b> product variations)
+                                          </Typography>
+                                      </CardContent>
+                                  </Card>
+                              </Grid>
+                          ))
                         : [...Array(12).keys()].map((index) => (
                               <div key={index} className='p-2'>
                                   <Card variant='outlined' sx={{ width: 343, display: 'flex', gap: 2 }}>
@@ -113,6 +137,22 @@ const Product = () => {
                               </div>
                           ))}
                 </Grid>
+            </div>
+            <div
+                className='offcanvas offcanvas-end w-75'
+                tabIndex={-1}
+                id='offcanvasRight'
+                aria-labelledby='offcanvasRightLabel'
+            >
+                <div className='offcanvas-header'>
+                    <h5 className='offcanvas-title' id='offcanvasRightLabel'>
+                        {productSelected ? `Product: ${productSelected.name}` : 'Create New Product'}
+                    </h5>
+                    <button type='button' className='btn-close' data-bs-dismiss='offcanvas' aria-label='Close'></button>
+                </div>
+                <div className='offcanvas-body d-flex flex-column align-content-center'>
+                    <CreateProduct productSlug={productSelected?.slug} />
+                </div>
             </div>
             {totalPage > 1 && (
                 <Pagination total={totalProduct} currentPage={page} totalPage={totalPage} setPage={setPage} />

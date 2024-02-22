@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 
 import com.e.store.product.entity.Product;
 import com.e.store.product.entity.ProductGroup;
+import com.e.store.product.entity.ProductImage;
+import com.e.store.product.entity.ProductSEO;
 import com.e.store.product.entity.ProductVariation;
 import com.e.store.product.entity.attribute.ProductAttribute;
 import com.e.store.product.entity.attribute.ProductAttributeValue;
@@ -29,6 +31,7 @@ import com.e.store.product.viewmodel.req.ProductReqVm;
 import com.e.store.product.viewmodel.req.ProductSEOReqVm;
 import com.e.store.product.viewmodel.req.ProductVariationReqVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
+import com.e.store.product.viewmodel.res.ProductDetailResVm;
 import com.e.store.product.viewmodel.res.ProductResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.time.Instant;
@@ -46,6 +49,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -169,13 +173,20 @@ public class ProductServiceTest {
             .productAttribute(productAttribute)
             .build();
     ProductGroup productGroup = ProductGroup.builder().name("this is name").build();
+    ProductImage productImage = ProductImage.builder().imageUrl("xxx").build();
+    ProductSEO productSEO = ProductSEO.builder().keyword("key_word").metadata("meta_data").build();
     product =
         Product.builder()
             .id("piid")
+            .name("this is name")
+            .price(3.4)
+            .slug("this-is-name")
             .productVariationList(Collections.singletonList(productVariation))
             .productOptionValueList(Collections.singletonList(productOptionValue))
             .productAttributeValueList(Collections.singletonList(productAttributeValue))
             .productGroup(productGroup)
+            .productImageList(Collections.singletonList(productImage))
+            .productSEO(productSEO)
             .build();
     product.setLastUpdate(Instant.now());
   }
@@ -340,5 +351,37 @@ public class ProductServiceTest {
     Assertions.assertNotNull(res);
     Assertions.assertEquals(200, res.getStatusCode().value());
     Assertions.assertEquals("Product with id: XXXX is disable for now", res.getBody().message());
+  }
+
+  @Test
+  void getDetailProductBySlug_shouldThrowException_whenSlugNotExist() {
+    when(iProductRepository.findBySlug(anyString())).thenReturn(Optional.empty());
+    EntityNotFoundException exception =
+        Assertions.assertThrows(
+            EntityNotFoundException.class,
+            () -> {
+              productService.getDetailProductBySlug("nnn");
+            });
+    Assertions.assertEquals("Product with slug nnn not found", exception.getMessage());
+  }
+
+  @Test
+  void getDetailProductBySlug_shouldSuccess_whenDataValid() {
+    when(iProductRepository.findBySlug(anyString())).thenReturn(Optional.of(product));
+    ResponseEntity<ProductDetailResVm> resVmResponseEntity =
+        this.productService.getDetailProductBySlug("nnn");
+
+    Assertions.assertEquals(HttpStatus.OK, resVmResponseEntity.getStatusCode());
+    ProductDetailResVm result = resVmResponseEntity.getBody();
+    Assertions.assertNotNull(result);
+    Assertions.assertEquals(1, result.imageUrls().size());
+    Assertions.assertEquals("this is name", result.name());
+    Assertions.assertEquals("key_word", result.seo().keyword());
+    Assertions.assertEquals("meta_data", result.seo().metadata());
+    Assertions.assertEquals("piid", result.id());
+    Assertions.assertEquals(1, result.productVariations().size());
+    Assertions.assertEquals(1, result.productAttributeValues().size());
+    Assertions.assertEquals(1, result.productOptionValues().size());
+    Assertions.assertNull(result.shortDescription());
   }
 }
