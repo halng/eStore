@@ -15,10 +15,10 @@ interface Props {
 }
 
 const ProductAction = {
-    CREATE: 'create',
-    UPDATE: 'update',
-    VIEW: 'view',
-    DELETE: 'delete',
+    CREATE: 'Create',
+    UPDATE: 'Update',
+    VIEW: 'View',
+    DELETE: 'Delete',
 }
 
 const CreateProduct = ({ productSlug }: Props) => {
@@ -84,6 +84,15 @@ const CreateProduct = ({ productSlug }: Props) => {
 
     const getInputValue = (fieldName: any) => getValues(fieldName)
 
+    const cancelButtonHandler = () => {
+        if (action === ProductAction.CREATE) {
+            // clear field and close off canva
+        } else if (action === ProductAction.UPDATE) {
+            // reset value
+            setAction(ProductAction.VIEW)
+        }
+    }
+
     const tabs = ['Basic Info', 'Images', 'Blog Post', 'Product Variation', 'Product Attribute', 'SEO']
     const tabComponent = [
         <ProductBasicInfo
@@ -133,7 +142,11 @@ const CreateProduct = ({ productSlug }: Props) => {
                 {action === ProductAction.VIEW && (
                     <>
                         <div>
-                            <button type='button' className='me-3 btn btn-warning'>
+                            <button
+                                type='button'
+                                className='me-3 btn btn-warning'
+                                onClick={() => setAction(ProductAction.UPDATE)}
+                            >
                                 Edit
                             </button>
                         </div>
@@ -148,11 +161,11 @@ const CreateProduct = ({ productSlug }: Props) => {
                     <>
                         <div>
                             <button type='submit' className='me-3 btn btn-primary'>
-                                Save
+                                {action}
                             </button>
                         </div>
                         <div>
-                            <button type='button' className='me-3 btn btn-warning'>
+                            <button type='button' className='me-3 btn btn-warning' onClick={cancelButtonHandler}>
                                 Cancel
                             </button>
                         </div>

@@ -35,7 +35,6 @@ import com.e.store.product.viewmodel.res.ProductVariationsResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -227,7 +226,8 @@ public class ProductServiceImpl implements IProductService {
     return this.iProductRepository
         .findBySlug(slug)
         .orElseThrow(
-            () -> new EntityNotFoundException(String.format("Product with slug %s not found", slug)));
+            () ->
+                new EntityNotFoundException(String.format("Product with slug %s not found", slug)));
   }
 
   @Override
