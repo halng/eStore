@@ -31,7 +31,6 @@ jobs:
         working-directory: ui-api
       - name: Publish package
         run: ./publishPackage.sh
-        working-directory: ui-api
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
