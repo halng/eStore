@@ -30,7 +30,7 @@ jobs:
         run: npm run lint
         working-directory: ui-api
       - name: Publish package
-        run: ./publishPackage.sh
+        run: .github/workflows/publishPackage.sh
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
