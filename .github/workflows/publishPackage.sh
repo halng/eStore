@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e  # Exit on any error
+set -e  
 cd ui-api
 
 # Get the package name and version from package.json
