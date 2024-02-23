@@ -4,6 +4,10 @@ set -e
 
 cd ui-api
 
+npm config set registry https://registry.npmjs.org
+npm config set _authToken=$NODE_AUTH_TOKEN
+
+
 # Get the package name and version from package.json
 package_name=$(jq -r .name package.json)
 package_version=$(jq -r .version package.json)
@@ -17,6 +21,6 @@ if [[ $? -eq 0 ]]; then
 
 else
  # Version doesn't exist, publish and comment on PR
- npm publish
+ npm publish --registry https://registry.npmjs.org
  gh pr comment --body "Publish new version $package_version success"
 fi
