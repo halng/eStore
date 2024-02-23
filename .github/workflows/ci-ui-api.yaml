@@ -5,14 +5,13 @@ on:
     branches: ["main", "dev"]
     paths:
       - ui-api/package.json
+      - .github/workflows/publishPackage.sh
 
   workflow_dispatch:
 
 jobs:
   published:
     runs-on: ubuntu-latest
-    env:
-      FAIL_FAST: true
     permissions: write-all
     steps:
       - name: checkout version
@@ -31,7 +30,8 @@ jobs:
         run: npm run lint
         working-directory: ui-api
       - name: Publish package
-        run: npm publish
+        run: ./publishPackage.sh
         working-directory: ui-api
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
