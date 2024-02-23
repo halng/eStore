@@ -1,6 +1,6 @@
 {
     "name": "api-estore-v2",
-    "version": "0.0.13",
+    "version": "0.0.14",
     "description": "A package use to call api to backend for my personal project",
     "main": "./dist/cjs/index.js",
     "module": "./dist/esm/index.js",
