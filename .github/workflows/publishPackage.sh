@@ -5,7 +5,7 @@
 cd ui-api
 
 npm config set registry https://registry.npmjs.org
-npm config set _authToken=$NODE_AUTH_TOKEN
+npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
 
 # Get the package name and version from package.json
 package_name=$(jq -r .name package.json)
