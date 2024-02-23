@@ -11,6 +11,8 @@ on:
 jobs:
   published:
     runs-on: ubuntu-latest
+    env:
+      FAIL_FAST: true
     permissions: write-all
     steps:
       - name: checkout version
