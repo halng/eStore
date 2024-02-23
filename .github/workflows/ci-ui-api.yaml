@@ -14,11 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions: write-all
     steps:
-      - name: checkout version
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref_name }}
-          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: set up env
         uses: actions/setup-node@v3
         with:
