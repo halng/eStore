@@ -22,6 +22,7 @@ import com.e.store.product.repositories.IProductRepository;
 import com.e.store.product.repositories.IProductSEORepository;
 import com.e.store.product.repositories.IProductVariationRepository;
 import com.e.store.product.services.IProductService;
+import com.e.store.product.services.SendMessage;
 import com.e.store.product.viewmodel.req.OptionValueReqVm;
 import com.e.store.product.viewmodel.req.ProductAttributeReqVm;
 import com.e.store.product.viewmodel.req.ProductReqVm;
@@ -35,7 +36,9 @@ import com.e.store.product.viewmodel.res.ProductSEOResVm;
 import com.e.store.product.viewmodel.res.ProductVariationsResVm;
 import com.e.store.product.viewmodel.res.ResVm;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +65,7 @@ public class ProductServiceImpl implements IProductService {
   private final IProductOptionRepository iProductOptionRepository;
   private final IProductOptionValueRepository iProductOptionValueRepository;
   private final IProductVariationRepository iProductVariationRepository;
+  private final SendMessage sendMessage;
 
   @Autowired
   public ProductServiceImpl(
@@ -73,7 +77,8 @@ public class ProductServiceImpl implements IProductService {
       IProductAttributeValueRepository iProductAttributeValueRepository,
       IProductOptionRepository iProductOptionRepository,
       IProductOptionValueRepository iProductOptionValueRepository,
-      IProductVariationRepository iProductVariationRepository) {
+      IProductVariationRepository iProductVariationRepository,
+      SendMessage sendMessage) {
     this.iProductRepository = iProductRepository;
     this.iProductGroupRepository = iProductGroupRepository;
     this.iProductAttributeRepository = iProductAttributeRepository;
@@ -83,6 +88,7 @@ public class ProductServiceImpl implements IProductService {
     this.iProductOptionRepository = iProductOptionRepository;
     this.iProductOptionValueRepository = iProductOptionValueRepository;
     this.iProductVariationRepository = iProductVariationRepository;
+    this.sendMessage = sendMessage;
   }
 
   @Override
@@ -176,6 +182,16 @@ public class ProductServiceImpl implements IProductService {
 
       this.iProductVariationRepository.save(productVariation);
     }
+
+    Map<String, Object> msg = new HashMap<>();
+    msg.put("id", newProduct.getId());
+    msg.put("thumbnail", newProduct.getThumbnailUrl());
+    msg.put("name", newProduct.getName());
+    msg.put("description", newProduct.getShortDescription());
+    msg.put("quantity", newProduct.getQuantity());
+    msg.put("price", newProduct.getPrice());
+
+    sendMessage.putMsg(msg);
 
     ResVm resVm =
         new ResVm(

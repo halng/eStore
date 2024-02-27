@@ -29,7 +29,6 @@ public abstract class AbstractControllerTest {
   private ObjectMapper mapper;
 
   protected void setUp() {
-
     mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     this.mapper = new ObjectMapper();
     SecurityContextHolder.getContext()

@@ -22,12 +22,12 @@ INSERT INTO public.product_attribute_value (id, create_by, create_date, last_upd
 
 
 
-INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_id, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-1', 'p1');
-INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_id, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-2', 'p1');
-INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_id, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-3', 'p1');
-INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_id, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-4', 'p1');
-INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_id, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-5', 'p3');
-INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_id, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-6', 'p2');
+INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_url, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-1', 'p1');
+INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_url, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-2', 'p1');
+INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_url, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-3', 'p1');
+INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_url, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-4', 'p1');
+INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_url, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-5', 'p3');
+INSERT INTO public.product_image (create_by, create_date, last_update, last_update_by, image_url, product_id) VALUES	('SYSTEM', NOW(), NOW(), 'SYSTEM', 'img-6', 'p2');
 
 
 
