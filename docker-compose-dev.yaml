@@ -29,22 +29,6 @@ services:
     networks:
       - estore_app
 
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@admin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    networks:
-      - estore_app
-    restart: unless-stopped
-
   akhq:
     # build:
     #   context: .
@@ -164,7 +148,6 @@ networks:
 
 volumes:
   postgres:
-  pgadmin:
   redis_data:
     driver: local
   kafka-data: 
