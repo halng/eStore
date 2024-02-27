@@ -119,6 +119,7 @@ const CreateProduct = ({ productSlug }: Props) => {
             ProductAPI.create(bodyData)
                 .then((res) => {
                     toast.success(res.data.message)
+                    window.location.reload()
                 })
                 .catch((err) => {
                     console.log(err)
