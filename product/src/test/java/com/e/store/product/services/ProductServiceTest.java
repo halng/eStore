@@ -95,7 +95,8 @@ public class ProductServiceTest {
             iProductAttributeValueRepository,
             iProductOptionRepository,
             iProductOptionValueRepository,
-            iProductVariationRepository, sendMessage);
+            iProductVariationRepository,
+            sendMessage);
 
     List<ProductAttributeReqVm> attributes =
         List.of(new ProductAttributeReqVm("AAA-1", "", "value 1"));
