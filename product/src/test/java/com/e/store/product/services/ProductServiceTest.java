@@ -70,6 +70,7 @@ public class ProductServiceTest {
 
   IProductVariationRepository iProductVariationRepository;
   Product product;
+  SendMessage sendMessage;
 
   @BeforeEach
   void setup() {
@@ -82,6 +83,7 @@ public class ProductServiceTest {
     iProductOptionValueRepository = mock(IProductOptionValueRepository.class);
     iProductOptionRepository = mock(IProductOptionRepository.class);
     iProductVariationRepository = mock(IProductVariationRepository.class);
+    sendMessage = mock(SendMessage.class);
 
     productService =
         new ProductServiceImpl(
@@ -93,7 +95,7 @@ public class ProductServiceTest {
             iProductAttributeValueRepository,
             iProductOptionRepository,
             iProductOptionValueRepository,
-            iProductVariationRepository);
+            iProductVariationRepository, sendMessage);
 
     List<ProductAttributeReqVm> attributes =
         List.of(new ProductAttributeReqVm("AAA-1", "", "value 1"));
