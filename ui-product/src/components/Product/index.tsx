@@ -21,19 +21,19 @@ const Product = () => {
     const [totalPage, setTotalPage] = useState<number>(0)
     const [productSelected, setProductSelected] = useState<any>(null)
 
-    const getAllProduct = () => {
-        ProductAPI.getAll(page)
-            .then((res) => {
-                setProducts(res.data.items)
-                setTotalPage(res.data.totalPages)
-                setTotalProduct(res.data.totalItems)
-            })
-            .catch((err) => {
-                toast.error('Cannot get all product. Please try again later')
-                console.log(err)
-            })
-    }
     useEffect(() => {
+        const getAllProduct = () => {
+            ProductAPI.getAll(page)
+                .then((res) => {
+                    setProducts(res.data.items)
+                    setTotalPage(res.data.totalPages)
+                    setTotalProduct(res.data.totalItems)
+                })
+                .catch((err) => {
+                    toast.error('Cannot get all product. Please try again later')
+                    console.log(err)
+                })
+        }
         getAllProduct()
     }, [page])
 
