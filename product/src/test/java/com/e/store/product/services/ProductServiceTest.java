@@ -238,8 +238,8 @@ public class ProductServiceTest {
   @Test
   void createNewProductOption_shouldSuccess_whenDataValid() {
     ProductAttribute productAttribute = ProductAttribute.builder().id("attId").build();
-    ProductGroup productGroup = ProductGroup.builder().id("1").build();
-    Product expected = Product.builder().id("xxx-111").build();
+    ProductGroup productGroup = ProductGroup.builder().id("1").name("group-name").build();
+    Product expected = Product.builder().id("xxx-111").productGroup(productGroup).build();
     ProductOptionValue productOptionValue = ProductOptionValue.builder().id("111").build();
     ProductOption option = ProductOption.builder().build();
 
