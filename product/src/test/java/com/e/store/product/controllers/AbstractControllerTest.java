@@ -24,8 +24,11 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class AbstractControllerTest {
+
   protected MockMvc mockMvc;
+
   @Autowired WebApplicationContext webApplicationContext;
+
   private ObjectMapper mapper;
 
   protected void setUp() {

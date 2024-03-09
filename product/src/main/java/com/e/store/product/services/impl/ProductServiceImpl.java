@@ -12,6 +12,7 @@ import com.e.store.product.entity.attribute.ProductAttributeValue;
 import com.e.store.product.entity.option.ProductOption;
 import com.e.store.product.entity.option.ProductOptionValue;
 import com.e.store.product.exceptions.EntityNotFoundException;
+import com.e.store.product.helper.UtilsHelper;
 import com.e.store.product.repositories.IProductAttributeRepository;
 import com.e.store.product.repositories.IProductAttributeValueRepository;
 import com.e.store.product.repositories.IProductGroupRepository;
@@ -56,15 +57,25 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements IProductService {
 
   private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
+
   private final IProductRepository iProductRepository;
+
   private final IProductGroupRepository iProductGroupRepository;
+
   private final IProductAttributeRepository iProductAttributeRepository;
+
   private final IProductImageRepository iProductImageRepository;
+
   private final IProductSEORepository iProductSEORepository;
+
   private final IProductAttributeValueRepository iProductAttributeValueRepository;
+
   private final IProductOptionRepository iProductOptionRepository;
+
   private final IProductOptionValueRepository iProductOptionValueRepository;
+
   private final IProductVariationRepository iProductVariationRepository;
+
   private final SendMessage sendMessage;
 
   @Autowired
@@ -91,6 +102,22 @@ public class ProductServiceImpl implements IProductService {
     this.sendMessage = sendMessage;
   }
 
+  private void sendProductDataIntoTopic(Action action, Product product) {
+    Map<String, Object> msg = new HashMap<>();
+    msg.put("id", product.getId());
+    msg.put("thumbnail", product.getThumbnailUrl());
+    msg.put("name", product.getName());
+    msg.put("description", product.getShortDescription());
+    msg.put("quantity", product.getQuantity());
+    msg.put("price", product.getPrice());
+    msg.put("branch", product.getProductGroup().getName());
+    msg.put("slug", product.getSlug());
+
+    Map<String, Object> finalMsg = Map.of("data", msg, "type", action.toString().toLowerCase());
+
+    sendMessage.putMsg(finalMsg);
+  }
+
   @Override
   public ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm) {
     LOG.info("createNewProduct: receive request create product.");
@@ -101,9 +128,11 @@ public class ProductServiceImpl implements IProductService {
             .thumbnailUrl(productReqVm.thumbnailId())
             .quantity(productReqVm.quantity())
             .shortDescription(productReqVm.description())
-            .slug(productReqVm.slug())
             .isSales(true)
             .build();
+
+    String slug = productReqVm.slug() + UtilsHelper.getGenerateString();
+    product.setSlug(slug);
 
     // product image
     List<ProductImage> productImageList = new ArrayList<>();
@@ -183,15 +212,7 @@ public class ProductServiceImpl implements IProductService {
       this.iProductVariationRepository.save(productVariation);
     }
 
-    Map<String, Object> msg = new HashMap<>();
-    msg.put("id", newProduct.getId());
-    msg.put("thumbnail", newProduct.getThumbnailUrl());
-    msg.put("name", newProduct.getName());
-    msg.put("description", newProduct.getShortDescription());
-    msg.put("quantity", newProduct.getQuantity());
-    msg.put("price", newProduct.getPrice());
-
-    sendMessage.putMsg(msg);
+    sendProductDataIntoTopic(Action.CREATE, newProduct);
 
     ResVm resVm =
         new ResVm(
@@ -249,6 +270,7 @@ public class ProductServiceImpl implements IProductService {
 
   @Override
   public ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm) {
+    sendProductDataIntoTopic(Action.UPDATE, null);
     return null;
   }
 

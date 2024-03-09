@@ -31,6 +31,7 @@ public class ProductAttribute extends AuditEntity {
   private String id;
 
   private String name;
+
   private String description;
 
   @Enumerated(EnumType.STRING)

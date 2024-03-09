@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 public class ProductAttributeServiceImpl implements IProductAttributeService {
 
   private static final Logger LOG = LoggerFactory.getLogger(ProductAttributeServiceImpl.class);
+
   private final IProductAttributeRepository iProductAttributeRepository;
 
   @Autowired

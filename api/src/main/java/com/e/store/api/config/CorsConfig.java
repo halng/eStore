@@ -18,8 +18,11 @@ public class CorsConfig {
 
   private static final String ALLOW_HEADER =
       "authorization, Content-Type, Authorization, credential";
+
   private static final String ALLOW_METHODS = "GET, PUT, PATCH, DELETE, OPTIONS";
+
   private static final String ALLOW_ORIGINS = "*";
+
   private static final String MAX_AGE = "3600";
 
   @Bean

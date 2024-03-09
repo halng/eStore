@@ -28,6 +28,7 @@ public class ProductSEO extends AuditEntity {
   private String id;
 
   private String keyword;
+
   private String metadata;
 
   @OneToOne(cascade = CascadeType.ALL)

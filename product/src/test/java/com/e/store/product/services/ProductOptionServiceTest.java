@@ -37,7 +37,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class ProductOptionServiceTest {
 
   IProductOptionRepository iProductOptionRepository;
+
   ProductOptionServiceImpl productOptionService;
+
   ProductOptionCreateReqVm optionCreateReqVm;
 
   @BeforeEach

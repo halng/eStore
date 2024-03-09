@@ -45,13 +45,21 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements IAuthService {
 
   private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
+
   private final IAuthRepository authRepository;
+
   private final IRoleRepository roleRepository;
+
   private final PasswordEncoder passwordEncoder;
+
   private final AuthenticationManager authenticationManager;
+
   private final JwtUtilities jwtUtilities;
+
   private final IRefreshTokenService refreshTokenService;
+
   private final IMessageProducer iMessageProducer;
+
   private final IVerifyAccountRepository iVerifyAccountRepository;
 
   public ResponseEntity<HttpStatus> sendMessageActiveAccount(Account account) {
@@ -84,7 +92,8 @@ public class AuthServiceImpl implements IAuthService {
   @Override
   public ResponseEntity<HttpStatus> signUp(SignUpVm signUpData) {
 
-    // already on front-end - but check again to make sure user don't call api directly
+    // already on front-end - but check again to make sure user don't call api
+    // directly
     if (!signUpData.password().equals(signUpData.rePassword())) {
       throw new BadRequestException("Password are not identical!");
     }

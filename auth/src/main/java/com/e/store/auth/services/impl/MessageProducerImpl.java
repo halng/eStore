@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class MessageProducerImpl implements IMessageProducer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(MessageProducerImpl.class);
+
   private final KafkaTemplate<String, String> kafkaTemplate;
 
   @Value("${kafka.topic}")

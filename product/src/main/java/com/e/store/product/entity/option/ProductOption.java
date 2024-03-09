@@ -32,6 +32,7 @@ public class ProductOption extends AuditEntity {
   private String name;
 
   private String displayType;
+
   private String description;
 
   @OneToMany(mappedBy = "productOption")

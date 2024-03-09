@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageServiceImpl implements IImageService {
 
   private static final Logger LOG = LoggerFactory.getLogger(ImageServiceImpl.class);
+
   private final AWSBucketUtils aws;
 
   @Autowired

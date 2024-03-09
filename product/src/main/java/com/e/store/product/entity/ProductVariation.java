@@ -28,7 +28,9 @@ public class ProductVariation extends AuditEntity {
   private String id;
 
   private int quantity;
+
   private double price;
+
   private List<String> optionValueIds;
 
   @ManyToOne

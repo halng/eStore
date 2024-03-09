@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 class UserDetailsServiceTest {
 
   UserDetailsServiceImpl userDetailsService;
+
   IAuthRepository authRepository;
 
   @BeforeEach

@@ -17,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 public class EmailServiceTest {
 
   EmailService emailService;
+
   JavaMailSender javaMailSender;
 
   TemplateEngine templateEngine;
@@ -25,7 +26,7 @@ public class EmailServiceTest {
 
   @BeforeEach
   void setUp() {
-    //        javaMailSender = mock(JavaMailSender.class);
+    // javaMailSender = mock(JavaMailSender.class);
     templateEngine = mock(TemplateEngine.class);
     emailService = new EmailServiceImpl(javaMailSender, templateEngine);
     ReflectionTestUtils.setField(emailService, "sender", "me");

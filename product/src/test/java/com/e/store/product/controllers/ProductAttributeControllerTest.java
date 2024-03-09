@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class ProductAttributeControllerTest extends AbstractControllerTest {
+
   ProductAttributeCreateReqVm updateModel;
 
   @Override

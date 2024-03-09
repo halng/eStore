@@ -18,8 +18,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 class RefreshTokenServiceTest {
 
   RefreshTokenServiceImpl refreshTokenService;
+
   IRefreshTokenRepository iRefreshTokenRepository;
+
   Account account;
+
   Long refreshTokenExpiration = 864000L;
 
   @BeforeEach

@@ -36,7 +36,9 @@ import reactor.core.publisher.Mono;
 public class AuthFilterConfig extends AbstractGatewayFilterFactory<AuthFilterConfig.Config> {
 
   private static final Logger LOG = LoggerFactory.getLogger(AuthFilterConfig.class);
+
   private final WebClient.Builder webClientBuilder;
+
   @Autowired private ObjectMapper objectMapper;
 
   @Value("${gateway.auth}")

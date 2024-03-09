@@ -21,6 +21,7 @@ public class EmailServiceImpl implements EmailService {
   private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
 
   private final JavaMailSender javaMailSender;
+
   private final TemplateEngine templateEngine;
 
   @Value("${spring.mail.username}")

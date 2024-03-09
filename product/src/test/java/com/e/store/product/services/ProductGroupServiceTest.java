@@ -38,7 +38,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class ProductGroupServiceTest {
 
   IProductGroupRepository iProductGroupRepository;
+
   ProductGroupServiceImpl productGroupService;
+
   ProductGroup mockProductGroup;
 
   @BeforeEach

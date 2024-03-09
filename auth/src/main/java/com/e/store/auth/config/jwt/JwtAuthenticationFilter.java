@@ -23,7 +23,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private static final List<String> LIST_EXCLUDE_URL =
       Arrays.asList("register", "login", "active-token");
+
   private final JwtUtilities jwtUtilities;
+
   private final UserDetailsServiceImpl userDetailsService;
 
   private boolean isExclude(String path) {

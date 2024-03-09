@@ -52,16 +52,27 @@ import org.springframework.test.util.ReflectionTestUtils;
 class AuthServiceTest {
 
   IAuthService iAuthService;
+
   IRoleRepository roleRepository;
+
   IAuthRepository authRepository;
+
   Account account;
+
   Role role;
+
   PasswordEncoder passwordEncoder;
+
   IRefreshTokenService refreshTokenService;
+
   AuthenticationManager authenticationManager;
+
   JwtUtilities jwtUtilities;
+
   Authentication authentication;
+
   IMessageProducer iMessageProducer;
+
   IVerifyAccountRepository iVerifyAccountRepository;
 
   @BeforeEach

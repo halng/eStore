@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SendMessageImpl implements SendMessage {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(SendMessageImpl.class);
 
-  private static final String NEW_PRODUCT_TOPIC = "product-new";
+  private static final String NEW_PRODUCT_TOPIC = "product_new";
+
   private final KafkaTemplate<String, String> kafkaTemplate;
 
   @Autowired

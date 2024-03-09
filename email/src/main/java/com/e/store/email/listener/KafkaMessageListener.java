@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class KafkaMessageListener {
 
   private static final Logger log = LoggerFactory.getLogger(KafkaMessageListener.class);
+
   @Autowired private EmailService emailService;
 
   @KafkaListener(

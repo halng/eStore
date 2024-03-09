@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class OpenAPIConfig {
 
   private final String moduleName;
+
   private final String apiVersion;
 
   public OpenAPIConfig(

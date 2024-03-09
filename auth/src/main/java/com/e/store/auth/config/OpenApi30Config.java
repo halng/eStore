@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 public class OpenApi30Config {
 
   private final String moduleName;
+
   private final String apiVersion;
 
   public OpenApi30Config(

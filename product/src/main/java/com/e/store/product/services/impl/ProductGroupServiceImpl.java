@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 public class ProductGroupServiceImpl implements IProductGroupService {
 
   private static final Logger LOG = LoggerFactory.getLogger(ProductGroupServiceImpl.class);
+
   private final IProductGroupRepository iProductGroupRepository;
 
   @Autowired

@@ -38,9 +38,13 @@ public class Product extends AuditEntity {
   private String slug;
 
   private double price;
+
   private int quantity;
+
   private boolean isSales;
+
   private String thumbnailUrl;
+
   private String blogPostId;
 
   @Column(length = 512)
