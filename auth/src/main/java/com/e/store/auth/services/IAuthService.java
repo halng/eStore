@@ -10,13 +10,14 @@ import org.springframework.http.ResponseEntity;
 
 public interface IAuthService {
 
-  ResponseEntity<HttpStatus> signUp(SignUpVm signUpData);
+	ResponseEntity<HttpStatus> signUp(SignUpVm signUpData);
 
-  Account loadAccountByUsername(String username);
+	Account loadAccountByUsername(String username);
 
-  ResponseEntity<AuthResVm> signIn(SignInVm signInData);
+	ResponseEntity<AuthResVm> signIn(SignInVm signInData);
 
-  ResponseEntity<HttpStatus> activeAccount(String token, String email);
+	ResponseEntity<HttpStatus> activeAccount(String token, String email);
 
-  ResponseEntity<ValidateAuthVm> validateAuth();
+	ResponseEntity<ValidateAuthVm> validateAuth();
+
 }

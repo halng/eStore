@@ -32,141 +32,128 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductAttributeServiceImpl implements IProductAttributeService {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ProductAttributeServiceImpl.class);
-  private final IProductAttributeRepository iProductAttributeRepository;
+	private static final Logger LOG = LoggerFactory.getLogger(ProductAttributeServiceImpl.class);
 
-  @Autowired
-  public ProductAttributeServiceImpl(IProductAttributeRepository iProductAttributeRepository) {
-    this.iProductAttributeRepository = iProductAttributeRepository;
-  }
+	private final IProductAttributeRepository iProductAttributeRepository;
 
-  @Override
-  public ResponseEntity<ResVm> createNewAttribute(
-      ProductAttributeCreateReqVm productAttributeCreateReqVm) {
-    ProductAttribute productAttribute = productAttributeCreateReqVm.toModel();
-    if (this.iProductAttributeRepository.existsByName(productAttribute.getName())) {
-      throw new BadRequestException(
-          "Product Attribute with name " + productAttribute.getName() + " already exists!");
-    }
-    productAttribute.setStatus(Status.ENABLED);
-    ProductAttribute newProductAttribute = this.iProductAttributeRepository.save(productAttribute);
+	@Autowired
+	public ProductAttributeServiceImpl(IProductAttributeRepository iProductAttributeRepository) {
+		this.iProductAttributeRepository = iProductAttributeRepository;
+	}
 
-    ResVm resVm =
-        new ResVm(
-            HttpStatus.CREATED,
-            "Create new attribute successfully - id: " + newProductAttribute.getId());
-    LOG.info(resVm.getLogMessage());
-    return ResponseEntity.status(201).body(resVm);
-  }
+	@Override
+	public ResponseEntity<ResVm> createNewAttribute(ProductAttributeCreateReqVm productAttributeCreateReqVm) {
+		ProductAttribute productAttribute = productAttributeCreateReqVm.toModel();
+		if (this.iProductAttributeRepository.existsByName(productAttribute.getName())) {
+			throw new BadRequestException(
+					"Product Attribute with name " + productAttribute.getName() + " already exists!");
+		}
+		productAttribute.setStatus(Status.ENABLED);
+		ProductAttribute newProductAttribute = this.iProductAttributeRepository.save(productAttribute);
 
-  public ProductAttribute getById(String id) {
-    LOG.info("getById: get product attribute with id: " + id);
-    ProductAttribute productAttribute =
-        this.iProductAttributeRepository
-            .findById(id)
-            .orElseThrow(
-                () ->
-                    new EntityNotFoundException(
-                        String.format(
-                            "Product Attribute with id: %s does not exist! Pls try again!", id)));
+		ResVm resVm = new ResVm(HttpStatus.CREATED,
+				"Create new attribute successfully - id: " + newProductAttribute.getId());
+		LOG.info(resVm.getLogMessage());
+		return ResponseEntity.status(201).body(resVm);
+	}
 
-    if (Status.REMOVED.equals(productAttribute.getStatus())) {
-      LOG.debug("getById: bad request. Attribute have status is REMOVED.");
-      throw new BadRequestException("Attribute removed. Please try again!");
-    }
+	public ProductAttribute getById(String id) {
+		LOG.info("getById: get product attribute with id: " + id);
+		ProductAttribute productAttribute = this.iProductAttributeRepository.findById(id)
+			.orElseThrow(() -> new EntityNotFoundException(
+					String.format("Product Attribute with id: %s does not exist! Pls try again!", id)));
 
-    return productAttribute;
-  }
+		if (Status.REMOVED.equals(productAttribute.getStatus())) {
+			LOG.debug("getById: bad request. Attribute have status is REMOVED.");
+			throw new BadRequestException("Attribute removed. Please try again!");
+		}
 
-  @Override
-  public ResponseEntity<PagingResVm<ProductAttributeResVm>> getAllProductAttribute(int page) {
-    LOG.info("Receive request to get all product attribute");
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    Pageable pageable =
-        PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
+		return productAttribute;
+	}
 
-    Page<ProductAttribute> productAttributes =
-        this.iProductAttributeRepository.findByCreatorWithPagination(username, pageable);
+	@Override
+	public ResponseEntity<PagingResVm<ProductAttributeResVm>> getAllProductAttribute(int page) {
+		LOG.info("Receive request to get all product attribute");
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
 
-    List<ProductAttributeResVm> productAttributeResVmList =
-        productAttributes.getContent().stream()
-            .map(ProductAttributeResVm::fromModel)
-            .collect(Collectors.toList());
+		Page<ProductAttribute> productAttributes = this.iProductAttributeRepository
+			.findByCreatorWithPagination(username, pageable);
 
-    PagingResVm<ProductAttributeResVm> productAttributeResVm =
-        new PagingResVm<>(
-            productAttributeResVmList,
-            productAttributes.getTotalPages(),
-            (int) productAttributes.getTotalElements());
+		List<ProductAttributeResVm> productAttributeResVmList = productAttributes.getContent()
+			.stream()
+			.map(ProductAttributeResVm::fromModel)
+			.collect(Collectors.toList());
 
-    return ResponseEntity.ok(productAttributeResVm);
-  }
+		PagingResVm<ProductAttributeResVm> productAttributeResVm = new PagingResVm<>(productAttributeResVmList,
+				productAttributes.getTotalPages(), (int) productAttributes.getTotalElements());
 
-  @Override
-  public ResponseEntity<ResVm> updateAttribute(
-      String attId, ProductAttributeCreateReqVm updateModel) {
-    LOG.info(
-        String.format("Receive request to update properties for attribute have id: %s", attId));
-    ProductAttribute productAttribute = getById(attId);
+		return ResponseEntity.ok(productAttributeResVm);
+	}
 
-    productAttribute.setName(updateModel.name());
-    productAttribute.setDescription(updateModel.description());
+	@Override
+	public ResponseEntity<ResVm> updateAttribute(String attId, ProductAttributeCreateReqVm updateModel) {
+		LOG.info(String.format("Receive request to update properties for attribute have id: %s", attId));
+		ProductAttribute productAttribute = getById(attId);
 
-    this.iProductAttributeRepository.save(productAttribute);
+		productAttribute.setName(updateModel.name());
+		productAttribute.setDescription(updateModel.description());
 
-    ResVm resVm = new ResVm(HttpStatus.OK, "Update attribute successfully");
-    LOG.info(resVm.getLogMessage());
+		this.iProductAttributeRepository.save(productAttribute);
 
-    return ResponseEntity.ok(resVm);
-  }
+		ResVm resVm = new ResVm(HttpStatus.OK, "Update attribute successfully");
+		LOG.info(resVm.getLogMessage());
 
-  @Override
-  public ResponseEntity<ResVm> updateStatusAtt(String attId, String action) {
-    LOG.info(
-        String.format(
-            "Receive request to change status for attribute have id: %s and action: %s ",
-            attId, action));
-    ProductAttribute productAttribute = getById(attId);
-    if (Action.ENABLE.toString().toLowerCase().equals(action)) {
-      productAttribute.setStatus(Status.ENABLED);
-    } else {
-      productAttribute.setStatus(Status.DISABLED);
-    }
-    this.iProductAttributeRepository.save(productAttribute);
+		return ResponseEntity.ok(resVm);
+	}
 
-    ResVm resVm = new ResVm(HttpStatus.OK, "Update status successfully");
-    LOG.info(resVm.getLogMessage());
+	@Override
+	public ResponseEntity<ResVm> updateStatusAtt(String attId, String action) {
+		LOG.info(String.format("Receive request to change status for attribute have id: %s and action: %s ", attId,
+				action));
+		ProductAttribute productAttribute = getById(attId);
+		if (Action.ENABLE.toString().toLowerCase().equals(action)) {
+			productAttribute.setStatus(Status.ENABLED);
+		}
+		else {
+			productAttribute.setStatus(Status.DISABLED);
+		}
+		this.iProductAttributeRepository.save(productAttribute);
 
-    return ResponseEntity.ok(resVm);
-  }
+		ResVm resVm = new ResVm(HttpStatus.OK, "Update status successfully");
+		LOG.info(resVm.getLogMessage());
 
-  @Override
-  public ResponseEntity<ResVm> deleteAttribute(String attId) {
-    LOG.info(String.format("Receive request to delete status for attribute have id: %s", attId));
-    ProductAttribute productAttribute = getById(attId);
+		return ResponseEntity.ok(resVm);
+	}
 
-    productAttribute.setStatus(Status.REMOVED);
-    this.iProductAttributeRepository.save(productAttribute);
+	@Override
+	public ResponseEntity<ResVm> deleteAttribute(String attId) {
+		LOG.info(String.format("Receive request to delete status for attribute have id: %s", attId));
+		ProductAttribute productAttribute = getById(attId);
 
-    LOG.info("Delete attribute done");
+		productAttribute.setStatus(Status.REMOVED);
+		this.iProductAttributeRepository.save(productAttribute);
 
-    ResVm resVm = new ResVm(HttpStatus.OK, "Delete attribute successfully");
-    LOG.info(resVm.getLogMessage());
+		LOG.info("Delete attribute done");
 
-    return ResponseEntity.ok(resVm);
-  }
+		ResVm resVm = new ResVm(HttpStatus.OK, "Delete attribute successfully");
+		LOG.info(resVm.getLogMessage());
 
-  @Override
-  public ResponseEntity<List<CommonProductResVm>> getAllAttribute() {
-    String user = CommonService.getUser();
-    List<ProductAttribute> productAttributes =
-        this.iProductAttributeRepository.findByCreateByAndStatus(user, Status.ENABLED);
-    List<CommonProductResVm> productResVms = new ArrayList<>();
+		return ResponseEntity.ok(resVm);
+	}
 
-    for (ProductAttribute attribute : productAttributes) {
-      productResVms.add(new CommonProductResVm(attribute.getId(), attribute.getName()));
-    }
+	@Override
+	public ResponseEntity<List<CommonProductResVm>> getAllAttribute() {
+		String user = CommonService.getUser();
+		List<ProductAttribute> productAttributes = this.iProductAttributeRepository.findByCreateByAndStatus(user,
+				Status.ENABLED);
+		List<CommonProductResVm> productResVms = new ArrayList<>();
 
-    return ResponseEntity.ok(productResVms);
-  }
+		for (ProductAttribute attribute : productAttributes) {
+			productResVms.add(new CommonProductResVm(attribute.getId(), attribute.getName()));
+		}
+
+		return ResponseEntity.ok(productResVms);
+	}
+
 }

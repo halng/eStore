@@ -16,29 +16,32 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class CorsConfig {
 
-  private static final String ALLOW_HEADER =
-      "authorization, Content-Type, Authorization, credential";
-  private static final String ALLOW_METHODS = "GET, PUT, PATCH, DELETE, OPTIONS";
-  private static final String ALLOW_ORIGINS = "*";
-  private static final String MAX_AGE = "3600";
+	private static final String ALLOW_HEADER = "authorization, Content-Type, Authorization, credential";
 
-  @Bean
-  WebFilter corsWebFilter() {
-    return (ServerWebExchange sse, WebFilterChain wfc) -> {
-      ServerHttpRequest request = sse.getRequest();
-      if (CorsUtils.isCorsRequest(request)) {
-        ServerHttpResponse response = sse.getResponse();
-        HttpHeaders headers = response.getHeaders();
-        headers.set("Access-Control-Allow-Origin", ALLOW_ORIGINS);
-        headers.set("Access-Control-Allow-Methods", ALLOW_METHODS);
-        headers.set("Access-Control-Max-Age", MAX_AGE);
-        headers.set("Access-Control-Allow-Headers", ALLOW_HEADER);
-        if (request.getMethod() == HttpMethod.OPTIONS) {
-          response.setStatusCode(HttpStatus.OK);
-          return Mono.empty();
-        }
-      }
-      return wfc.filter(sse);
-    };
-  }
+	private static final String ALLOW_METHODS = "GET, PUT, PATCH, DELETE, OPTIONS";
+
+	private static final String ALLOW_ORIGINS = "*";
+
+	private static final String MAX_AGE = "3600";
+
+	@Bean
+	WebFilter corsWebFilter() {
+		return (ServerWebExchange sse, WebFilterChain wfc) -> {
+			ServerHttpRequest request = sse.getRequest();
+			if (CorsUtils.isCorsRequest(request)) {
+				ServerHttpResponse response = sse.getResponse();
+				HttpHeaders headers = response.getHeaders();
+				headers.set("Access-Control-Allow-Origin", ALLOW_ORIGINS);
+				headers.set("Access-Control-Allow-Methods", ALLOW_METHODS);
+				headers.set("Access-Control-Max-Age", MAX_AGE);
+				headers.set("Access-Control-Allow-Headers", ALLOW_HEADER);
+				if (request.getMethod() == HttpMethod.OPTIONS) {
+					response.setStatusCode(HttpStatus.OK);
+					return Mono.empty();
+				}
+			}
+			return wfc.filter(sse);
+		};
+	}
+
 }

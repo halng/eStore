@@ -12,168 +12,146 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 class ProductAttributeControllerTest extends AbstractControllerTest {
-  ProductAttributeCreateReqVm updateModel;
 
-  @Override
-  @BeforeEach
-  public void setUp() {
-    super.setUp();
-    updateModel = new ProductAttributeCreateReqVm("hehe", "test update attribute");
-  }
+	ProductAttributeCreateReqVm updateModel;
 
-  @Test
-  void getAttributeTest() throws Exception {
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.get("/api/v1/product/attribute")
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .param("page", "1"))
-            .andReturn();
+	@Override
+	@BeforeEach
+	public void setUp() {
+		super.setUp();
+		updateModel = new ProductAttributeCreateReqVm("hehe", "test update attribute");
+	}
 
-    int statusCode = result.getResponse().getStatus();
-    Assertions.assertEquals(200, statusCode);
+	@Test
+	void getAttributeTest() throws Exception {
+		MvcResult result = mockMvc
+			.perform(MockMvcRequestBuilders.get("/api/v1/product/attribute")
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.param("page", "1"))
+			.andReturn();
 
-    String responseContent = result.getResponse().getContentAsString();
-    PagingResVm listProductAttributeResVm = this.mapFromJson(responseContent, PagingResVm.class);
-    Assertions.assertEquals(4, listProductAttributeResVm.totalItems());
-    Assertions.assertEquals(1, listProductAttributeResVm.totalPages());
-  }
+		int statusCode = result.getResponse().getStatus();
+		Assertions.assertEquals(200, statusCode);
 
-  @Test
-  void getAllAttributeTest() throws Exception {
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.get("/api/v1/product/attribute/all")
-                    .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andReturn();
+		String responseContent = result.getResponse().getContentAsString();
+		PagingResVm listProductAttributeResVm = this.mapFromJson(responseContent, PagingResVm.class);
+		Assertions.assertEquals(4, listProductAttributeResVm.totalItems());
+		Assertions.assertEquals(1, listProductAttributeResVm.totalPages());
+	}
 
-    Assertions.assertEquals(200, result.getResponse().getStatus());
+	@Test
+	void getAllAttributeTest() throws Exception {
+		MvcResult result = mockMvc
+			.perform(MockMvcRequestBuilders.get("/api/v1/product/attribute/all")
+				.accept(MediaType.APPLICATION_JSON_VALUE))
+			.andReturn();
 
-    CommonProductResVm[] commonProductResVmList =
-        this.mapFromJson(result.getResponse().getContentAsString(), CommonProductResVm[].class);
+		Assertions.assertEquals(200, result.getResponse().getStatus());
 
-    Assertions.assertEquals(2, commonProductResVmList.length); // ENABLE only
-  }
+		CommonProductResVm[] commonProductResVmList = this.mapFromJson(result.getResponse().getContentAsString(),
+				CommonProductResVm[].class);
 
-  @Test
-  void updateAttributeTest_whenAttributeIsRemoved() throws Exception {
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.put("/api/v1/product/attribute/att4")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .content(this.mapToJson(updateModel)))
-            .andReturn();
+		Assertions.assertEquals(2, commonProductResVmList.length); // ENABLE only
+	}
 
-    int statusCode = result.getResponse().getStatus();
-    Assertions.assertEquals(400, statusCode);
-    Assertions.assertEquals(
-        "{\"msg\":\"Attribute removed. Please try"
-            + " again!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
-            + " Attribute removed. Please try again!\\n"
-            + "Status Code: 400\"}",
-        result.getResponse().getContentAsString());
-  }
+	@Test
+	void updateAttributeTest_whenAttributeIsRemoved() throws Exception {
+		MvcResult result = mockMvc
+			.perform(MockMvcRequestBuilders.put("/api/v1/product/attribute/att4")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.content(this.mapToJson(updateModel)))
+			.andReturn();
 
-  @Test
-  void updateAttributeTest() throws Exception {
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.put("/api/v1/product/attribute/att2")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .content(this.mapToJson(updateModel)))
-            .andReturn();
+		int statusCode = result.getResponse().getStatus();
+		Assertions.assertEquals(400, statusCode);
+		Assertions.assertEquals(
+				"{\"msg\":\"Attribute removed. Please try"
+						+ " again!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
+						+ " Attribute removed. Please try again!\\n" + "Status Code: 400\"}",
+				result.getResponse().getContentAsString());
+	}
 
-    int statusCode = result.getResponse().getStatus();
-    Assertions.assertEquals(200, statusCode);
-    Assertions.assertEquals(
-        "{\"status\":\"OK\",\"message\":\"Update attribute successfully\",\"logMessage\":\"200 OK -"
-            + " Update attribute successfully\"}",
-        result.getResponse().getContentAsString());
-  }
+	@Test
+	void updateAttributeTest() throws Exception {
+		MvcResult result = mockMvc
+			.perform(MockMvcRequestBuilders.put("/api/v1/product/attribute/att2")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.content(this.mapToJson(updateModel)))
+			.andReturn();
 
-  @Test
-  void updateStatusAttribute() throws Exception {
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.patch("/api/v1/product/attribute")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .param("action", Action.ENABLE.toString().toLowerCase())
-                    .param("attId", "att1"))
-            .andReturn();
+		int statusCode = result.getResponse().getStatus();
+		Assertions.assertEquals(200, statusCode);
+		Assertions
+			.assertEquals("{\"status\":\"OK\",\"message\":\"Update attribute successfully\",\"logMessage\":\"200 OK -"
+					+ " Update attribute successfully\"}", result.getResponse().getContentAsString());
+	}
 
-    int statusCode = result.getResponse().getStatus();
-    Assertions.assertEquals(200, statusCode);
-    Assertions.assertEquals(
-        "{\"status\":\"OK\",\"message\":\"Update status successfully\",\"logMessage\":\"200 OK -"
-            + " Update status successfully\"}",
-        result.getResponse().getContentAsString());
-  }
+	@Test
+	void updateStatusAttribute() throws Exception {
+		MvcResult result = mockMvc
+			.perform(MockMvcRequestBuilders.patch("/api/v1/product/attribute")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.param("action", Action.ENABLE.toString().toLowerCase())
+				.param("attId", "att1"))
+			.andReturn();
 
-  @Test
-  void deleteAttributeTest() throws Exception {
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.delete("/api/v1/product/attribute/att1")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andReturn();
+		int statusCode = result.getResponse().getStatus();
+		Assertions.assertEquals(200, statusCode);
+		Assertions
+			.assertEquals("{\"status\":\"OK\",\"message\":\"Update status successfully\",\"logMessage\":\"200 OK -"
+					+ " Update status successfully\"}", result.getResponse().getContentAsString());
+	}
 
-    int statusCode = result.getResponse().getStatus();
-    Assertions.assertEquals(200, statusCode);
-    Assertions.assertEquals(
-        "{\"status\":\"OK\",\"message\":\"Delete attribute successfully\",\"logMessage\":\"200 OK -"
-            + " Delete attribute successfully\"}",
-        result.getResponse().getContentAsString());
-  }
+	@Test
+	void deleteAttributeTest() throws Exception {
+		MvcResult result = mockMvc
+			.perform(MockMvcRequestBuilders.delete("/api/v1/product/attribute/att1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON_VALUE))
+			.andReturn();
 
-  @Test
-  void createAttributeTest_whenNameExist() throws Exception {
-    ProductAttributeCreateReqVm createModel = new ProductAttributeCreateReqVm("Att - 1", "");
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.post("/api/v1/product/attribute")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .content(this.mapToJson(createModel)))
-            .andReturn();
-    int statusCode = result.getResponse().getStatus();
-    Assertions.assertEquals(400, statusCode);
-    Assertions.assertEquals(
-        "{\"msg\":\"Product Attribute with name Att - 1 already"
-            + " exists!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
-            + " Product Attribute with name Att - 1 already exists!\\n"
-            + "Status Code: 400\"}",
-        result.getResponse().getContentAsString());
-  }
+		int statusCode = result.getResponse().getStatus();
+		Assertions.assertEquals(200, statusCode);
+		Assertions
+			.assertEquals("{\"status\":\"OK\",\"message\":\"Delete attribute successfully\",\"logMessage\":\"200 OK -"
+					+ " Delete attribute successfully\"}", result.getResponse().getContentAsString());
+	}
 
-  @Test
-  void createAttributeTest() throws Exception {
-    ProductAttributeCreateReqVm createModel = new ProductAttributeCreateReqVm("Att - 5", "");
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.post("/api/v1/product/attribute")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .content(this.mapToJson(createModel)))
-            .andReturn();
-    int statusCode = result.getResponse().getStatus();
-    Assertions.assertEquals(201, statusCode);
-    Assertions.assertTrue(
-        result
-            .getResponse()
-            .getContentAsString()
-            .startsWith(
-                "{\"status\":\"CREATED\",\"message\":\"Create new attribute successfully - id:"));
-  }
+	@Test
+	void createAttributeTest_whenNameExist() throws Exception {
+		ProductAttributeCreateReqVm createModel = new ProductAttributeCreateReqVm("Att - 1", "");
+		MvcResult result = mockMvc
+			.perform(MockMvcRequestBuilders.post("/api/v1/product/attribute")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.content(this.mapToJson(createModel)))
+			.andReturn();
+		int statusCode = result.getResponse().getStatus();
+		Assertions.assertEquals(400, statusCode);
+		Assertions.assertEquals(
+				"{\"msg\":\"Product Attribute with name Att - 1 already"
+						+ " exists!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
+						+ " Product Attribute with name Att - 1 already exists!\\n" + "Status Code: 400\"}",
+				result.getResponse().getContentAsString());
+	}
+
+	@Test
+	void createAttributeTest() throws Exception {
+		ProductAttributeCreateReqVm createModel = new ProductAttributeCreateReqVm("Att - 5", "");
+		MvcResult result = mockMvc
+			.perform(MockMvcRequestBuilders.post("/api/v1/product/attribute")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.content(this.mapToJson(createModel)))
+			.andReturn();
+		int statusCode = result.getResponse().getStatus();
+		Assertions.assertEquals(201, statusCode);
+		Assertions.assertTrue(result.getResponse()
+			.getContentAsString()
+			.startsWith("{\"status\":\"CREATED\",\"message\":\"Create new attribute successfully - id:"));
+	}
+
 }

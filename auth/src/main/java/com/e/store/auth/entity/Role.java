@@ -29,16 +29,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Role {
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  @Column(name = "role")
-  @Enumerated(EnumType.STRING)
-  private AccountRole roleName;
+	@Column(name = "role")
+	@Enumerated(EnumType.STRING)
+	private AccountRole roleName;
 
-  @JsonIgnore
-  @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private Set<Account> accounts;
+	@JsonIgnore
+	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Account> accounts;
+
 }

@@ -7,5 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface IImageService {
 
-  ResponseEntity<ResVm> uploadImage(List<MultipartFile> files, String caption);
+	ResponseEntity<ResVm> uploadImage(List<MultipartFile> files, String caption);
+
 }

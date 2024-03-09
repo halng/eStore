@@ -23,38 +23,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product")
 public class ProductController {
 
-  private final IProductService iProductService;
+	private final IProductService iProductService;
 
-  @Autowired
-  public ProductController(IProductService iProductService) {
-    this.iProductService = iProductService;
-  }
+	@Autowired
+	public ProductController(IProductService iProductService) {
+		this.iProductService = iProductService;
+	}
 
-  @PostMapping()
-  public ResponseEntity<ResVm> createNewProduct(@RequestBody ProductReqVm productReqVm) {
-    return iProductService.createNewProduct(productReqVm);
-  }
+	@PostMapping()
+	public ResponseEntity<ResVm> createNewProduct(@RequestBody ProductReqVm productReqVm) {
+		return iProductService.createNewProduct(productReqVm);
+	}
 
-  @GetMapping("")
-  public ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(
-      @RequestParam @Min(1) int page) {
-    return iProductService.getProductsWithPaging(page);
-  }
+	@GetMapping("")
+	public ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(@RequestParam @Min(1) int page) {
+		return iProductService.getProductsWithPaging(page);
+	}
 
-  @GetMapping("/{slug}")
-  public ResponseEntity<ProductDetailResVm> getDetailProductById(@PathVariable String slug) {
-    return this.iProductService.getDetailProductBySlug(slug);
-  }
+	@GetMapping("/{slug}")
+	public ResponseEntity<ProductDetailResVm> getDetailProductById(@PathVariable String slug) {
+		return this.iProductService.getDetailProductBySlug(slug);
+	}
 
-  @PutMapping("/{prodId}")
-  public ResponseEntity<?> updateProductById(
-      @PathVariable String prodId, @RequestBody ProductReqVm productReqVm) {
-    return null;
-  }
+	@PutMapping("/{prodId}")
+	public ResponseEntity<?> updateProductById(@PathVariable String prodId, @RequestBody ProductReqVm productReqVm) {
+		return null;
+	}
 
-  @PatchMapping("/{prodId}/{action}")
-  public ResponseEntity<ResVm> updateStatus(
-      @PathVariable String prodId, @PathVariable String action) {
-    return this.iProductService.updateStatus(prodId, action);
-  }
+	@PatchMapping("/{prodId}/{action}")
+	public ResponseEntity<ResVm> updateStatus(@PathVariable String prodId, @PathVariable String action) {
+		return this.iProductService.updateStatus(prodId, action);
+	}
+
 }

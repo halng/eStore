@@ -9,19 +9,19 @@ import org.springframework.web.multipart.MultipartFile;
 @Component
 public abstract class UploadToBucketUtils {
 
-  private final List<String> SUPPORTED_EXTENSION = Arrays.asList(".jpeg", ".jpg", ".png");
+	private final List<String> SUPPORTED_EXTENSION = Arrays.asList(".jpeg", ".jpg", ".png");
 
-  String getFileExtension(String fileName) {
-    if (fileName != null && fileName.contains(".")) {
-      for (var e : SUPPORTED_EXTENSION) {
-        if (fileName.endsWith(e)) {
-          return e;
-        }
-      }
-    }
-    throw new BadRequestException("File extension not supported " + fileName);
-  }
+	String getFileExtension(String fileName) {
+		if (fileName != null && fileName.contains(".")) {
+			for (var e : SUPPORTED_EXTENSION) {
+				if (fileName.endsWith(e)) {
+					return e;
+				}
+			}
+		}
+		throw new BadRequestException("File extension not supported " + fileName);
+	}
 
-  public abstract String uploadFile(
-      MultipartFile multipartFile, String fileName, String contentType);
+	public abstract String uploadFile(MultipartFile multipartFile, String fileName, String contentType);
+
 }

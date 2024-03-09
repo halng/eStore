@@ -19,41 +19,38 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 class UserDetailsServiceTest {
 
-  UserDetailsServiceImpl userDetailsService;
-  IAuthRepository authRepository;
+	UserDetailsServiceImpl userDetailsService;
 
-  @BeforeEach
-  void setUp() {
-    authRepository = mock(IAuthRepository.class);
-    userDetailsService = new UserDetailsServiceImpl(authRepository);
-  }
+	IAuthRepository authRepository;
 
-  @Test
-  void loadUserByUsername_shouldThrowException_whenDataInvalid() {
-    NotFoundException usernameNotFoundException =
-        Assert.assertThrows(
-            NotFoundException.class,
-            () -> {
-              userDetailsService.loadUserByUsername("admin");
-            });
+	@BeforeEach
+	void setUp() {
+		authRepository = mock(IAuthRepository.class);
+		userDetailsService = new UserDetailsServiceImpl(authRepository);
+	}
 
-    assertEquals("Username admin not found", usernameNotFoundException.getMessage());
-  }
+	@Test
+	void loadUserByUsername_shouldThrowException_whenDataInvalid() {
+		NotFoundException usernameNotFoundException = Assert.assertThrows(NotFoundException.class, () -> {
+			userDetailsService.loadUserByUsername("admin");
+		});
 
-  @Test
-  void loadUserByUsername_shouldReturnUser_whenDataValid() {
-    Role role = Role.builder().id(1L).roleName(AccountRole.BUYER).build();
-    Account account =
-        Account.builder().username("username").password("password").role(role).build();
+		assertEquals("Username admin not found", usernameNotFoundException.getMessage());
+	}
 
-    when(authRepository.findByUsername("username")).thenReturn(Optional.of(account));
+	@Test
+	void loadUserByUsername_shouldReturnUser_whenDataValid() {
+		Role role = Role.builder().id(1L).roleName(AccountRole.BUYER).build();
+		Account account = Account.builder().username("username").password("password").role(role).build();
 
-    UserDetails userDetailsExpected = userDetailsService.loadUserByUsername("username");
+		when(authRepository.findByUsername("username")).thenReturn(Optional.of(account));
 
-    assertNotNull(userDetailsExpected);
-    assertEquals(userDetailsExpected.getUsername(), account.getUsername());
-    assertEquals(
-        userDetailsExpected.getAuthorities().toString(), account.getAuthorities().toString());
-    assertEquals(userDetailsExpected.getPassword(), account.getPassword());
-  }
+		UserDetails userDetailsExpected = userDetailsService.loadUserByUsername("username");
+
+		assertNotNull(userDetailsExpected);
+		assertEquals(userDetailsExpected.getUsername(), account.getUsername());
+		assertEquals(userDetailsExpected.getAuthorities().toString(), account.getAuthorities().toString());
+		assertEquals(userDetailsExpected.getPassword(), account.getPassword());
+	}
+
 }

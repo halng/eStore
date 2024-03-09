@@ -6,8 +6,9 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class RePassConstraintValidator implements ConstraintValidator<RePassword, SignUpVm> {
 
-  @Override
-  public boolean isValid(SignUpVm signUpVm, ConstraintValidatorContext constraintValidatorContext) {
-    return signUpVm.password().equals(signUpVm.rePassword());
-  }
+	@Override
+	public boolean isValid(SignUpVm signUpVm, ConstraintValidatorContext constraintValidatorContext) {
+		return signUpVm.password().equals(signUpVm.rePassword());
+	}
+
 }

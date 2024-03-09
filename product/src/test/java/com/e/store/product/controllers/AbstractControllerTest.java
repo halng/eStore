@@ -24,57 +24,60 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class AbstractControllerTest {
-  protected MockMvc mockMvc;
-  @Autowired WebApplicationContext webApplicationContext;
-  private ObjectMapper mapper;
 
-  protected void setUp() {
-    mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    this.mapper = new ObjectMapper();
-    SecurityContextHolder.getContext()
-        .setAuthentication(
-            new Authentication() {
-              @Override
-              public Collection<? extends GrantedAuthority> getAuthorities() {
-                return null;
-              }
+	protected MockMvc mockMvc;
 
-              @Override
-              public Object getCredentials() {
-                return null;
-              }
+	@Autowired
+	WebApplicationContext webApplicationContext;
 
-              @Override
-              public Object getDetails() {
-                return null;
-              }
+	private ObjectMapper mapper;
 
-              @Override
-              public Object getPrincipal() {
-                return null;
-              }
+	protected void setUp() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mapper = new ObjectMapper();
+		SecurityContextHolder.getContext().setAuthentication(new Authentication() {
+			@Override
+			public Collection<? extends GrantedAuthority> getAuthorities() {
+				return null;
+			}
 
-              @Override
-              public boolean isAuthenticated() {
-                return false;
-              }
+			@Override
+			public Object getCredentials() {
+				return null;
+			}
 
-              @Override
-              public void setAuthenticated(boolean isAuthenticated)
-                  throws IllegalArgumentException {}
+			@Override
+			public Object getDetails() {
+				return null;
+			}
 
-              @Override
-              public String getName() {
-                return "SYSTEM";
-              }
-            });
-  }
+			@Override
+			public Object getPrincipal() {
+				return null;
+			}
 
-  protected String mapToJson(Object obj) throws JsonProcessingException {
-    return this.mapper.writeValueAsString(obj);
-  }
+			@Override
+			public boolean isAuthenticated() {
+				return false;
+			}
 
-  protected <T> T mapFromJson(String json, Class<T> entity) throws IOException {
-    return this.mapper.readValue(json, entity);
-  }
+			@Override
+			public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+			}
+
+			@Override
+			public String getName() {
+				return "SYSTEM";
+			}
+		});
+	}
+
+	protected String mapToJson(Object obj) throws JsonProcessingException {
+		return this.mapper.writeValueAsString(obj);
+	}
+
+	protected <T> T mapFromJson(String json, Class<T> entity) throws IOException {
+		return this.mapper.readValue(json, entity);
+	}
+
 }

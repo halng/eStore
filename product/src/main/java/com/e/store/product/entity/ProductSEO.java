@@ -23,14 +23,16 @@ import lombok.Setter;
 @Table(name = "product_seo")
 public class ProductSEO extends AuditEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
 
-  private String keyword;
-  private String metadata;
+	private String keyword;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "product_id", referencedColumnName = "id")
-  private Product product;
+	private String metadata;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	private Product product;
+
 }

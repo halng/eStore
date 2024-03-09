@@ -4,5 +4,6 @@ import com.e.store.auth.entity.Account;
 
 public interface IRefreshTokenService {
 
-  String generateRefreshToken(Account account);
+	String generateRefreshToken(Account account);
+
 }

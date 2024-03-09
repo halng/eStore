@@ -16,45 +16,38 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  private final RequestFilterConfig requestFilterConfig;
+	private final RequestFilterConfig requestFilterConfig;
 
-  @Bean
-  public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity
-        .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(
-            auth ->
-                auth.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**", "/error")
-                    .permitAll()
-                    .requestMatchers("/api/v1/product", "/api/v1/product/**")
-                    .hasAuthority("SELLER")
-                    .anyRequest()
-                    .authenticated());
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(
+					auth -> auth.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/api-docs/**", "/error")
+						.permitAll()
+						.requestMatchers("/api/v1/product", "/api/v1/product/**")
+						.hasAuthority("SELLER")
+						.anyRequest()
+						.authenticated());
 
-    httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);
-    httpSecurity.addFilterBefore(requestFilterConfig, UsernamePasswordAuthenticationFilter.class);
-    return httpSecurity.build();
-  }
+		httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable);
+		httpSecurity.addFilterBefore(requestFilterConfig, UsernamePasswordAuthenticationFilter.class);
+		return httpSecurity.build();
+	}
 
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer() {
-    return web ->
-        web.ignoring()
-            .requestMatchers(
-                "/actuator/prometheus",
-                "/swagger-ui",
-                "/swagger-ui/**",
-                "/error",
-                "/v3/api-docs/**");
-  }
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return web -> web.ignoring()
+			.requestMatchers("/actuator/prometheus", "/swagger-ui", "/swagger-ui/**", "/error", "/v3/api-docs/**");
+	}
 
-  @Bean
-  public WebMvcConfigurer corsConfigurer() {
-    return new WebMvcConfigurer() {
-      @Override
-      public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("*").allowedOrigins("*").allowedHeaders("*");
-      }
-    };
-  }
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedMethods("*").allowedOrigins("*").allowedHeaders("*");
+			}
+		};
+	}
+
 }

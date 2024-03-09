@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public record ResVm(HttpStatus status, String message) {
 
-  public String getLogMessage() {
-    return status.toString() + " - " + message;
-  }
+	public String getLogMessage() {
+		return status.toString() + " - " + message;
+	}
 }

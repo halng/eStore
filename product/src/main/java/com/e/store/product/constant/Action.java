@@ -1,7 +1,7 @@
 package com.e.store.product.constant;
 
 public enum Action {
-  ENABLE,
-  DISABLE,
-  DELETE
+
+	CREATE, UPDATE, ENABLE, DISABLE, DELETE
+
 }

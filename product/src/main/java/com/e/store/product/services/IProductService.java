@@ -9,13 +9,14 @@ import org.springframework.http.ResponseEntity;
 
 public interface IProductService {
 
-  ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);
+	ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm);
 
-  ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(int page);
+	ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(int page);
 
-  ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm);
+	ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm);
 
-  ResponseEntity<ResVm> updateStatus(String productId, String action);
+	ResponseEntity<ResVm> updateStatus(String productId, String action);
 
-  ResponseEntity<ProductDetailResVm> getDetailProductBySlug(String slug);
+	ResponseEntity<ProductDetailResVm> getDetailProductBySlug(String slug);
+
 }

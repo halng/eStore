@@ -14,13 +14,14 @@ import org.springframework.messaging.handler.annotation.Payload;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({FIELD, ANNOTATION_TYPE, RECORD_COMPONENT, CONSTRUCTOR})
+@Target({ FIELD, ANNOTATION_TYPE, RECORD_COMPONENT, CONSTRUCTOR })
 @Constraint(validatedBy = PasswordConstraintValidator.class)
 public @interface ValidPassword {
 
-  String message() default "Invalid Password";
+	String message() default "Invalid Password";
 
-  Class<?>[] groups() default {};
+	Class<?>[] groups() default {};
 
-  Class<? extends Payload>[] payload() default {};
+	Class<? extends Payload>[] payload() default {};
+
 }

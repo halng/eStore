@@ -44,157 +44,149 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements IAuthService {
 
-  private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
-  private final IAuthRepository authRepository;
-  private final IRoleRepository roleRepository;
-  private final PasswordEncoder passwordEncoder;
-  private final AuthenticationManager authenticationManager;
-  private final JwtUtilities jwtUtilities;
-  private final IRefreshTokenService refreshTokenService;
-  private final IMessageProducer iMessageProducer;
-  private final IVerifyAccountRepository iVerifyAccountRepository;
+	private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
-  public ResponseEntity<HttpStatus> sendMessageActiveAccount(Account account) {
-    if (account.getId() == null) {
-      logger.error("Server can't create account correctly for user");
-      throw new InternalErrorException("Server can't create account correctly. Try again!");
-    }
+	private final IAuthRepository authRepository;
 
-    String token = UUID.randomUUID().toString();
-    Long expiryDate =
-        Instant.now().plusSeconds(Const.DEFAULT_TIME_EXPIRY_CONFIRM_ACCOUNT).getEpochSecond();
-    VerifyAccount verifyAccount =
-        VerifyAccount.builder().token(token).account(account).expiryDate(expiryDate).build();
+	private final IRoleRepository roleRepository;
 
-    VerifyAccount createdVerifyAccount = iVerifyAccountRepository.save(verifyAccount);
+	private final PasswordEncoder passwordEncoder;
 
-    AuthMessageVm authMessageVm =
-        new AuthMessageVm(
-            account.getEmail(),
-            account.getUsername(),
-            createdVerifyAccount.getToken(),
-            createdVerifyAccount.getExpiryDate());
+	private final AuthenticationManager authenticationManager;
 
-    logger.info("Send message for IMessageProducer");
-    iMessageProducer.sendMessage(authMessageVm);
+	private final JwtUtilities jwtUtilities;
 
-    return ResponseEntity.status(HttpStatus.CREATED.value()).build();
-  }
+	private final IRefreshTokenService refreshTokenService;
 
-  @Override
-  public ResponseEntity<HttpStatus> signUp(SignUpVm signUpData) {
+	private final IMessageProducer iMessageProducer;
 
-    // already on front-end - but check again to make sure user don't call api directly
-    if (!signUpData.password().equals(signUpData.rePassword())) {
-      throw new BadRequestException("Password are not identical!");
-    }
+	private final IVerifyAccountRepository iVerifyAccountRepository;
 
-    if (!(signUpData.role() == 1 || signUpData.role() == 2)) {
-      throw new BadRequestException("Role incorrect");
-    }
+	public ResponseEntity<HttpStatus> sendMessageActiveAccount(Account account) {
+		if (account.getId() == null) {
+			logger.error("Server can't create account correctly for user");
+			throw new InternalErrorException("Server can't create account correctly. Try again!");
+		}
 
-    if (authRepository.existsByEmail(signUpData.email())) {
-      throw new BadRequestException("Email %s already exist!".formatted(signUpData.email()));
-    }
+		String token = UUID.randomUUID().toString();
+		Long expiryDate = Instant.now().plusSeconds(Const.DEFAULT_TIME_EXPIRY_CONFIRM_ACCOUNT).getEpochSecond();
+		VerifyAccount verifyAccount = VerifyAccount.builder()
+			.token(token)
+			.account(account)
+			.expiryDate(expiryDate)
+			.build();
 
-    Role role =
-        this.roleRepository
-            .findById(signUpData.role())
-            .orElseThrow(() -> new EntityNotFoundException("Role with id not found"));
+		VerifyAccount createdVerifyAccount = iVerifyAccountRepository.save(verifyAccount);
 
-    Account newAccount =
-        Account.builder()
-            .username(signUpData.username())
-            .role(role)
-            .status(AccountStatus.INACTIVE)
-            .password(passwordEncoder.encode(signUpData.password()))
-            .email(signUpData.email())
-            .build();
+		AuthMessageVm authMessageVm = new AuthMessageVm(account.getEmail(), account.getUsername(),
+				createdVerifyAccount.getToken(), createdVerifyAccount.getExpiryDate());
 
-    newAccount.setCreateBy("USER");
-    newAccount.setUpdateBy("USER");
-    Account createedAccount = authRepository.save(newAccount);
+		logger.info("Send message for IMessageProducer");
+		iMessageProducer.sendMessage(authMessageVm);
 
-    return sendMessageActiveAccount(createedAccount);
-  }
+		return ResponseEntity.status(HttpStatus.CREATED.value()).build();
+	}
 
-  public Account getAccountByUsername(String username) {
-    return authRepository
-        .findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
-  }
+	@Override
+	public ResponseEntity<HttpStatus> signUp(SignUpVm signUpData) {
 
-  @Override
-  public Account loadAccountByUsername(String username) {
-    return getAccountByUsername(username);
-  }
+		// already on front-end - but check again to make sure user don't call api
+		// directly
+		if (!signUpData.password().equals(signUpData.rePassword())) {
+			throw new BadRequestException("Password are not identical!");
+		}
 
-  @Override
-  public ResponseEntity<AuthResVm> signIn(SignInVm signInData) {
-    try {
-      Authentication authentication =
-          authenticationManager.authenticate(
-              new UsernamePasswordAuthenticationToken(
-                  signInData.username(), signInData.password()));
-      Account account = getAccountByUsername(authentication.getName());
+		if (!(signUpData.role() == 1 || signUpData.role() == 2)) {
+			throw new BadRequestException("Role incorrect");
+		}
 
-      if (!account.getStatus().equals(AccountStatus.ACTIVE)) {
-        throw new ForbiddenException("Account Not Active");
-      }
+		if (authRepository.existsByEmail(signUpData.email())) {
+			throw new BadRequestException("Email %s already exist!".formatted(signUpData.email()));
+		}
 
-      String accessToken =
-          jwtUtilities.generateAccessToken(
-              account.getUsername(), account.getRole().getRoleName().toString());
-      String refreshToken = refreshTokenService.generateRefreshToken(account);
+		Role role = this.roleRepository.findById(signUpData.role())
+			.orElseThrow(() -> new EntityNotFoundException("Role with id not found"));
 
-      SecurityContextHolder.getContext().setAuthentication(authentication);
+		Account newAccount = Account.builder()
+			.username(signUpData.username())
+			.role(role)
+			.status(AccountStatus.INACTIVE)
+			.password(passwordEncoder.encode(signUpData.password()))
+			.email(signUpData.email())
+			.build();
 
-      return ResponseEntity.status(200)
-          .body(AuthResVm.fromAccount(accessToken, refreshToken, account));
-    } catch (AuthenticationException exception) {
-      logger.error("Login failed. Reason: %s".formatted(exception.getMessage()));
-      throw new AuthenException("Invalid username or password");
-    }
-  }
+		newAccount.setCreateBy("USER");
+		newAccount.setUpdateBy("USER");
+		Account createedAccount = authRepository.save(newAccount);
 
-  @Override
-  public ResponseEntity<HttpStatus> activeAccount(String token, String email) {
-    logger.info("Receive request to active account from {}", email);
+		return sendMessageActiveAccount(createedAccount);
+	}
 
-    Account account =
-        this.authRepository
-            .findByEmail(email)
-            .orElseThrow(
-                () -> new NotFoundException("Account with email: %s not found".formatted(email)));
-    if (!account.getStatus().equals(AccountStatus.INACTIVE)) {
-      throw new BadRequestException("Account already active");
-    }
+	public Account getAccountByUsername(String username) {
+		return authRepository.findByUsername(username)
+			.orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
+	}
 
-    VerifyAccount verifyAccount =
-        iVerifyAccountRepository
-            .findByToken(token)
-            .orElseThrow(() -> new NotFoundException("Token: %s not found".formatted(token)));
-    if (Instant.now().isAfter(Instant.ofEpochSecond(verifyAccount.getExpiryDate()))) {
-      throw new TokenException("Token expired");
-    }
+	@Override
+	public Account loadAccountByUsername(String username) {
+		return getAccountByUsername(username);
+	}
 
-    account.setStatus(AccountStatus.ACTIVE);
-    authRepository.save(account);
-    iVerifyAccountRepository.delete(verifyAccount);
+	@Override
+	public ResponseEntity<AuthResVm> signIn(SignInVm signInData) {
+		try {
+			Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(signInData.username(), signInData.password()));
+			Account account = getAccountByUsername(authentication.getName());
 
-    return ResponseEntity.status(200).build();
-  }
+			if (!account.getStatus().equals(AccountStatus.ACTIVE)) {
+				throw new ForbiddenException("Account Not Active");
+			}
 
-  @Override
-  public ResponseEntity<ValidateAuthVm> validateAuth() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Account account = getAccountByUsername(authentication.getName());
-    ValidateAuthVm result =
-        new ValidateAuthVm(
-            account.getUsername(),
-            account.getAuthorities().stream()
-                .map(e -> e.getAuthority())
-                .reduce("", String::concat));
-    return ResponseEntity.ok(result);
-  }
+			String accessToken = jwtUtilities.generateAccessToken(account.getUsername(),
+					account.getRole().getRoleName().toString());
+			String refreshToken = refreshTokenService.generateRefreshToken(account);
+
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+
+			return ResponseEntity.status(200).body(AuthResVm.fromAccount(accessToken, refreshToken, account));
+		}
+		catch (AuthenticationException exception) {
+			logger.error("Login failed. Reason: %s".formatted(exception.getMessage()));
+			throw new AuthenException("Invalid username or password");
+		}
+	}
+
+	@Override
+	public ResponseEntity<HttpStatus> activeAccount(String token, String email) {
+		logger.info("Receive request to active account from {}", email);
+
+		Account account = this.authRepository.findByEmail(email)
+			.orElseThrow(() -> new NotFoundException("Account with email: %s not found".formatted(email)));
+		if (!account.getStatus().equals(AccountStatus.INACTIVE)) {
+			throw new BadRequestException("Account already active");
+		}
+
+		VerifyAccount verifyAccount = iVerifyAccountRepository.findByToken(token)
+			.orElseThrow(() -> new NotFoundException("Token: %s not found".formatted(token)));
+		if (Instant.now().isAfter(Instant.ofEpochSecond(verifyAccount.getExpiryDate()))) {
+			throw new TokenException("Token expired");
+		}
+
+		account.setStatus(AccountStatus.ACTIVE);
+		authRepository.save(account);
+		iVerifyAccountRepository.delete(verifyAccount);
+
+		return ResponseEntity.status(200).build();
+	}
+
+	@Override
+	public ResponseEntity<ValidateAuthVm> validateAuth() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Account account = getAccountByUsername(authentication.getName());
+		ValidateAuthVm result = new ValidateAuthVm(account.getUsername(),
+				account.getAuthorities().stream().map(e -> e.getAuthority()).reduce("", String::concat));
+		return ResponseEntity.ok(result);
+	}
+
 }

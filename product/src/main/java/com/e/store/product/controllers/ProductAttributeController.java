@@ -25,43 +25,42 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product/attribute")
 public class ProductAttributeController {
 
-  private final IProductAttributeService iProductAttributeService;
+	private final IProductAttributeService iProductAttributeService;
 
-  @Autowired
-  public ProductAttributeController(IProductAttributeService attributeService) {
-    this.iProductAttributeService = attributeService;
-  }
+	@Autowired
+	public ProductAttributeController(IProductAttributeService attributeService) {
+		this.iProductAttributeService = attributeService;
+	}
 
-  @PostMapping()
-  public ResponseEntity<ResVm> createNewAttribute(@RequestBody ProductAttributeCreateReqVm reqVm) {
-    return this.iProductAttributeService.createNewAttribute(reqVm);
-  }
+	@PostMapping()
+	public ResponseEntity<ResVm> createNewAttribute(@RequestBody ProductAttributeCreateReqVm reqVm) {
+		return this.iProductAttributeService.createNewAttribute(reqVm);
+	}
 
-  @GetMapping()
-  public ResponseEntity<PagingResVm<ProductAttributeResVm>> getAttribute(
-      @RequestParam @Min(0) int page) {
-    return this.iProductAttributeService.getAllProductAttribute(page);
-  }
+	@GetMapping()
+	public ResponseEntity<PagingResVm<ProductAttributeResVm>> getAttribute(@RequestParam @Min(0) int page) {
+		return this.iProductAttributeService.getAllProductAttribute(page);
+	}
 
-  @PutMapping("{attId}")
-  public ResponseEntity<ResVm> updateAttribute(
-      @RequestBody ProductAttributeCreateReqVm updateModel, @PathVariable String attId) {
-    return this.iProductAttributeService.updateAttribute(attId, updateModel);
-  }
+	@PutMapping("{attId}")
+	public ResponseEntity<ResVm> updateAttribute(@RequestBody ProductAttributeCreateReqVm updateModel,
+			@PathVariable String attId) {
+		return this.iProductAttributeService.updateAttribute(attId, updateModel);
+	}
 
-  @PatchMapping()
-  public ResponseEntity<ResVm> updateStatusAtt(
-      @RequestParam String action, @RequestParam String attId) {
-    return this.iProductAttributeService.updateStatusAtt(attId, action);
-  }
+	@PatchMapping()
+	public ResponseEntity<ResVm> updateStatusAtt(@RequestParam String action, @RequestParam String attId) {
+		return this.iProductAttributeService.updateStatusAtt(attId, action);
+	}
 
-  @DeleteMapping("{attId}")
-  public ResponseEntity<ResVm> deleteAttribute(@PathVariable String attId) {
-    return this.iProductAttributeService.deleteAttribute(attId);
-  }
+	@DeleteMapping("{attId}")
+	public ResponseEntity<ResVm> deleteAttribute(@PathVariable String attId) {
+		return this.iProductAttributeService.deleteAttribute(attId);
+	}
 
-  @GetMapping("/all")
-  public ResponseEntity<List<CommonProductResVm>> getAllAttribute() {
-    return this.iProductAttributeService.getAllAttribute();
-  }
+	@GetMapping("/all")
+	public ResponseEntity<List<CommonProductResVm>> getAllAttribute() {
+		return this.iProductAttributeService.getAllAttribute();
+	}
+
 }

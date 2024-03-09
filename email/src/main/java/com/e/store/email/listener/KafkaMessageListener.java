@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaMessageListener {
 
-  private static final Logger log = LoggerFactory.getLogger(KafkaMessageListener.class);
-  @Autowired private EmailService emailService;
+	private static final Logger log = LoggerFactory.getLogger(KafkaMessageListener.class);
 
-  @KafkaListener(
-      topics = "user_register",
-      groupId = "user",
-      containerFactory = "kafkaListenerContainerFactory")
-  public void listenGroupUser(String message) {
-    log.info("Get new message: {}", message);
-    JsonObject json = JsonParser.parseString(message).getAsJsonObject();
-    AuthMessageVm authMessageVm = AuthMessageVm.fromJsonObject(json);
-    emailService.sendEmail(authMessageVm);
-  }
+	@Autowired
+	private EmailService emailService;
+
+	@KafkaListener(topics = "user_register", groupId = "user", containerFactory = "kafkaListenerContainerFactory")
+	public void listenGroupUser(String message) {
+		log.info("Get new message: {}", message);
+		JsonObject json = JsonParser.parseString(message).getAsJsonObject();
+		AuthMessageVm authMessageVm = AuthMessageVm.fromJsonObject(json);
+		emailService.sendEmail(authMessageVm);
+	}
+
 }

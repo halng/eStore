@@ -18,47 +18,49 @@ import org.thymeleaf.context.Context;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-  private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
 
-  private final JavaMailSender javaMailSender;
-  private final TemplateEngine templateEngine;
+	private final JavaMailSender javaMailSender;
 
-  @Value("${spring.mail.username}")
-  private String sender;
+	private final TemplateEngine templateEngine;
 
-  public EmailServiceImpl(JavaMailSender javaMailSender, TemplateEngine templateEngine) {
-    this.javaMailSender = javaMailSender;
-    this.templateEngine = templateEngine;
-  }
+	@Value("${spring.mail.username}")
+	private String sender;
 
-  @Override
-  public void sendEmail(AuthMessageVm authMessageVm) {
-    try {
-      // prepare context
-      Context context = new Context();
-      String url = "http://localhost:3000/auth" + authMessageVm.getUrlConfirm();
-      URI activeUrl = new URI(url);
-      context.setVariable("username", authMessageVm.username());
-      context.setVariable("activeUrl", activeUrl.toURL());
-      context.setVariable("expiredDate", Instant.ofEpochSecond(authMessageVm.expiryDate()));
-      log.debug("Context of template: {}", context.getVariable("activeUrl"));
-      String htmlBody = templateEngine.process("email-active", context);
+	public EmailServiceImpl(JavaMailSender javaMailSender, TemplateEngine templateEngine) {
+		this.javaMailSender = javaMailSender;
+		this.templateEngine = templateEngine;
+	}
 
-      MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-      MimeMessageHelper mimeMessageHelper =
-          new MimeMessageHelper(
-              mimeMessage, MimeMessageHelper.MULTIPART_MODE_RELATED, StandardCharsets.UTF_8.name());
+	@Override
+	public void sendEmail(AuthMessageVm authMessageVm) {
+		try {
+			// prepare context
+			Context context = new Context();
+			String url = "http://localhost:3000/auth" + authMessageVm.getUrlConfirm();
+			URI activeUrl = new URI(url);
+			context.setVariable("username", authMessageVm.username());
+			context.setVariable("activeUrl", activeUrl.toURL());
+			context.setVariable("expiredDate", Instant.ofEpochSecond(authMessageVm.expiryDate()));
+			log.debug("Context of template: {}", context.getVariable("activeUrl"));
+			String htmlBody = templateEngine.process("email-active", context);
 
-      mimeMessageHelper.setFrom(sender);
-      mimeMessageHelper.setTo(authMessageVm.email());
-      mimeMessageHelper.setSubject("[E-Store] Active account");
-      mimeMessageHelper.setText(htmlBody, true);
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,
+					MimeMessageHelper.MULTIPART_MODE_RELATED, StandardCharsets.UTF_8.name());
 
-      log.info("Start send email for active account for user: {}", authMessageVm.username());
-      javaMailSender.send(mimeMessage);
+			mimeMessageHelper.setFrom(sender);
+			mimeMessageHelper.setTo(authMessageVm.email());
+			mimeMessageHelper.setSubject("[E-Store] Active account");
+			mimeMessageHelper.setText(htmlBody, true);
 
-    } catch (Exception e) {
-      throw new ActiveAccountException("Can not send email: " + e.getMessage());
-    }
-  }
+			log.info("Start send email for active account for user: {}", authMessageVm.username());
+			javaMailSender.send(mimeMessage);
+
+		}
+		catch (Exception e) {
+			throw new ActiveAccountException("Can not send email: " + e.getMessage());
+		}
+	}
+
 }

@@ -28,40 +28,45 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Product extends AuditEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private String id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
 
-  private String name;
+	private String name;
 
-  @Column(name = "slug", unique = true)
-  private String slug;
+	@Column(name = "slug", unique = true)
+	private String slug;
 
-  private double price;
-  private int quantity;
-  private boolean isSales;
-  private String thumbnailUrl;
-  private String blogPostId;
+	private double price;
 
-  @Column(length = 512)
-  private String shortDescription;
+	private int quantity;
 
-  @OneToMany(mappedBy = "product")
-  private List<ProductImage> productImageList;
+	private boolean isSales;
 
-  @OneToMany(mappedBy = "product")
-  private List<ProductAttributeValue> productAttributeValueList;
+	private String thumbnailUrl;
 
-  @OneToMany(mappedBy = "product")
-  private List<ProductOptionValue> productOptionValueList;
+	private String blogPostId;
 
-  @ManyToOne
-  @JoinColumn(name = "group_id", nullable = true)
-  private ProductGroup productGroup;
+	@Column(length = 512)
+	private String shortDescription;
 
-  @OneToOne(mappedBy = "product")
-  private ProductSEO productSEO;
+	@OneToMany(mappedBy = "product")
+	private List<ProductImage> productImageList;
 
-  @OneToMany(mappedBy = "product")
-  private List<ProductVariation> productVariationList;
+	@OneToMany(mappedBy = "product")
+	private List<ProductAttributeValue> productAttributeValueList;
+
+	@OneToMany(mappedBy = "product")
+	private List<ProductOptionValue> productOptionValueList;
+
+	@ManyToOne
+	@JoinColumn(name = "group_id", nullable = true)
+	private ProductGroup productGroup;
+
+	@OneToOne(mappedBy = "product")
+	private ProductSEO productSEO;
+
+	@OneToMany(mappedBy = "product")
+	private List<ProductVariation> productVariationList;
+
 }

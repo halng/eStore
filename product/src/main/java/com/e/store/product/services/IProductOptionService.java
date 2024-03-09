@@ -10,13 +10,14 @@ import org.springframework.http.ResponseEntity;
 
 public interface IProductOptionService {
 
-  ResponseEntity<ResVm> createNewProductOption(ProductOptionCreateReqVm productOptionCreateReqVm);
+	ResponseEntity<ResVm> createNewProductOption(ProductOptionCreateReqVm productOptionCreateReqVm);
 
-  ResponseEntity<PagingResVm<ProductOptionResVm>> getAllOption(int page);
+	ResponseEntity<PagingResVm<ProductOptionResVm>> getAllOption(int page);
 
-  ResponseEntity<ResVm> updateOption(String optionId, ProductOptionCreateReqVm req);
+	ResponseEntity<ResVm> updateOption(String optionId, ProductOptionCreateReqVm req);
 
-  ResponseEntity<ResVm> deleteOption(String optionId);
+	ResponseEntity<ResVm> deleteOption(String optionId);
 
-  ResponseEntity<List<CommonProductResVm>> getAllOption();
+	ResponseEntity<List<CommonProductResVm>> getAllOption();
+
 }

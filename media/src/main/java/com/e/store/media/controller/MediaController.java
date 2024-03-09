@@ -16,19 +16,17 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/media")
 public class MediaController {
 
-  private final IImageService iImageService;
+	private final IImageService iImageService;
 
-  @Autowired
-  public MediaController(IImageService iImageService) {
-    this.iImageService = iImageService;
-  }
+	@Autowired
+	public MediaController(IImageService iImageService) {
+		this.iImageService = iImageService;
+	}
 
-  @PostMapping(
-      path = "images",
-      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public ResponseEntity<ResVm> uploadMultiImage(
-      @RequestParam("files") List<MultipartFile> files,
-      @RequestParam(value = "caption") String caption) {
-    return this.iImageService.uploadImage(files, caption);
-  }
+	@PostMapping(path = "images", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<ResVm> uploadMultiImage(@RequestParam("files") List<MultipartFile> files,
+			@RequestParam(value = "caption") String caption) {
+		return this.iImageService.uploadImage(files, caption);
+	}
+
 }

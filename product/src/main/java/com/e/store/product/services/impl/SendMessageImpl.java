@@ -12,32 +12,32 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SendMessageImpl implements SendMessage {
-  private static final Logger LOGGER = LoggerFactory.getLogger(SendMessageImpl.class);
 
-  private static final String NEW_PRODUCT_TOPIC = "product-new";
-  private final KafkaTemplate<String, String> kafkaTemplate;
+	private static final Logger LOGGER = LoggerFactory.getLogger(SendMessageImpl.class);
 
-  @Autowired
-  public SendMessageImpl(KafkaTemplate<String, String> k) {
-    kafkaTemplate = k;
-  }
+	private static final String NEW_PRODUCT_TOPIC = "product_new";
 
-  @Override
-  public <T> void putMsg(T data) {
-    LOGGER.info("Start put message {} into {} topic.", data.toString(), NEW_PRODUCT_TOPIC);
+	private final KafkaTemplate<String, String> kafkaTemplate;
 
-    String stringData = new Gson().toJson(data);
+	@Autowired
+	public SendMessageImpl(KafkaTemplate<String, String> k) {
+		kafkaTemplate = k;
+	}
 
-    CompletableFuture<SendResult<String, String>> future =
-        kafkaTemplate.send(NEW_PRODUCT_TOPIC, stringData);
+	@Override
+	public <T> void putMsg(T data) {
+		LOGGER.info("Start put message {} into {} topic.", data.toString(), NEW_PRODUCT_TOPIC);
 
-    future.whenComplete(
-        (res, ex) -> {
-          if (ex == null) {
-            throw new InternalError(
-                "Can not put message into topic %s with error: %s"
-                    .formatted(NEW_PRODUCT_TOPIC, ex.getMessage()));
-          }
-        });
-  }
+		String stringData = new Gson().toJson(data);
+
+		CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(NEW_PRODUCT_TOPIC, stringData);
+
+		future.whenComplete((res, ex) -> {
+			if (ex == null) {
+				throw new InternalError("Can not put message into topic %s with error: %s".formatted(NEW_PRODUCT_TOPIC,
+						ex.getMessage()));
+			}
+		});
+	}
+
 }
