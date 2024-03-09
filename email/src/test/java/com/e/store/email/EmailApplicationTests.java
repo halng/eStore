@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Test;
 
 class EmailApplicationTests {
 
-	@Test
-	void greeting() {
-		String msg = "Hello";
-		Assert.assertEquals(msg, "Hello");
-	}
-
+  @Test
+  void greeting() {
+    String msg = "Hello";
+    Assert.assertEquals(msg, "Hello");
+  }
 }

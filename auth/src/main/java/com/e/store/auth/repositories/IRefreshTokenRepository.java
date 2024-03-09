@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRefreshTokenRepository extends JpaRepository<RefreshToken, String> {
 
-	Optional<RefreshToken> findByAccount(Account account);
-
+  Optional<RefreshToken> findByAccount(Account account);
 }

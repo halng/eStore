@@ -4,6 +4,5 @@ import com.e.store.auth.viewmodel.res.AuthMessageVm;
 
 public interface IMessageProducer {
 
-	void sendMessage(AuthMessageVm authMessageVm);
-
+  void sendMessage(AuthMessageVm authMessageVm);
 }

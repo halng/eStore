@@ -4,8 +4,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class CommonService {
 
-	public static String getUser() {
-		return SecurityContextHolder.getContext().getAuthentication().getName();
-	}
-
+  public static String getUser() {
+    return SecurityContextHolder.getContext().getAuthentication().getName();
+  }
 }

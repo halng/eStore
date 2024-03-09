@@ -23,37 +23,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/product/option")
 public class ProductOptionController {
 
-	private final IProductOptionService iProductOptionService;
+  private final IProductOptionService iProductOptionService;
 
-	@Autowired
-	public ProductOptionController(IProductOptionService iProductOptionService) {
-		this.iProductOptionService = iProductOptionService;
-	}
+  @Autowired
+  public ProductOptionController(IProductOptionService iProductOptionService) {
+    this.iProductOptionService = iProductOptionService;
+  }
 
-	@PostMapping()
-	public ResponseEntity<ResVm> createNewOption(@RequestBody ProductOptionCreateReqVm req) {
-		return this.iProductOptionService.createNewProductOption(req);
-	}
+  @PostMapping()
+  public ResponseEntity<ResVm> createNewOption(@RequestBody ProductOptionCreateReqVm req) {
+    return this.iProductOptionService.createNewProductOption(req);
+  }
 
-	@GetMapping()
-	public ResponseEntity<PagingResVm<ProductOptionResVm>> getOptions(@RequestParam int page) {
-		return this.iProductOptionService.getAllOption(page);
-	}
+  @GetMapping()
+  public ResponseEntity<PagingResVm<ProductOptionResVm>> getOptions(@RequestParam int page) {
+    return this.iProductOptionService.getAllOption(page);
+  }
 
-	@PutMapping("{optionId}")
-	public ResponseEntity<ResVm> updateOption(@PathVariable String optionId,
-			@RequestBody ProductOptionCreateReqVm req) {
-		return this.iProductOptionService.updateOption(optionId, req);
-	}
+  @PutMapping("{optionId}")
+  public ResponseEntity<ResVm> updateOption(
+      @PathVariable String optionId, @RequestBody ProductOptionCreateReqVm req) {
+    return this.iProductOptionService.updateOption(optionId, req);
+  }
 
-	@DeleteMapping("{optionId}")
-	public ResponseEntity<ResVm> deleteOption(@PathVariable String optionId) {
-		return this.iProductOptionService.deleteOption(optionId);
-	}
+  @DeleteMapping("{optionId}")
+  public ResponseEntity<ResVm> deleteOption(@PathVariable String optionId) {
+    return this.iProductOptionService.deleteOption(optionId);
+  }
 
-	@GetMapping("all")
-	public ResponseEntity<List<CommonProductResVm>> getAllOption() {
-		return this.iProductOptionService.getAllOption();
-	}
-
+  @GetMapping("all")
+  public ResponseEntity<List<CommonProductResVm>> getAllOption() {
+    return this.iProductOptionService.getAllOption();
+  }
 }

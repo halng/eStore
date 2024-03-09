@@ -5,6 +5,9 @@ import com.e.store.auth.annotation.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record SignUpVm(@NotBlank String username, @ValidPassword String password, @RePassword String rePassword,
-		Long role, @Email String email) {
-}
+public record SignUpVm(
+    @NotBlank String username,
+    @ValidPassword String password,
+    @RePassword String rePassword,
+    Long role,
+    @Email String email) {}

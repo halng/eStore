@@ -10,45 +10,62 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RouteConfig {
 
-	@Value("${gateway.auth}")
-	private String AUTH_URI;
+  @Value("${gateway.auth}")
+  private String AUTH_URI;
 
-	@Value("${gateway.media}")
-	private String MEDIA_URI;
+  @Value("${gateway.media}")
+  private String MEDIA_URI;
 
-	@Value("${gateway.product}")
-	private String PRODUCT_URI;
+  @Value("${gateway.product}")
+  private String PRODUCT_URI;
 
-	@Bean
-	public RouteLocator routes(RouteLocatorBuilder builder, AuthFilterConfig authFilter,
-			DedupeResponseHeaderGatewayFilterFactory dedup) {
-		return builder.routes()
-			.route("auth",
-					r -> r.path("/api/v1/auth/**")
-						.filters(f -> f.rewritePath("/api/v1/auth(?<segment>/?.*)", "/api/v1/auth${segment}")
-							.filter(dedup.apply(dedupeConfig2()))
-							.filter(authFilter.apply(new AuthFilterConfig.Config())))
-						.uri(AUTH_URI))
-			.route("product",
-					r -> r.path("/api/v1/product/**")
-						.filters(f -> f.rewritePath("/api/v1/product(?<segment>/?.*)", "/api/v1/product${segment}")
-							.filter(dedup.apply(dedupeConfig2()))
-							.filter(authFilter.apply(new AuthFilterConfig.Config())))
-						.uri(PRODUCT_URI))
-			.route("media",
-					r -> r.path("/api/v1/media/**")
-						.filters(f -> f.rewritePath("/api/v1/media(?<segment>/?.*)", "/api/v1/media${segment}")
-							.filter(authFilter.apply(new AuthFilterConfig.Config())))
-						.uri(MEDIA_URI))
-			.build();
-	}
+  @Bean
+  public RouteLocator routes(
+      RouteLocatorBuilder builder,
+      AuthFilterConfig authFilter,
+      DedupeResponseHeaderGatewayFilterFactory dedup) {
+    return builder
+        .routes()
+        .route(
+            "auth",
+            r ->
+                r.path("/api/v1/auth/**")
+                    .filters(
+                        f ->
+                            f.rewritePath("/api/v1/auth(?<segment>/?.*)", "/api/v1/auth${segment}")
+                                .filter(dedup.apply(dedupeConfig2()))
+                                .filter(authFilter.apply(new AuthFilterConfig.Config())))
+                    .uri(AUTH_URI))
+        .route(
+            "product",
+            r ->
+                r.path("/api/v1/product/**")
+                    .filters(
+                        f ->
+                            f.rewritePath(
+                                    "/api/v1/product(?<segment>/?.*)", "/api/v1/product${segment}")
+                                .filter(dedup.apply(dedupeConfig2()))
+                                .filter(authFilter.apply(new AuthFilterConfig.Config())))
+                    .uri(PRODUCT_URI))
+        .route(
+            "media",
+            r ->
+                r.path("/api/v1/media/**")
+                    .filters(
+                        f ->
+                            f.rewritePath(
+                                    "/api/v1/media(?<segment>/?.*)", "/api/v1/media${segment}")
+                                .filter(authFilter.apply(new AuthFilterConfig.Config())))
+                    .uri(MEDIA_URI))
+        .build();
+  }
 
-	@Bean
-	public DedupeResponseHeaderGatewayFilterFactory.Config dedupeConfig2() {
-		DedupeResponseHeaderGatewayFilterFactory.Config ret = new DedupeResponseHeaderGatewayFilterFactory.Config();
-		ret.setStrategy(DedupeResponseHeaderGatewayFilterFactory.Strategy.RETAIN_FIRST);
-		ret.setName("Access-Control-Allow-Origin");
-		return ret;
-	}
-
+  @Bean
+  public DedupeResponseHeaderGatewayFilterFactory.Config dedupeConfig2() {
+    DedupeResponseHeaderGatewayFilterFactory.Config ret =
+        new DedupeResponseHeaderGatewayFilterFactory.Config();
+    ret.setStrategy(DedupeResponseHeaderGatewayFilterFactory.Strategy.RETAIN_FIRST);
+    ret.setName("Access-Control-Allow-Origin");
+    return ret;
+  }
 }

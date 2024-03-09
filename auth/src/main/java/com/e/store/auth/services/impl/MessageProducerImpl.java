@@ -17,29 +17,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageProducerImpl implements IMessageProducer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(MessageProducerImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MessageProducerImpl.class);
 
-	private final KafkaTemplate<String, String> kafkaTemplate;
+  private final KafkaTemplate<String, String> kafkaTemplate;
 
-	@Value("${kafka.topic}")
-	private String topicName;
+  @Value("${kafka.topic}")
+  private String topicName;
 
-	@Autowired
-	public MessageProducerImpl(KafkaTemplate<String, String> template) {
-		this.kafkaTemplate = template;
-	}
+  @Autowired
+  public MessageProducerImpl(KafkaTemplate<String, String> template) {
+    this.kafkaTemplate = template;
+  }
 
-	@Override
-	public void sendMessage(AuthMessageVm authMessageVm) {
-		LOGGER.info("Start send message to kafka topic to active account: {}", authMessageVm.username());
-		CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topicName,
-				authMessageVm.toStringWithJsonFormat());
+  @Override
+  public void sendMessage(AuthMessageVm authMessageVm) {
+    LOGGER.info(
+        "Start send message to kafka topic to active account: {}", authMessageVm.username());
+    CompletableFuture<SendResult<String, String>> future =
+        kafkaTemplate.send(topicName, authMessageVm.toStringWithJsonFormat());
 
-		future.whenComplete((result, ex) -> {
-			if (ex == null) {
-				throw new InternalErrorException("Can not send email for activation! Try again");
-			}
-		});
-	}
-
+    future.whenComplete(
+        (result, ex) -> {
+          if (ex == null) {
+            throw new InternalErrorException("Can not send email for activation! Try again");
+          }
+        });
+  }
 }

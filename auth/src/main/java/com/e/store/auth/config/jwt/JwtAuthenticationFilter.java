@@ -21,42 +21,44 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-	private static final List<String> LIST_EXCLUDE_URL = Arrays.asList("register", "login", "active-token");
+  private static final List<String> LIST_EXCLUDE_URL =
+      Arrays.asList("register", "login", "active-token");
 
-	private final JwtUtilities jwtUtilities;
+  private final JwtUtilities jwtUtilities;
 
-	private final UserDetailsServiceImpl userDetailsService;
+  private final UserDetailsServiceImpl userDetailsService;
 
-	private boolean isExclude(String path) {
-		for (String s : LIST_EXCLUDE_URL) {
-			if (path.contains(s)) {
-				return true;
-			}
-		}
-		return false;
-	}
+  private boolean isExclude(String path) {
+    for (String s : LIST_EXCLUDE_URL) {
+      if (path.contains(s)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		if (!isExclude(request.getRequestURI())) {
-			String accessToken = jwtUtilities.getAccessToken(request);
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    if (!isExclude(request.getRequestURI())) {
+      String accessToken = jwtUtilities.getAccessToken(request);
 
-			if (accessToken != null && jwtUtilities.validateAccessToken(accessToken)) {
-				String username = jwtUtilities.getUsernameFromAccessToken(accessToken);
-				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+      if (accessToken != null && jwtUtilities.validateAccessToken(accessToken)) {
+        String username = jwtUtilities.getUsernameFromAccessToken(accessToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-				if (userDetails != null && jwtUtilities.validateAccessToken(accessToken, userDetails)) {
-					UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-							userDetails.getUsername(), null, userDetails.getAuthorities());
-					log.info("User %s authenticated.".formatted(username));
+        if (userDetails != null && jwtUtilities.validateAccessToken(accessToken, userDetails)) {
+          UsernamePasswordAuthenticationToken authenticationToken =
+              new UsernamePasswordAuthenticationToken(
+                  userDetails.getUsername(), null, userDetails.getAuthorities());
+          log.info("User %s authenticated.".formatted(username));
 
-					SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-				}
-			}
-		}
+          SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        }
+      }
+    }
 
-		filterChain.doFilter(request, response);
-	}
-
+    filterChain.doFilter(request, response);
+  }
 }

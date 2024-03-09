@@ -10,21 +10,21 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-	private static final Logger loggerFactory = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+  private static final Logger loggerFactory = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-	@ExceptionHandler({ ActiveAccountException.class })
-	protected void handleActiveAccountException(ActiveAccountException exception, WebRequest req) {
-		loggerFactory.error(exception.getMessage());
-	}
+  @ExceptionHandler({ActiveAccountException.class})
+  protected void handleActiveAccountException(ActiveAccountException exception, WebRequest req) {
+    loggerFactory.error(exception.getMessage());
+  }
 
-	@ExceptionHandler({ ActiveAccountTimeOutException.class })
-	protected void handleActiveAccountTimeOutException(ActiveAccountTimeOutException exception, WebRequest req) {
-		loggerFactory.error(exception.getMessage());
-	}
+  @ExceptionHandler({ActiveAccountTimeOutException.class})
+  protected void handleActiveAccountTimeOutException(
+      ActiveAccountTimeOutException exception, WebRequest req) {
+    loggerFactory.error(exception.getMessage());
+  }
 
-	@ExceptionHandler({ ParseMessageException.class })
-	protected void handleParseMessageException(ParseMessageException exception, WebRequest req) {
-		loggerFactory.error(exception.getMessage());
-	}
-
+  @ExceptionHandler({ParseMessageException.class})
+  protected void handleParseMessageException(ParseMessageException exception, WebRequest req) {
+    loggerFactory.error(exception.getMessage());
+  }
 }

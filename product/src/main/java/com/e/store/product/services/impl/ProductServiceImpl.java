@@ -56,234 +56,293 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements IProductService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
 
-	private final IProductRepository iProductRepository;
+  private final IProductRepository iProductRepository;
 
-	private final IProductGroupRepository iProductGroupRepository;
+  private final IProductGroupRepository iProductGroupRepository;
 
-	private final IProductAttributeRepository iProductAttributeRepository;
+  private final IProductAttributeRepository iProductAttributeRepository;
 
-	private final IProductImageRepository iProductImageRepository;
+  private final IProductImageRepository iProductImageRepository;
 
-	private final IProductSEORepository iProductSEORepository;
+  private final IProductSEORepository iProductSEORepository;
 
-	private final IProductAttributeValueRepository iProductAttributeValueRepository;
+  private final IProductAttributeValueRepository iProductAttributeValueRepository;
 
-	private final IProductOptionRepository iProductOptionRepository;
+  private final IProductOptionRepository iProductOptionRepository;
 
-	private final IProductOptionValueRepository iProductOptionValueRepository;
+  private final IProductOptionValueRepository iProductOptionValueRepository;
 
-	private final IProductVariationRepository iProductVariationRepository;
+  private final IProductVariationRepository iProductVariationRepository;
 
-	private final SendMessage sendMessage;
+  private final SendMessage sendMessage;
 
-	@Autowired
-	public ProductServiceImpl(IProductRepository iProductRepository, IProductGroupRepository iProductGroupRepository,
-			IProductAttributeRepository iProductAttributeRepository, IProductImageRepository iProductImageRepository,
-			IProductSEORepository iProductSEORepository,
-			IProductAttributeValueRepository iProductAttributeValueRepository,
-			IProductOptionRepository iProductOptionRepository,
-			IProductOptionValueRepository iProductOptionValueRepository,
-			IProductVariationRepository iProductVariationRepository, SendMessage sendMessage) {
-		this.iProductRepository = iProductRepository;
-		this.iProductGroupRepository = iProductGroupRepository;
-		this.iProductAttributeRepository = iProductAttributeRepository;
-		this.iProductImageRepository = iProductImageRepository;
-		this.iProductSEORepository = iProductSEORepository;
-		this.iProductAttributeValueRepository = iProductAttributeValueRepository;
-		this.iProductOptionRepository = iProductOptionRepository;
-		this.iProductOptionValueRepository = iProductOptionValueRepository;
-		this.iProductVariationRepository = iProductVariationRepository;
-		this.sendMessage = sendMessage;
-	}
+  @Autowired
+  public ProductServiceImpl(
+      IProductRepository iProductRepository,
+      IProductGroupRepository iProductGroupRepository,
+      IProductAttributeRepository iProductAttributeRepository,
+      IProductImageRepository iProductImageRepository,
+      IProductSEORepository iProductSEORepository,
+      IProductAttributeValueRepository iProductAttributeValueRepository,
+      IProductOptionRepository iProductOptionRepository,
+      IProductOptionValueRepository iProductOptionValueRepository,
+      IProductVariationRepository iProductVariationRepository,
+      SendMessage sendMessage) {
+    this.iProductRepository = iProductRepository;
+    this.iProductGroupRepository = iProductGroupRepository;
+    this.iProductAttributeRepository = iProductAttributeRepository;
+    this.iProductImageRepository = iProductImageRepository;
+    this.iProductSEORepository = iProductSEORepository;
+    this.iProductAttributeValueRepository = iProductAttributeValueRepository;
+    this.iProductOptionRepository = iProductOptionRepository;
+    this.iProductOptionValueRepository = iProductOptionValueRepository;
+    this.iProductVariationRepository = iProductVariationRepository;
+    this.sendMessage = sendMessage;
+  }
 
-	private void sendProductDataIntoTopic(Action action, Product product) {
-		Map<String, Object> msg = new HashMap<>();
-		msg.put("id", product.getId());
-		msg.put("thumbnail", product.getThumbnailUrl());
-		msg.put("name", product.getName());
-		msg.put("description", product.getShortDescription());
-		msg.put("quantity", product.getQuantity());
-		msg.put("price", product.getPrice());
-		msg.put("branch", product.getProductGroup().getName());
-		msg.put("slug", product.getSlug());
+  private void sendProductDataIntoTopic(Action action, Product product) {
+    Map<String, Object> msg = new HashMap<>();
+    msg.put("id", product.getId());
+    msg.put("thumbnail", product.getThumbnailUrl());
+    msg.put("name", product.getName());
+    msg.put("description", product.getShortDescription());
+    msg.put("quantity", product.getQuantity());
+    msg.put("price", product.getPrice());
+    msg.put("branch", product.getProductGroup().getName());
+    msg.put("slug", product.getSlug());
 
-		Map<String, Object> finalMsg = Map.of("data", msg, "type", action.toString().toLowerCase());
+    Map<String, Object> finalMsg = Map.of("data", msg, "type", action.toString().toLowerCase());
 
-		sendMessage.putMsg(finalMsg);
-	}
+    sendMessage.putMsg(finalMsg);
+  }
 
-	@Override
-	public ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm) {
-		LOG.info("createNewProduct: receive request create product.");
-		Product product = Product.builder()
-			.name(productReqVm.name())
-			.price(productReqVm.price())
-			.thumbnailUrl(productReqVm.thumbnailId())
-			.quantity(productReqVm.quantity())
-			.shortDescription(productReqVm.description())
-			.isSales(true)
-			.build();
+  @Override
+  public ResponseEntity<ResVm> createNewProduct(ProductReqVm productReqVm) {
+    LOG.info("createNewProduct: receive request create product.");
+    Product product =
+        Product.builder()
+            .name(productReqVm.name())
+            .price(productReqVm.price())
+            .thumbnailUrl(productReqVm.thumbnailId())
+            .quantity(productReqVm.quantity())
+            .shortDescription(productReqVm.description())
+            .isSales(true)
+            .build();
 
-		String slug = productReqVm.slug() + UtilsHelper.getGenerateString();
-		product.setSlug(slug);
+    String slug = productReqVm.slug() + UtilsHelper.getGenerateString();
+    product.setSlug(slug);
 
-		// product image
-		List<ProductImage> productImageList = new ArrayList<>();
-		for (String imageId : productReqVm.imagesIds()) {
-			ProductImage productImage = ProductImage.builder().imageUrl(imageId).product(product).build();
-			productImageList.add(iProductImageRepository.save(productImage));
-		}
-		product.setProductImageList(productImageList);
+    // product image
+    List<ProductImage> productImageList = new ArrayList<>();
+    for (String imageId : productReqVm.imagesIds()) {
+      ProductImage productImage = ProductImage.builder().imageUrl(imageId).product(product).build();
+      productImageList.add(iProductImageRepository.save(productImage));
+    }
+    product.setProductImageList(productImageList);
 
-		// seo
-		if (productReqVm.seo() != null) {
-			ProductSEO productSEO = ProductSEO.builder()
-				.keyword(productReqVm.seo().keyword())
-				.metadata(productReqVm.seo().metadata())
-				.product(product)
-				.build();
-			ProductSEO newProdSEO = iProductSEORepository.save(productSEO);
-			product.setProductSEO(newProdSEO);
-		}
-		// attribute
-		List<ProductAttributeValue> productAttributeValueList = new ArrayList<>();
-		for (ProductAttributeReqVm att : productReqVm.attributes()) {
-			ProductAttribute productAttribute = iProductAttributeRepository.findById(att.id())
-				.orElseThrow(() -> new EntityNotFoundException(
-						"Product Attribute with id %s not found".formatted(att.id())));
-			ProductAttributeValue productAttributeValue = new ProductAttributeValue(att.id(), att.value(), product,
-					productAttribute);
-			productAttributeValueList.add(iProductAttributeValueRepository.save(productAttributeValue));
-		}
-		product.setProductAttributeValueList(productAttributeValueList);
+    // seo
+    if (productReqVm.seo() != null) {
+      ProductSEO productSEO =
+          ProductSEO.builder()
+              .keyword(productReqVm.seo().keyword())
+              .metadata(productReqVm.seo().metadata())
+              .product(product)
+              .build();
+      ProductSEO newProdSEO = iProductSEORepository.save(productSEO);
+      product.setProductSEO(newProdSEO);
+    }
+    // attribute
+    List<ProductAttributeValue> productAttributeValueList = new ArrayList<>();
+    for (ProductAttributeReqVm att : productReqVm.attributes()) {
+      ProductAttribute productAttribute =
+          iProductAttributeRepository
+              .findById(att.id())
+              .orElseThrow(
+                  () ->
+                      new EntityNotFoundException(
+                          "Product Attribute with id %s not found".formatted(att.id())));
+      ProductAttributeValue productAttributeValue =
+          new ProductAttributeValue(att.id(), att.value(), product, productAttribute);
+      productAttributeValueList.add(iProductAttributeValueRepository.save(productAttributeValue));
+    }
+    product.setProductAttributeValueList(productAttributeValueList);
 
-		// product group
-		ProductGroup productGroup = iProductGroupRepository.findById(productReqVm.group())
-			.orElseThrow(() -> new EntityNotFoundException(
-					"Product group with id: " + productReqVm.group() + " not founded"));
-		product.setProductGroup(productGroup);
+    // product group
+    ProductGroup productGroup =
+        iProductGroupRepository
+            .findById(productReqVm.group())
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "Product group with id: " + productReqVm.group() + " not founded"));
+    product.setProductGroup(productGroup);
 
-		Product newProduct = iProductRepository.save(product);
+    Product newProduct = iProductRepository.save(product);
 
-		for (ProductVariationReqVm variationReqVm : productReqVm.variations()) {
-			ProductVariation productVariation = ProductVariation.builder()
-				.price(variationReqVm.price())
-				.quantity(variationReqVm.quantity())
-				.product(newProduct)
-				.build();
-			List<String> optionValueIds = new ArrayList<>();
-			for (OptionValueReqVm opV : variationReqVm.optionCombine()) {
-				ProductOption option = this.iProductOptionRepository.findById(opV.optionId())
-					.orElseThrow(() -> new EntityNotFoundException("Option with id: " + opV.optionId() + " not found"));
+    for (ProductVariationReqVm variationReqVm : productReqVm.variations()) {
+      ProductVariation productVariation =
+          ProductVariation.builder()
+              .price(variationReqVm.price())
+              .quantity(variationReqVm.quantity())
+              .product(newProduct)
+              .build();
+      List<String> optionValueIds = new ArrayList<>();
+      for (OptionValueReqVm opV : variationReqVm.optionCombine()) {
+        ProductOption option =
+            this.iProductOptionRepository
+                .findById(opV.optionId())
+                .orElseThrow(
+                    () ->
+                        new EntityNotFoundException(
+                            "Option with id: " + opV.optionId() + " not found"));
 
-				ProductOptionValue productOptionValue = this.iProductOptionValueRepository
-					.save(ProductOptionValue.builder()
-						.productOption(option)
-						.value(opV.optionValue())
-						.product(newProduct)
-						.build());
-				optionValueIds.add(productOptionValue.getId());
-			}
-			productVariation.setOptionValueIds(optionValueIds);
+        ProductOptionValue productOptionValue =
+            this.iProductOptionValueRepository.save(
+                ProductOptionValue.builder()
+                    .productOption(option)
+                    .value(opV.optionValue())
+                    .product(newProduct)
+                    .build());
+        optionValueIds.add(productOptionValue.getId());
+      }
+      productVariation.setOptionValueIds(optionValueIds);
 
-			this.iProductVariationRepository.save(productVariation);
-		}
+      this.iProductVariationRepository.save(productVariation);
+    }
 
-		sendProductDataIntoTopic(Action.CREATE, newProduct);
+    sendProductDataIntoTopic(Action.CREATE, newProduct);
 
-		ResVm resVm = new ResVm(HttpStatus.CREATED, "New product created. Id: " + newProduct.getId() + ". And "
-				+ productReqVm.variations().size() + " child product");
-		LOG.info(resVm.getLogMessage());
-		return ResponseEntity.status(HttpStatus.CREATED).body(resVm);
-	}
+    ResVm resVm =
+        new ResVm(
+            HttpStatus.CREATED,
+            "New product created. Id: "
+                + newProduct.getId()
+                + ". And "
+                + productReqVm.variations().size()
+                + " child product");
+    LOG.info(resVm.getLogMessage());
+    return ResponseEntity.status(HttpStatus.CREATED).body(resVm);
+  }
 
-	@Override
-	public ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(int page) {
-		LOG.info("Receive request to get all product with page  = " + page);
-		String creator = CommonService.getUser();
-		Pageable pageable = PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
-		Page<Product> products = this.iProductRepository.findAllProductWithPaging(creator, pageable);
+  @Override
+  public ResponseEntity<PagingResVm<ProductResVm>> getProductsWithPaging(int page) {
+    LOG.info("Receive request to get all product with page  = " + page);
+    String creator = CommonService.getUser();
+    Pageable pageable =
+        PageRequest.of(page - 1, Constant.NUM_PER_CALL, Sort.by(Direction.DESC, "lastUpdate"));
+    Page<Product> products = this.iProductRepository.findAllProductWithPaging(creator, pageable);
 
-		List<ProductResVm> productResVmList = new ArrayList<>();
-		for (Product product : products.getContent()) {
-			productResVmList.add(new ProductResVm(product.getSlug(), product.getName(), product.getQuantity(),
-					product.getPrice(), product.getProductGroup().getName(), product.getThumbnailUrl(),
-					product.getProductVariationList().size()));
-		}
+    List<ProductResVm> productResVmList = new ArrayList<>();
+    for (Product product : products.getContent()) {
+      productResVmList.add(
+          new ProductResVm(
+              product.getSlug(),
+              product.getName(),
+              product.getQuantity(),
+              product.getPrice(),
+              product.getProductGroup().getName(),
+              product.getThumbnailUrl(),
+              product.getProductVariationList().size()));
+    }
 
-		PagingResVm<ProductResVm> result = new PagingResVm<>(productResVmList, products.getTotalPages(),
-				products.getTotalElements());
+    PagingResVm<ProductResVm> result =
+        new PagingResVm<>(productResVmList, products.getTotalPages(), products.getTotalElements());
 
-		return ResponseEntity.ok(result);
-	}
+    return ResponseEntity.ok(result);
+  }
 
-	private Product getProductById(String id) {
-		return this.iProductRepository.findById(id)
-			.orElseThrow(() -> new EntityNotFoundException(String.format("Product with id %s not found", id)));
-	}
+  private Product getProductById(String id) {
+    return this.iProductRepository
+        .findById(id)
+        .orElseThrow(
+            () -> new EntityNotFoundException(String.format("Product with id %s not found", id)));
+  }
 
-	private Product getProductBySlug(String slug) {
-		return this.iProductRepository.findBySlug(slug)
-			.orElseThrow(() -> new EntityNotFoundException(String.format("Product with slug %s not found", slug)));
-	}
+  private Product getProductBySlug(String slug) {
+    return this.iProductRepository
+        .findBySlug(slug)
+        .orElseThrow(
+            () ->
+                new EntityNotFoundException(String.format("Product with slug %s not found", slug)));
+  }
 
-	@Override
-	public ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm) {
-		sendProductDataIntoTopic(Action.UPDATE, null);
-		return null;
-	}
+  @Override
+  public ResponseEntity<ResVm> updateProduct(String productId, ProductReqVm productReqVm) {
+    sendProductDataIntoTopic(Action.UPDATE, null);
+    return null;
+  }
 
-	@Override
-	public ResponseEntity<ResVm> updateStatus(String productId, String action) {
-		LOG.info(String.format("Receive a request to %s product have id: %s from user: %s ", action, productId,
-				CommonService.getUser()));
+  @Override
+  public ResponseEntity<ResVm> updateStatus(String productId, String action) {
+    LOG.info(
+        String.format(
+            "Receive a request to %s product have id: %s from user: %s ",
+            action, productId, CommonService.getUser()));
 
-		Product product = this.getProductById(productId);
-		product.setSales(!Action.ENABLE.toString().toLowerCase().equals(action));
-		this.iProductRepository.save(product);
-		ResVm res = new ResVm(HttpStatus.OK, "Product with id: " + productId + " is disable for now");
-		return ResponseEntity.ok(res);
-	}
+    Product product = this.getProductById(productId);
+    product.setSales(!Action.ENABLE.toString().toLowerCase().equals(action));
+    this.iProductRepository.save(product);
+    ResVm res = new ResVm(HttpStatus.OK, "Product with id: " + productId + " is disable for now");
+    return ResponseEntity.ok(res);
+  }
 
-	@Override
-	public ResponseEntity<ProductDetailResVm> getDetailProductBySlug(String slug) {
-		Product product = getProductBySlug(slug);
-		CommonProductResVm group = new CommonProductResVm(product.getProductGroup().getId(),
-				product.getProductGroup().getName());
+  @Override
+  public ResponseEntity<ProductDetailResVm> getDetailProductBySlug(String slug) {
+    Product product = getProductBySlug(slug);
+    CommonProductResVm group =
+        new CommonProductResVm(
+            product.getProductGroup().getId(), product.getProductGroup().getName());
 
-		List<CommonProductValueResVm> productAttributeValues = new ArrayList<>();
-		for (var attVal : product.getProductAttributeValueList()) {
-			productAttributeValues.add(new CommonProductValueResVm(attVal.getProductAttribute().getId(),
-					attVal.getProductAttribute().getName(), attVal.getValue()));
-		}
+    List<CommonProductValueResVm> productAttributeValues = new ArrayList<>();
+    for (var attVal : product.getProductAttributeValueList()) {
+      productAttributeValues.add(
+          new CommonProductValueResVm(
+              attVal.getProductAttribute().getId(),
+              attVal.getProductAttribute().getName(),
+              attVal.getValue()));
+    }
 
-		List<CommonProductValueResVm> productOptionValues = new ArrayList<>();
-		for (var optionValue : product.getProductOptionValueList()) {
-			productOptionValues.add(new CommonProductValueResVm(optionValue.getId(),
-					optionValue.getProductOption().getName(), optionValue.getValue()));
-		}
+    List<CommonProductValueResVm> productOptionValues = new ArrayList<>();
+    for (var optionValue : product.getProductOptionValueList()) {
+      productOptionValues.add(
+          new CommonProductValueResVm(
+              optionValue.getId(),
+              optionValue.getProductOption().getName(),
+              optionValue.getValue()));
+    }
 
-		List<ProductVariationsResVm> productVariationsResVms = new ArrayList<>();
-		for (var variation : product.getProductVariationList()) {
-			productVariationsResVms.add(ProductVariationsResVm.fromModel(variation));
-		}
+    List<ProductVariationsResVm> productVariationsResVms = new ArrayList<>();
+    for (var variation : product.getProductVariationList()) {
+      productVariationsResVms.add(ProductVariationsResVm.fromModel(variation));
+    }
 
-		List<String> imageUrls = product.getProductImageList()
-			.stream()
-			.map(ProductImage::getImageUrl)
-			.collect(Collectors.toList());
+    List<String> imageUrls =
+        product.getProductImageList().stream()
+            .map(ProductImage::getImageUrl)
+            .collect(Collectors.toList());
 
-		ProductSEOResVm seoResVm = new ProductSEOResVm(product.getProductSEO().getKeyword(),
-				product.getProductSEO().getMetadata());
+    ProductSEOResVm seoResVm =
+        new ProductSEOResVm(
+            product.getProductSEO().getKeyword(), product.getProductSEO().getMetadata());
 
-		ProductDetailResVm productDetailResVm = new ProductDetailResVm(product.getId(), product.getName(),
-				product.getPrice(), product.getQuantity(), product.isSales(), product.getThumbnailUrl(), imageUrls,
-				product.getShortDescription(), group, productAttributeValues, productOptionValues,
-				productVariationsResVms, seoResVm);
+    ProductDetailResVm productDetailResVm =
+        new ProductDetailResVm(
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            product.getQuantity(),
+            product.isSales(),
+            product.getThumbnailUrl(),
+            imageUrls,
+            product.getShortDescription(),
+            group,
+            productAttributeValues,
+            productOptionValues,
+            productVariationsResVms,
+            seoResVm);
 
-		return ResponseEntity.ok(productDetailResVm);
-	}
-
+    return ResponseEntity.ok(productDetailResVm);
+  }
 }

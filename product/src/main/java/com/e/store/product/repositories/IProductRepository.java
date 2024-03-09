@@ -11,9 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, String> {
 
-	@Query("SELECT p FROM Product p WHERE p.createBy=?1")
-	Page<Product> findAllProductWithPaging(String creator, Pageable pageable);
+  @Query("SELECT p FROM Product p WHERE p.createBy=?1")
+  Page<Product> findAllProductWithPaging(String creator, Pageable pageable);
 
-	Optional<Product> findBySlug(String slug);
-
+  Optional<Product> findBySlug(String slug);
 }

@@ -16,24 +16,24 @@ import org.thymeleaf.TemplateEngine;
 
 public class EmailServiceTest {
 
-	EmailService emailService;
+  EmailService emailService;
 
-	JavaMailSender javaMailSender;
+  JavaMailSender javaMailSender;
 
-	TemplateEngine templateEngine;
+  TemplateEngine templateEngine;
 
-	AuthMessageVm authMessageVm;
+  AuthMessageVm authMessageVm;
 
-	@BeforeEach
-	void setUp() {
-		// javaMailSender = mock(JavaMailSender.class);
-		templateEngine = mock(TemplateEngine.class);
-		emailService = new EmailServiceImpl(javaMailSender, templateEngine);
-		ReflectionTestUtils.setField(emailService, "sender", "me");
-		authMessageVm = new AuthMessageVm("email", "username", "123-344", 10000L);
-	}
+  @BeforeEach
+  void setUp() {
+    // javaMailSender = mock(JavaMailSender.class);
+    templateEngine = mock(TemplateEngine.class);
+    emailService = new EmailServiceImpl(javaMailSender, templateEngine);
+    ReflectionTestUtils.setField(emailService, "sender", "me");
+    authMessageVm = new AuthMessageVm("email", "username", "123-344", 10000L);
+  }
 
-	@Test
+  @Test
   public void sendEmail_shouldThrowException() {
 
     when(templateEngine.process(anyString(), any())).thenReturn("<p></p>");
@@ -47,5 +47,4 @@ public class EmailServiceTest {
 
     Assertions.assertNotNull(exception);
   }
-
 }
