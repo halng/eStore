@@ -15,7 +15,7 @@ func main() {
 		routers.GET("/test/:name", getMsgWithName)
 	}
 
-	err := r.Run("0.0.0.0:8080")
+	err := r.Run("0.0.0.0:9095")
 	if err != nil {
 		return
 	}

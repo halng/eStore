@@ -1,6 +1,5 @@
-package com.e.store.email.config;
+package com.e.store.search.config;
 
-import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -16,25 +15,24 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 @EnableKafka
 @Configuration
-public class KafkaConsumerConfig {
+public class KafkaConfig {
 
-  @Value(value = "${kafka.bootstrap-server}")
-  private String bootStrapAddress;
+  @Value("${kafka.bootstrap-server}")
+  private String bootstrapAddress;
 
-  private static final String groupId = "user-consumer";
-  private static final String trustedPackage = "*";
+  private static final String groupId = "search-consumer";
 
   @Bean
   public ConsumerFactory<String, String> consumerFactory() {
-    Map<String, Object> props = new HashMap<>();
-
-    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapAddress);
-    props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
-    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
-    props.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
-    props.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, StringDeserializer.class);
-    props.put(JsonDeserializer.TRUSTED_PACKAGES, trustedPackage);
+    Map<String, Object> props =
+        Map.of(
+            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress,
+            ConsumerConfig.GROUP_ID_CONFIG, groupId,
+            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class,
+            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class,
+            ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class,
+            ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, StringDeserializer.class,
+            JsonDeserializer.TRUSTED_PACKAGES, "*");
 
     return new DefaultKafkaConsumerFactory<>(props);
   }

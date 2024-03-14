@@ -14,12 +14,14 @@ import org.springframework.stereotype.Service;
 public class KafkaMessageListener {
 
   private static final Logger log = LoggerFactory.getLogger(KafkaMessageListener.class);
+  private static final String topic = "user_register";
+  private static final String groupId = "user-consumer";
 
   @Autowired private EmailService emailService;
 
   @KafkaListener(
-      topics = "user_register",
-      groupId = "user",
+      topics = topic,
+      groupId = groupId,
       containerFactory = "kafkaListenerContainerFactory")
   public void listenGroupUser(String message) {
     log.info("Get new message: {}", message);

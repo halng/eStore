@@ -15,7 +15,7 @@ public class SendMessageImpl implements SendMessage {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SendMessageImpl.class);
 
-  private static final String NEW_PRODUCT_TOPIC = "product_new";
+  private static final String NEW_PRODUCT_TOPIC = "db.product-new";
 
   private final KafkaTemplate<String, String> kafkaTemplate;
 
