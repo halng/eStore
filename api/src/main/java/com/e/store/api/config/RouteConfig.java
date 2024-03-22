@@ -67,7 +67,8 @@ public class RouteConfig {
                     .filters(
                         f ->
                             f.rewritePath(
-                                    "/api/v1/inventory(?<segment>/?.*)", "/api/v1/inventory${segment}")
+                                    "/api/v1/inventory(?<segment>/?.*)",
+                                    "/api/v1/inventory${segment}")
                                 .filter(authFilter.apply(new AuthFilterConfig.Config())))
                     .uri(INVENTORY_URI))
         .build();
