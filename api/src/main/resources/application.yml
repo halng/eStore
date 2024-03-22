@@ -5,6 +5,7 @@ gateway:
   auth: http://localhost:9091
   product: http://localhost:9094
   media: http://localhost:9095
+  inventory: http://localhost:9096
 
 spring:
   application:

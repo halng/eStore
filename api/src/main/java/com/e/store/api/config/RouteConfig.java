@@ -19,6 +19,9 @@ public class RouteConfig {
   @Value("${gateway.product}")
   private String PRODUCT_URI;
 
+  @Value("${gateway.inventory}")
+  private String INVENTORY_URI;
+
   @Bean
   public RouteLocator routes(
       RouteLocatorBuilder builder,
@@ -57,6 +60,17 @@ public class RouteConfig {
                                     "/api/v1/media(?<segment>/?.*)", "/api/v1/media${segment}")
                                 .filter(authFilter.apply(new AuthFilterConfig.Config())))
                     .uri(MEDIA_URI))
+        .route(
+            "inventory",
+            r ->
+                r.path("/api/v1/inventory/**")
+                    .filters(
+                        f ->
+                            f.rewritePath(
+                                    "/api/v1/inventory(?<segment>/?.*)",
+                                    "/api/v1/inventory${segment}")
+                                .filter(authFilter.apply(new AuthFilterConfig.Config())))
+                    .uri(INVENTORY_URI))
         .build();
   }
 

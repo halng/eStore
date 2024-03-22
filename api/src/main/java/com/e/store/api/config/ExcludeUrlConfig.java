@@ -14,6 +14,7 @@ public class ExcludeUrlConfig {
     excludedUrl.put("login", HttpMethod.POST);
     excludedUrl.put("image", HttpMethod.GET);
     excludedUrl.put("active-account", HttpMethod.POST);
+    excludedUrl.put("inventory", HttpMethod.GET);
   }
 
   public static boolean isSecure(String requestPath, HttpMethod method) {
