@@ -24,6 +24,7 @@ const App = () => (
         </React.Suspense>
     </div>
 )
+// eslint-disable-next-line react/no-deprecated
 ReactDOM.render(
     <StrictMode>
         <App />

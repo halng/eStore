@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { UserLogin } from '../../model'
+import { useNavigate } from 'react-router-dom'
 
 import './style.css'
 import { Auth } from 'api-estore-v2'
@@ -19,6 +20,7 @@ const schema = yup.object({
 const LogInForm = () => {
     const [isRemember, setIsRemember] = useState(false)
     const [status, setStatus] = useState<LoadingStatus>(LoadingStatus.NOPE)
+    const navigate = useNavigate()
 
     const {
         register,
@@ -34,9 +36,15 @@ const LogInForm = () => {
             password: data.password,
         }
         Auth.login(resData)
-            .then(() => {
+            .then((res) => {
                 toast.success(MESSAGE.LOGIN.SUCCESS)
-                window.location.replace('http://localhost:3000/')
+                if (res.data.role === 'SELLER') {
+                    navigate('/partner', { replace: true })
+                } else if (res.data.role === 'ADMIN' || res.data.role === 'SUPER_ADMIN' || res.data.role === 'STAFF') {
+                    navigate('/management', { replace: true })
+                } else {
+                    navigate('/store', { replace: true })
+                }
             })
             .catch((err) => {
                 if (err.response.status === 401) {
