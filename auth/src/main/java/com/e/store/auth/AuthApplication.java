@@ -37,7 +37,8 @@ public class AuthApplication {
       roleRepository.save(Role.builder().roleName(AccountRole.BUYER).build());
       roleRepository.save(Role.builder().roleName(AccountRole.STAFF).build());
       Role adminRole = roleRepository.save(Role.builder().roleName(AccountRole.ADMIN).build());
-      Role superRole = roleRepository.save(Role.builder().roleName(AccountRole.SUPER_ADMIN).build());
+      Role superRole =
+          roleRepository.save(Role.builder().roleName(AccountRole.SUPER_ADMIN).build());
       Role sellerRole = roleRepository.save(Role.builder().roleName(AccountRole.SELLER).build());
 
       Account adminAccount =
