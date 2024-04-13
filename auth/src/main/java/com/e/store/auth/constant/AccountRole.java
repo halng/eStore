@@ -5,5 +5,5 @@ public enum AccountRole {
   SELLER,
   STAFF,
   ADMIN,
-  SUPERADMIN
+  SUPER_ADMIN
 }

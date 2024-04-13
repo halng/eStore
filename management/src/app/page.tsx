@@ -1,49 +1,47 @@
+'use client'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { UserLogin } from '../../model'
-import { useNavigate } from 'react-router-dom'
+import { UserInfo } from '@types'
 
 import './style.css'
 import { Auth } from 'api-estore-v2'
-import { LoadingStatus, MESSAGE } from '../../model/Constants'
+import Message from '@/constants/message'
+import LoadingStatus from '@/constants/status'
 import { toast } from 'react-toastify'
+import 'bootstrap/dist/css/bootstrap.css'
 
 const schema = yup.object({
-    username: yup.string().required(),
-    password: yup.string().required(),
+    username: yup.string().required('Username is required'),
+    password: yup.string().required('Password is required'),
     isRemember: yup.boolean(),
 })
 
-const LogInForm = () => {
+const Home = () => {
     const [isRemember, setIsRemember] = useState(false)
     const [status, setStatus] = useState<LoadingStatus>(LoadingStatus.NOPE)
-    const navigate = useNavigate()
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<UserLogin | any>({
+    } = useForm<UserInfo | any>({
         resolver: yupResolver(schema),
     })
 
-    const handleFormSubmit = async (data: UserLogin) => {
+    const handleFormSubmit = async (data: UserInfo) => {
         const resData = {
             username: data.username,
             password: data.password,
         }
         Auth.login(resData)
             .then((res) => {
-                toast.success(MESSAGE.LOGIN.SUCCESS)
+                toast.success(Message.LOGIN.SUCCESS)
                 if (res.data.role === 'SELLER') {
-                    navigate('/partner', { replace: true })
+                    window.location.replace('/partner')
                 } else if (res.data.role === 'ADMIN' || res.data.role === 'SUPER_ADMIN' || res.data.role === 'STAFF') {
-                    navigate('/management', { replace: true })
-                } else {
-                    navigate('/store', { replace: true })
+                    window.location.replace('/management')
                 }
             })
             .catch((err) => {
@@ -81,7 +79,7 @@ const LogInForm = () => {
                                     <div className='mb-3 text-center'>
                                         <h3>Welcome</h3>
                                         {status === LoadingStatus.INVALID && (
-                                            <p className='text-danger'>{MESSAGE.LOGIN.INVALID}</p>
+                                            <p className='text-danger'>{Message.LOGIN.INVALID}</p>
                                         )}
                                     </div>
 
@@ -96,7 +94,7 @@ const LogInForm = () => {
                                             id='form3Example3'
                                             className='form-control'
                                         />
-                                        <p className='fst-italic text-danger'>{errors.username?.message}</p>
+                                        <p className='fst-italic text-danger'>{errors.username?.message?.toString()}</p>
                                     </div>
 
                                     {/* <!-- Password input --> */}
@@ -110,7 +108,7 @@ const LogInForm = () => {
                                             id='form3Example4'
                                             className='form-control'
                                         />
-                                        <p className='fst-italic text-danger'>{errors.password?.message}</p>
+                                        <p className='fst-italic text-danger'>{errors.password?.message?.toString()}</p>
                                     </div>
 
                                     {/* <!-- Checkbox --> */}
@@ -145,19 +143,6 @@ const LogInForm = () => {
                                             Login
                                         </button>
                                     </div>
-
-                                    {/* <!-- Register buttons --> */}
-                                    <div className='text-center'>
-                                        <p>
-                                            Not a member?{' '}
-                                            <Link
-                                                className='link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover'
-                                                to={'/auth/register'}
-                                            >
-                                                Create account
-                                            </Link>
-                                        </p>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -168,4 +153,4 @@ const LogInForm = () => {
     )
 }
 
-export default LogInForm
+export default Home
