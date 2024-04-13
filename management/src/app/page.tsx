@@ -13,8 +13,8 @@ import { toast } from 'react-toastify'
 import 'bootstrap/dist/css/bootstrap.css'
 
 const schema = yup.object({
-    username: yup.string().required("Username is required"),
-    password: yup.string().required("Password is required"),
+    username: yup.string().required('Username is required'),
+    password: yup.string().required('Password is required'),
     isRemember: yup.boolean(),
 })
 

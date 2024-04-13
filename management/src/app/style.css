@@ -42,18 +42,18 @@
     backdrop-filter: saturate(200%) blur(25px);
 }
 
-.intro{
+.intro {
     z-index: 10;
 }
 
-.title-color{
-    color: hsl(218, 81%, 95%)
+.title-color {
+    color: hsl(218, 81%, 95%);
 }
 
-.title-color-embrace{
-    color: hsl(218, 81%, 75%)
+.title-color-embrace {
+    color: hsl(218, 81%, 75%);
 }
 
-.title-color-description{
-    color: hsl(218, 81%, 85%)
+.title-color-description {
+    color: hsl(218, 81%, 85%);
 }

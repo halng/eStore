@@ -3,7 +3,6 @@ const Message = {
     LOGIN: {
         SUCCESS: 'Login successfully',
         INVALID: 'Invalid username or password',
-        
     },
 }
 
