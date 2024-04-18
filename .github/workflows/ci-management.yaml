@@ -2,7 +2,7 @@ name: ci management ui service
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
     paths:
       - "management/**"
       - ".github/workflows/ci-management.yaml"

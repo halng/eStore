@@ -2,7 +2,7 @@ name: load-balancer service ci
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
     paths:
       - "load-balancer/**"
       - ".github/workflows/ci-lb.yaml"
