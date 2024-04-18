@@ -1,9 +1,0 @@
-.breadcrumb{
-    --bs-breadcrumb-divider: ' / ';
-    --bs-breadcrumb-divider-color: white !important;
-    --bs-breadcrumb-active-color: white !important;
-    color: white !important;
-}
-.active {
-    color: #68748d !important;
-}
