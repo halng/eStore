@@ -1,0 +1,40 @@
+{
+    "name": "management",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "format": "prettier --check .",
+        "format:fix": "prettier --write --list-different ."
+    },
+    "dependencies": {
+        "@emotion/react": "^11.11.4",
+        "@emotion/styled": "^11.11.5",
+        "@hookform/resolvers": "^3.3.4",
+        "@mui/material": "^5.15.15",
+        "@phosphor-icons/react": "^2.1.4",
+        "api-estore-v2": "^0.0.15",
+        "bootstrap": "5.3.3",
+        "next": "14.2.0",
+        "react": "^18",
+        "react-dom": "^18",
+        "react-hook-form": "^7.51.3",
+        "react-router-dom": "^6.22.3",
+        "react-toastify": "^10.0.5",
+        "yup": "^1.4.0"
+    },
+    "devDependencies": {
+        "@next/eslint-plugin-next": "^14.2.1",
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "14.2.0",
+        "eslint-config-prettier": "^9.1.0",
+        "prettier": "^3.2.5",
+        "typescript": "^5"
+    }
+}
