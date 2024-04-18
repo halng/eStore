@@ -2,7 +2,7 @@ name: Format
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main", "dev" ]
     paths:
       - "auth/**"
       - "product/**"
@@ -12,7 +12,7 @@ on:
       - "payment/**"
       - ".github/workflows/ci-format.yaml"
   pull_request:
-    branches: ["main"]
+    branches: ["main", "dev"]
     paths:
       - "auth/**"
       - "product/**"

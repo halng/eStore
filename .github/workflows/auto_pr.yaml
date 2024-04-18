@@ -1,0 +1,29 @@
+name: Auto Create PR
+
+on:
+  schedule:
+    - cron: '5 7 * * 5'  # Run every friday morning at 7:05
+
+jobs:
+  auto-create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set current date
+        id: set_date
+        run: echo "::set-output name=date::$(date +'%d.%m.%Y')"
+
+      - name: Create PR
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git fetch -a
+          git checkout dev
+          git pull origin dev
+          git push origin dev
+          gh pr create --base main --head dev --title "${{ steps.set_date.outputs.date }}" --body "Release ${{ steps.set_date.outputs.date }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

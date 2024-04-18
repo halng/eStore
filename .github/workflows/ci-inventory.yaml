@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - main
+      - dev
     paths:
       - "inventory/**"
       - ".github/workflows/ci-inventory.yaml"
   pull_request:
     branches:
       - main
+      - dev
     paths:
       - "inventory/**"
       - ".github/workflows/ci-inventory.yaml"

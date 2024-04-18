@@ -2,7 +2,7 @@ name: email service ci
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
     paths:
       - "email/**"
       - ".github/workflows/action-be/**"

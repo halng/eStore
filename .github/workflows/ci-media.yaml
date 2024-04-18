@@ -2,7 +2,7 @@ name: media service ci
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
     paths:
       - "media/**"
       - ".github/workflows/action-be/**"
