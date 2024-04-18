@@ -2,7 +2,7 @@ name: api service ci
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
     paths:
       - "api/**"
       - ".github/workflows/action-be/**"
