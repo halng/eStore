@@ -1,12 +1,7 @@
-import type { Metadata } from 'next'
+'use client'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import SideBar from '@/components/SideBar'
-
-export const metadata: Metadata = {
-    title: 'E-Store - Shop Name',
-    description: 'your own work, your own shop, your own brand',
-}
 
 export default function Layout({
     children,
