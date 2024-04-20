@@ -1,4 +1,4 @@
-name: ci management ui service
+name: Management App
 
 on:
   push:
@@ -27,9 +27,7 @@ jobs:
           node-version: 18
       - run: npm i
         working-directory: management
-      - run: npm run build
-        working-directory: management
-      - run: npm run format
+      - run: npm run format && npm run lint
         working-directory: management
       - name: Analyze with sonar cloud
         uses: SonarSource/sonarcloud-github-action@master
@@ -38,6 +36,8 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm run build
+        working-directory: management
 
   security:
     needs: "analyze"
