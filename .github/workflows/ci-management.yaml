@@ -78,36 +78,31 @@ jobs:
         with:
           category: "/language:${{matrix.language}}"
 
-  # unit-test:
-  #   needs: security
-  #   runs-on: ubuntu-latest
-  #   permissions: write-all
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: set up env
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18
-  #     - run: npm ci
-  #       working-directory: management
-  #     - run: npm run build
-  #       working-directory: management
-  #     - run: npm run junit-test  -- -u && npm run test:cover  -- -u
-  #       working-directory: management
-  #     - name: Analyze with sonar cloud
-  #       uses: SonarSource/sonarcloud-github-action@master
-  #       with:
-  #         projectBaseDir: management
-  #       env:
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     - name: Unit Test Results
-  #       uses: dorny/test-reporter@v1
-  #       if: always()
-  #       with:
-  #           name: JEST Tests            # Name of the check run which will be created
-  #           path: management/reports/jest-junit.xml    # Path to test results
-  #           reporter: jest-junit   
+  unit-test:
+    needs: analyze
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up env
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm i
+        working-directory: management
+      - run: npm run test:coverage
+        name: run unit tests
+        working-directory: management
+      - run: npm run e2e:headless
+        name: run e2e tests
+        working-directory: management
+      - name: Unit Test Results
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+            name: JEST Tests            # Name of the check run which will be created
+            path: management/junit.xml    # Path to test results
+            reporter: jest-junit   
 
   docker:
     needs: analyze

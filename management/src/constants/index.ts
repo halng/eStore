@@ -1,4 +1,4 @@
-import { ProductGroupTableHeader } from '@/types'
+import { ProductGroupTableHeader } from '@types'
 
 export const HEADER = {
     H_MOBILE: 64,
