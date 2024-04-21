@@ -1,7 +1,7 @@
 'use client'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import SideBar from '@/components/SideBar'
+import { SideBar } from '@components'
 
 export default function Layout({
     children,
