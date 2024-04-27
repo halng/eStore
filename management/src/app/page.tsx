@@ -7,8 +7,8 @@ import { UserInfo } from '@types'
 
 import './style.css'
 import { Auth } from 'api-estore-v2'
-import Message from '@/constants/message'
-import LoadingStatus from '@/constants/status'
+import Message from '@message'
+import LoadingStatus from '@status'
 import { toast } from 'react-toastify'
 import 'bootstrap/dist/css/bootstrap.css'
 
