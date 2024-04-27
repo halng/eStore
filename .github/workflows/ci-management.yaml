@@ -31,6 +31,13 @@ jobs:
         working-directory: management
       - run: npm run build
         working-directory: management
+      - name: Analyze with sonar cloud
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: management
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   security:
     needs: "analyze"
@@ -96,13 +103,6 @@ jobs:
             name: JEST Tests            # Name of the check run which will be created
             path: management/junit.xml    # Path to test results
             reporter: jest-junit 
-      - name: Analyze with sonar cloud
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: management
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker:
     needs: analyze
