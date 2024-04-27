@@ -18,7 +18,6 @@
             }
         ],
         "paths": {
-            // "@/*": ["./src/*"],
             "@types": ["./src/types"],
             "@status": ["./src/constants/status"],
             "@message": ["./src/constants/message"],

@@ -2,7 +2,7 @@ name: Management App
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: ["main"]
     paths:
       - "management/**"
       - ".github/workflows/ci-management.yaml"
@@ -29,13 +29,6 @@ jobs:
         working-directory: management
       - run: npm run format && npm run lint
         working-directory: management
-      - name: Analyze with sonar cloud
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          projectBaseDir: management
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm run build
         working-directory: management
 
@@ -102,7 +95,14 @@ jobs:
         with:
             name: JEST Tests            # Name of the check run which will be created
             path: management/junit.xml    # Path to test results
-            reporter: jest-junit   
+            reporter: jest-junit 
+      - name: Analyze with sonar cloud
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: management
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker:
     needs: analyze
