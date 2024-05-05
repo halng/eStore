@@ -18,10 +18,12 @@
             }
         ],
         "paths": {
-            "@/*": ["./src/*"],
             "@types": ["./src/types"],
             "@status": ["./src/constants/status"],
-            "@message": ["./src/constants/message"]
+            "@message": ["./src/constants/message"],
+            "@constants": ["./src/constants"],
+            "@components": ["./src/components"],
+            "@mock": ["./src/__mock__"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
