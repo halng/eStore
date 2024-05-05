@@ -10,13 +10,10 @@ import { usePathname } from 'next/navigation'
 
 import { NAV } from '@constants'
 import navConfig from './config-navigation'
+import { useAppSelector } from '@stores'
 
 export default function Nav() {
-    const account = {
-        displayName: 'Tao Nguyen',
-        photoURL: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
-        role: 'SELLER',
-    }
+    const account = useAppSelector((state) => state.auth)
 
     const renderAccount = (
         <Box
@@ -31,10 +28,10 @@ export default function Nav() {
                 bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
             }}
         >
-            <Avatar src={account.photoURL} alt='photo' />
+            <Avatar src={account.photoUrl} alt='photo' />
 
             <Box sx={{ ml: 2 }}>
-                <Typography variant='subtitle2'>{account.displayName}</Typography>
+                <Typography variant='subtitle2'>{account.username}</Typography>
 
                 <Typography variant='body2' sx={{ color: 'text.secondary' }}>
                     {account.role}
