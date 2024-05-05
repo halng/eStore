@@ -18,7 +18,7 @@ pipeline {
                 
 
                 // Push the Docker image to Docker Hub
-                sh 'docker push tanhaoke/estore-product:lates'
+                sh 'docker push tanhaoke/estore-product:latest'
             }
         }
     }
