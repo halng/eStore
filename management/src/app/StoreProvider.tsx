@@ -1,8 +1,10 @@
 'use client'
 
 import { Provider } from 'react-redux'
-import { store } from '@stores'
+import { setupStore } from '@stores'
 import { persistStore } from 'redux-persist'
+
+const store = setupStore({})
 persistStore(store)
 
 export default function StoreProvider({ children }: { children: React.ReactNode }) {
