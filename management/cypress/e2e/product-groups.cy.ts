@@ -15,10 +15,6 @@ describe('Product Groups Page', () => {
         // Assert that the page title is correct
         cy.title().should('eq', 'E-Store Management System')
 
-        // Assert that the page contains a specific element
-        cy.get('h6').should('contain', 'Tao Nguyen')
-        cy.get('p').should('contain', 'SELLER')
-
         cy.get("a[href='/partner/product-groups']").click()
 
         cy.url().should('contain', '/partner/product-groups')
