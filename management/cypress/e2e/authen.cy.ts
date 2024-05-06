@@ -107,24 +107,24 @@ describe('Check authentication func', () => {
             )
 
         cy.url().should('eq', 'http://localhost:3000/partner')
-    }),
-        it('should redirect to manager page when user is logged in with role seller', () => {
-            cy.visit('http://localhost:3000')
-            cy.window()
-                .its('Cypress')
-                .its('store')
-                .invoke(
-                    'dispatch',
-                    setAuth({
-                        isAuth: true,
-                        username: 'Admin',
-                        photoUrl: 'http://xxx.com',
-                        role: 'ADMIN',
-                        email: 'admin@email',
-                        id: 'xxx',
-                    }),
-                )
+    })
+    it('should redirect to manager page when user is logged in with role seller', () => {
+        cy.visit('http://localhost:3000')
+        cy.window()
+            .its('Cypress')
+            .its('store')
+            .invoke(
+                'dispatch',
+                setAuth({
+                    isAuth: true,
+                    username: 'Admin',
+                    photoUrl: 'https://xxx.com',
+                    role: 'ADMIN',
+                    email: 'admin@email',
+                    id: 'xxx',
+                }),
+            )
 
-            cy.url().should('eq', 'http://localhost:3000/management')
-        })
+        cy.url().should('eq', 'http://localhost:3000/management')
+    })
 })
