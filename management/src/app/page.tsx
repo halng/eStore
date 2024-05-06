@@ -11,6 +11,8 @@ import Message from '@message'
 import LoadingStatus from '@status'
 import { toast } from 'react-toastify'
 import 'bootstrap/dist/css/bootstrap.css'
+import { useAppDispatch, useAppSelector } from '@stores'
+import { setAuth } from '../stores/authSlice'
 
 const schema = yup.object({
     username: yup.string().required('Username is required'),
@@ -18,10 +20,10 @@ const schema = yup.object({
     isRemember: yup.boolean(),
 })
 
-const Home = () => {
+const LogIn = () => {
     const [isRemember, setIsRemember] = useState(false)
     const [status, setStatus] = useState<LoadingStatus>(LoadingStatus.NOPE)
-
+    const dispatch = useAppDispatch()
     const {
         register,
         handleSubmit,
@@ -37,7 +39,12 @@ const Home = () => {
         }
         Auth.login(resData)
             .then((res) => {
+                // handle data to set for auth state
+                const { accountId, email, role, username, photoUrl } = res.data
+                const authData = { id: accountId, email, role, username, photoUrl, isAuth: true }
+                dispatch(setAuth(authData))
                 toast.success(Message.LOGIN.SUCCESS)
+
                 if (res.data.role === 'SELLER') {
                     window.location.replace('/partner')
                 } else if (res.data.role === 'ADMIN' || res.data.role === 'SUPER_ADMIN' || res.data.role === 'STAFF') {
@@ -52,7 +59,6 @@ const Home = () => {
                 }
             })
     }
-
     return (
         <div className='background-radial-gradient overflow-hidden h-100'>
             <div className='container px-4 py-5 px-md-5 text-center text-lg-start h-100 d-flex'>
@@ -151,6 +157,19 @@ const Home = () => {
             </div>
         </div>
     )
+}
+
+const Home = () => {
+    const authData = useAppSelector((state) => state.auth)
+    if (authData.isAuth) {
+        if (authData.role === 'SELLER') {
+            window.location.replace('/partner')
+        } else {
+            window.location.replace('/management')
+        }
+    } else {
+        return <LogIn />
+    }
 }
 
 export default Home
