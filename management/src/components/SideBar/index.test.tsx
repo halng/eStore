@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react'
 import { SideBar } from '@components'
 import navConfig from './config-navigation'
-import { renderWithProviders } from '@utils/test-utils'
+import { renderWithProviders } from '../../utils/test-utils'
 import { AuthState } from '@types'
 
 jest.mock('next/navigation', () => ({
