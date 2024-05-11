@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { TableView, ActionHeader } from '@components'
 import { PRODUCT_GROUP_TABLE_HEADER, CRUD_ACTION, CRUD_ACTION_COLOR } from '@constants'
 import { ProductGroupTableData } from '@types'
-import { mockProductGroupData } from '../../../__mock__'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Dialog from '@mui/material/Dialog'
@@ -17,12 +16,13 @@ import { Switch } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { ProductGroupAPI } from 'api-estore-v2'
 import { toast } from 'react-toastify'
+import { calculateTimeAgo } from '../../../utils/CalculateDate'
 
 interface DialogProps {
     id?: string
     name?: string
     description?: string
-    status?: 'active' | 'inactive'
+    status?: 'ENABLED' | 'DISABLED'
     action: CRUD_ACTION.CREATE | CRUD_ACTION.UPDATE | CRUD_ACTION.DELETE
 }
 
@@ -37,12 +37,21 @@ const message = {
 const ProductGroups: React.FC = () => {
     const [data, setData] = useState<ProductGroupTableData[]>([])
     const [openDialogData, setOpenDialogData] = useState<DialogProps | null>(null)
-    const [enable, setEnable] = useState<string>('')
+    const [ENABLED, setEnable] = useState<string>('')
 
     // *************************************************************************************
 
     useEffect(() => {
-        setData(mockProductGroupData)
+        ProductGroupAPI.getAll(1).then((res) => {
+            console.log(res)
+            const _data = [...res.data.items]
+            const productGroup: ProductGroupTableData[] = _data.map((item: ProductGroupTableData, index) => {
+                item.updatedDate = calculateTimeAgo(item.updatedDate)
+                item.no = index + 1
+                return item
+            })
+            setData([...productGroup])
+        })
     }, [])
 
     const closeDialogHandler = () => {
@@ -154,19 +163,19 @@ const ProductGroups: React.FC = () => {
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={enable === 'active' ? true : false}
+                                        checked={ENABLED === 'ENABLED' ? true : false}
                                         onChange={() => {
-                                            setEnable(enable === 'active' ? 'inactive' : 'active')
+                                            setEnable(ENABLED === 'ENABLED' ? 'DISABLED' : 'ENABLED')
                                         }}
                                         inputProps={{ 'aria-label': 'controlled' }}
                                     />
                                 }
-                                label={enable === 'active' ? 'Active' : 'Inactive'}
+                                label={ENABLED === 'ENABLED' ? 'Enable' : 'Disable'}
                             />
                         )}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={closeDialogHandler} color='warning'>
+                        <Button onClick={closeDialogHandler} color='primary'>
                             Cancel
                         </Button>
 

@@ -1,5 +1,5 @@
 export type ProductGroupTableHeader = {
-    id: 'name' | 'id' | 'description' | 'createdAt' | 'updatedAt' | 'no' | 'status'
+    id: 'name' | 'id' | 'description' | 'updatedDate' | 'no' | 'status'
     label: string
     minWidth?: number
     align?: 'right'
@@ -12,7 +12,6 @@ export type ProductGroupTableData = {
     id: string
     name: string
     description: string
-    createdAt: string
-    updatedAt: string
-    status: 'active' | 'inactive'
+    updatedDate: string
+    status: 'ENABLED' | 'DISABLED'
 }

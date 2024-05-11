@@ -43,12 +43,6 @@ public class ProductGroupController {
     return this.iProductGroupService.updateProductGroup(newName, groupId);
   }
 
-  @PatchMapping("{groupId}/{action}")
-  public ResponseEntity<ResVm> disableEnableGroup(
-      @PathVariable String groupId, @PathVariable String action) {
-    return this.iProductGroupService.disableEnableGroup(groupId, action);
-  }
-
   @DeleteMapping("{groupId}")
   public ResponseEntity<ResVm> deleteProductGroup(@PathVariable String groupId) {
     return this.iProductGroupService.deleteProductGroup(groupId);

@@ -137,7 +137,7 @@ const TableView = ({ tableHeader, tableData, setOpenAction }: TableViewProps) =>
                                                 <TableCell key={column.id} align={column.align}>
                                                     <Chip
                                                         variant='outlined'
-                                                        color={value === 'active' ? 'success' : 'error'}
+                                                        color={value === 'ENABLED' ? 'success' : 'error'}
                                                         label={value.toString().toUpperCase()}
                                                     />
                                                 </TableCell>
