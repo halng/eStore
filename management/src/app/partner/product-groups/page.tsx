@@ -1,19 +1,181 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { TableView, ActionHeader } from '@components'
-import { PRODUCT_GROUP_TABLE_HEADER } from '@constants'
+import { PRODUCT_GROUP_TABLE_HEADER, CRUD_ACTION, CRUD_ACTION_COLOR } from '@constants'
 import { ProductGroupTableData } from '@types'
 import { mockProductGroupData } from '../../../__mock__'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import { FormatString } from '../../../utils/CustomString'
+import { Highlight } from '@components'
+import { Switch } from '@mui/material'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import { ProductGroupAPI } from 'api-estore-v2'
+import { toast } from 'react-toastify'
+
+interface DialogProps {
+    id?: string
+    name?: string
+    description?: string
+    status?: 'active' | 'inactive'
+    action: CRUD_ACTION.CREATE | CRUD_ACTION.UPDATE | CRUD_ACTION.DELETE
+}
+
+const message = {
+    [CRUD_ACTION.CREATE]:
+        'To create new Product Group please enter your product group name and product group description here.',
+    [CRUD_ACTION.UPDATE]:
+        'To update exist Product Group: {0} please enter your new product group name and new product group description here.',
+    [CRUD_ACTION.DELETE]: 'Are you sure you want to delete this product group {0}?',
+}
 
 const ProductGroups: React.FC = () => {
     const [data, setData] = useState<ProductGroupTableData[]>([])
+    const [openDialogData, setOpenDialogData] = useState<DialogProps | null>(null)
+    const [enable, setEnable] = useState<string>('')
+
+    // *************************************************************************************
+
     useEffect(() => {
         setData(mockProductGroupData)
     }, [])
+
+    const closeDialogHandler = () => {
+        setOpenDialogData(null)
+    }
+
+    const submitDialogHandler = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        const formData = new FormData(event.currentTarget)
+        const formJson = Object.fromEntries((formData as any).entries())
+
+        if (openDialogData?.action === CRUD_ACTION.CREATE) {
+            // prepare data to create new product group
+            const newProductGroup = {
+                name: formJson.groupName,
+                description: formJson.groupDescription,
+            }
+
+            ProductGroupAPI.create(newProductGroup)
+                .then((res: any) => {
+                    toast.success(res.data.message)
+                })
+                .catch((err) => {
+                    toast.error(err.response.data.message)
+                })
+        }
+        closeDialogHandler()
+    }
+
+    const onOpenDialogHandler = (id: string, action: CRUD_ACTION) => {
+        if (id !== '') {
+            const productGroup = data.find((item) => item.id === id)
+            if (productGroup) {
+                setOpenDialogData({
+                    id: productGroup.id,
+                    name: productGroup.name,
+                    description: productGroup.description,
+                    status: productGroup.status,
+                    action,
+                })
+                setEnable(productGroup.status)
+            }
+        } else {
+            // Create new product group action
+            setOpenDialogData({
+                action,
+            })
+        }
+    }
+
+    // *************************************************************************************
+
     return (
         <div>
-            <ActionHeader tableData={data} />
-            <TableView tableData={data} tableHeader={PRODUCT_GROUP_TABLE_HEADER} />
+            <ActionHeader tableData={data} setOpenAction={onOpenDialogHandler} />
+            <TableView tableData={data} tableHeader={PRODUCT_GROUP_TABLE_HEADER} setOpenAction={onOpenDialogHandler} />
+
+            {/* Open dialog to perform action */}
+            {openDialogData?.action && (
+                <Dialog
+                    open={openDialogData?.action !== null}
+                    onClose={closeDialogHandler}
+                    PaperProps={{
+                        component: 'form',
+                        onSubmit: submitDialogHandler,
+                    }}
+                >
+                    <DialogTitle>{openDialogData.action.toLocaleUpperCase()}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText pb={2}>
+                            {
+                                <Highlight
+                                    originStr={FormatString(message[openDialogData.action], openDialogData?.name)}
+                                    highlight={openDialogData.name ? openDialogData.name : ''}
+                                    color={'error'}
+                                />
+                            }
+                        </DialogContentText>
+                        {openDialogData.action !== CRUD_ACTION.DELETE && (
+                            <>
+                                <TextField
+                                    autoFocus
+                                    required
+                                    margin='dense'
+                                    name='groupName'
+                                    label='Product Name'
+                                    defaultValue={openDialogData.name}
+                                    type='text'
+                                    fullWidth
+                                    variant='standard'
+                                />
+                                <TextField
+                                    autoFocus
+                                    required
+                                    margin='dense'
+                                    name='groupDescription'
+                                    label='Product Group Description'
+                                    type='text'
+                                    defaultValue={openDialogData.description}
+                                    maxRows={3}
+                                    multiline
+                                    fullWidth
+                                    variant='standard'
+                                    sx={{ pt: 2, pb: 2 }}
+                                />
+                            </>
+                        )}
+                        {openDialogData.action === CRUD_ACTION.UPDATE && (
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={enable === 'active' ? true : false}
+                                        onChange={() => {
+                                            setEnable(enable === 'active' ? 'inactive' : 'active')
+                                        }}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                    />
+                                }
+                                label={enable === 'active' ? 'Active' : 'Inactive'}
+                            />
+                        )}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={closeDialogHandler} color='warning'>
+                            Cancel
+                        </Button>
+
+                        <Button type='submit' color={CRUD_ACTION_COLOR[openDialogData.action] as any}>
+                            {openDialogData.action.toLocaleUpperCase()}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
         </div>
     )
 }

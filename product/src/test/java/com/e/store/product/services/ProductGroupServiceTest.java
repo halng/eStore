@@ -12,6 +12,7 @@ import com.e.store.product.exceptions.BadRequestException;
 import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductGroupRepository;
 import com.e.store.product.services.impl.ProductGroupServiceImpl;
+import com.e.store.product.viewmodel.req.ProductGroupCreateReqVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
@@ -57,7 +58,7 @@ public class ProductGroupServiceTest {
         Assertions.assertThrows(
             BadRequestException.class,
             () -> {
-              productGroupService.createNewGroup("name");
+              productGroupService.createNewGroup(new ProductGroupCreateReqVm("test", "des"));
             });
     Assertions.assertEquals("name already exists", badRequestException.getMessage());
   }
@@ -68,7 +69,7 @@ public class ProductGroupServiceTest {
     when(iProductGroupRepository.existsByName(anyString())).thenReturn(false);
     when(iProductGroupRepository.save(any())).thenReturn(mockProductGroup);
 
-    ResponseEntity<ResVm> actualResult = this.productGroupService.createNewGroup("test");
+    ResponseEntity<ResVm> actualResult = this.productGroupService.createNewGroup(new ProductGroupCreateReqVm("test", "des"));
 
     Assertions.assertEquals(201, actualResult.getStatusCode().value());
     Assertions.assertEquals(

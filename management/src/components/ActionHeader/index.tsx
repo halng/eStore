@@ -8,6 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { ProductGroupTableData } from '@types'
 import AddIcon from '@mui/icons-material/Add'
 import CustomBreadcrumbs from '../Breadcrumbs'
+import { CRUD_ACTION } from '@constants'
 
 interface SearchBoxProps {
     initializeData: ProductGroupTableData[]
@@ -37,9 +38,10 @@ const SearchBox = ({ initializeData }: SearchBoxProps) => {
 
 interface ActionHeaderProps {
     tableData: ProductGroupTableData[]
+    setOpenAction: any
 }
 
-const ActionHeader = ({ tableData }: ActionHeaderProps) => {
+const ActionHeader = ({ tableData, setOpenAction }: ActionHeaderProps) => {
     return (
         <Box sx={{ display: 'flex', alignItems: 'left', mb: 2, flexDirection: 'column', mt: 3 }}>
             <CustomBreadcrumbs />
@@ -53,7 +55,12 @@ const ActionHeader = ({ tableData }: ActionHeaderProps) => {
                 }}
             >
                 {<SearchBox initializeData={tableData} />}
-                <Button variant='contained' color='success' startIcon={<AddIcon />}>
+                <Button
+                    variant='contained'
+                    color='success'
+                    startIcon={<AddIcon />}
+                    onClick={() => setOpenAction('', CRUD_ACTION.CREATE)}
+                >
                     Add
                 </Button>
             </Box>

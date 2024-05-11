@@ -29,3 +29,15 @@ export const PRODUCT_GROUP_TABLE_HEADER: ProductGroupTableHeader[] = [
     { id: 'updatedAt', label: 'Updated At', minWidth: 170, isDisplay: true },
     { id: 'status', label: 'Status', minWidth: 70, isDisplay: true },
 ]
+
+export const enum CRUD_ACTION {
+    CREATE = 'create',
+    UPDATE = 'update',
+    DELETE = 'delete',
+}
+
+export const CRUD_ACTION_COLOR = {
+    [CRUD_ACTION.CREATE]: 'success',
+    [CRUD_ACTION.UPDATE]: 'warning',
+    [CRUD_ACTION.DELETE]: 'error',
+}

@@ -17,12 +17,14 @@ import MenuItem from '@mui/material/MenuItem'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { CRUD_ACTION } from '@constants'
 
 interface TableViewProps {
     tableHeader: ProductGroupTableHeader[] | null
     tableData: ProductGroupTableData[]
+    setOpenAction: any
 }
-const ItemAction = () => {
+const ItemAction = ({ id, setOpenAction }: any) => {
     const [open, setOpen] = useState<any>(null)
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -53,11 +55,22 @@ const ItemAction = () => {
                     sx: { width: 140 },
                 }}
             >
-                <MenuItem onClick={handleClose}>
+                <MenuItem
+                    onClick={() => {
+                        setOpenAction(id, CRUD_ACTION.UPDATE)
+                        handleClose()
+                    }}
+                >
                     <EditIcon sx={{ mr: 2 }} />
                     <Typography variant='inherit'>Edit</Typography>
                 </MenuItem>
-                <MenuItem onClick={handleClose} sx={{ color: 'error.main' }}>
+                <MenuItem
+                    onClick={() => {
+                        setOpenAction(id, CRUD_ACTION.DELETE)
+                        handleClose()
+                    }}
+                    sx={{ color: 'error.main' }}
+                >
                     <DeleteIcon sx={{ mr: 2 }} />
                     Delete
                 </MenuItem>
@@ -66,7 +79,7 @@ const ItemAction = () => {
     )
 }
 
-const TableView = ({ tableHeader, tableData }: TableViewProps) => {
+const TableView = ({ tableHeader, tableData, setOpenAction }: TableViewProps) => {
     const [page, setPage] = React.useState(0)
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
@@ -140,7 +153,7 @@ const TableView = ({ tableHeader, tableData }: TableViewProps) => {
                                         }
                                     })}
                                     <TableCell>
-                                        <ItemAction />
+                                        <ItemAction id={row.id} setOpenAction={setOpenAction} />
                                     </TableCell>
                                 </TableRow>
                             )

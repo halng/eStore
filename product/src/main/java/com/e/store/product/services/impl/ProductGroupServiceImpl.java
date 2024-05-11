@@ -7,6 +7,7 @@ import com.e.store.product.exceptions.BadRequestException;
 import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductGroupRepository;
 import com.e.store.product.services.IProductGroupService;
+import com.e.store.product.viewmodel.req.ProductGroupCreateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductGroupResVm;
@@ -39,19 +40,20 @@ public class ProductGroupServiceImpl implements IProductGroupService {
   }
 
   @Override
-  public ResponseEntity<ResVm> createNewGroup(String groupName) {
-    if (iProductGroupRepository.existsByName(groupName)) {
-      throw new BadRequestException(groupName + " already exists");
+  public ResponseEntity<ResVm> createNewGroup(ProductGroupCreateReqVm groupData) {
+    if (iProductGroupRepository.existsByName(groupData.name())) {
+      throw new BadRequestException("Product Group Name: %s already exists".formatted(groupData.name()));
     }
-    LOG.info("createNewGroup: create new group with name: " + groupName);
+    LOG.info("createNewGroup: create new group with name: {}", groupData.name());
     ProductGroup productGroup = new ProductGroup();
-    productGroup.setName(groupName);
+    productGroup.setName(groupData.name());
+    productGroup.setDescription(groupData.description());
     productGroup.setStatus(Status.ENABLED);
 
     iProductGroupRepository.save(productGroup);
 
     ResVm resVm =
-        new ResVm(HttpStatus.CREATED, "Create new group with name: " + groupName + " successfully");
+        new ResVm(HttpStatus.CREATED, "Create new group with name: " + groupData.name() + " successfully");
     LOG.info(resVm.getLogMessage());
     return ResponseEntity.status(HttpStatus.CREATED).body(resVm);
   }
