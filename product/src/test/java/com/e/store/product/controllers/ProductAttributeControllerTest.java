@@ -72,7 +72,7 @@ class ProductAttributeControllerTest extends AbstractControllerTest {
     int statusCode = result.getResponse().getStatus();
     Assertions.assertEquals(400, statusCode);
     Assertions.assertEquals(
-        "{\"msg\":\"Attribute removed. Please try"
+        "{\"message\":\"Attribute removed. Please try"
             + " again!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
             + " Attribute removed. Please try again!\\n"
             + "Status Code: 400\"}",
@@ -150,7 +150,7 @@ class ProductAttributeControllerTest extends AbstractControllerTest {
     int statusCode = result.getResponse().getStatus();
     Assertions.assertEquals(400, statusCode);
     Assertions.assertEquals(
-        "{\"msg\":\"Product Attribute with name Att - 1 already"
+        "{\"message\":\"Product Attribute with name Att - 1 already"
             + " exists!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
             + " Product Attribute with name Att - 1 already exists!\\n"
             + "Status Code: 400\"}",

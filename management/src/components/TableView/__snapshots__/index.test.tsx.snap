@@ -21,7 +21,7 @@ exports[`Test Rendering snapshot rendering 1`] = `
             <th
               class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
               scope="col"
-              style="min-width: 100px; font-weight: bold; font-size: 1rem;"
+              style="min-width: 10px; font-weight: bold; font-size: 1rem;"
             >
               No.
             </th>
@@ -44,15 +44,19 @@ exports[`Test Rendering snapshot rendering 1`] = `
               scope="col"
               style="min-width: 170px; font-weight: bold; font-size: 1rem;"
             >
-              Created At
+              Last Update
             </th>
             <th
               class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
               scope="col"
-              style="min-width: 170px; font-weight: bold; font-size: 1rem;"
+              style="min-width: 70px; font-weight: bold; font-size: 1rem;"
             >
-              Updated At
+              Status
             </th>
+            <th
+              class="MuiTableCell-root MuiTableCell-head MuiTableCell-stickyHeader MuiTableCell-sizeMedium css-y8ay40-MuiTableCell-root"
+              scope="col"
+            />
           </tr>
         </thead>
         <tbody

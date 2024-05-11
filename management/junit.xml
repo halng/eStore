@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="26" failures="0" errors="0" time="3.682">
+  <testsuite name="components" errors="0" failures="0" skipped="0" timestamp="2024-05-11T11:32:56" time="2.08" tests="3">
+    <testcase classname="components exports SideBar" name="components exports SideBar" time="0.004">
+    </testcase>
+    <testcase classname="components exports TableView" name="components exports TableView" time="0">
+    </testcase>
+    <testcase classname="components exports ActionHeader" name="components exports ActionHeader" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test SideBar Component" errors="0" failures="0" skipped="0" timestamp="2024-05-11T11:32:56" time="2.336" tests="2">
+    <testcase classname="Test SideBar Component snapshot rendering" name="Test SideBar Component snapshot rendering" time="0.098">
+    </testcase>
+    <testcase classname="Test SideBar Component renders a side bar" name="Test SideBar Component renders a side bar" time="0.089">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Action Header Component" errors="0" failures="0" skipped="0" timestamp="2024-05-11T11:32:56" time="2.42" tests="2">
+    <testcase classname="Test Action Header Component snapshot rendering" name="Test Action Header Component snapshot rendering" time="0.165">
+    </testcase>
+    <testcase classname="Test Action Header Component renders a heading" name="Test Action Header Component renders a heading" time="0.189">
+    </testcase>
+  </testsuite>
+  <testsuite name="calculateTimeAgo" errors="0" failures="0" skipped="0" timestamp="2024-05-11T11:32:58" time="0.242" tests="5">
+    <testcase classname="calculateTimeAgo should return &quot;X seconds ago&quot; when less than a minute" name="calculateTimeAgo should return &quot;X seconds ago&quot; when less than a minute" time="0.003">
+    </testcase>
+    <testcase classname="calculateTimeAgo should return &quot;X minutes ago&quot; when less than an hour" name="calculateTimeAgo should return &quot;X minutes ago&quot; when less than an hour" time="0">
+    </testcase>
+    <testcase classname="calculateTimeAgo should return &quot;X hours ago&quot; when less than a day" name="calculateTimeAgo should return &quot;X hours ago&quot; when less than a day" time="0.001">
+    </testcase>
+    <testcase classname="calculateTimeAgo should return &quot;X days ago&quot; when more than a day" name="calculateTimeAgo should return &quot;X days ago&quot; when more than a day" time="0.001">
+    </testcase>
+    <testcase classname="calculateTimeAgo should return &quot;0 seconds ago&quot; when given the current date" name="calculateTimeAgo should return &quot;0 seconds ago&quot; when given the current date" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Test Rendering" errors="0" failures="0" skipped="0" timestamp="2024-05-11T11:32:56" time="2.585" tests="4">
+    <testcase classname="Test Rendering snapshot rendering" name="Test Rendering snapshot rendering" time="0.159">
+    </testcase>
+    <testcase classname="Test Rendering renders a heading" name="Test Rendering renders a heading" time="0.283">
+    </testcase>
+    <testcase classname="Test Rendering renders a when missing data" name="Test Rendering renders a when missing data" time="0.008">
+    </testcase>
+    <testcase classname="Test Rendering renders a when empty data" name="Test Rendering renders a when empty data" time="0.034">
+    </testcase>
+  </testsuite>
+  <testsuite name="FormatString" errors="0" failures="0" skipped="0" timestamp="2024-05-11T11:32:58" time="0.217" tests="4">
+    <testcase classname="FormatString should replace placeholders with values" name="FormatString should replace placeholders with values" time="0.003">
+    </testcase>
+    <testcase classname="FormatString should handle multiple placeholders" name="FormatString should handle multiple placeholders" time="0">
+    </testcase>
+    <testcase classname="FormatString should handle placeholders with different types" name="FormatString should handle placeholders with different types" time="0.001">
+    </testcase>
+    <testcase classname="FormatString should handle missing placeholders" name="FormatString should handle missing placeholders" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="test AuthSlice" errors="0" failures="0" skipped="0" timestamp="2024-05-11T11:32:58" time="0.183" tests="3">
+    <testcase classname="test AuthSlice should return the initial state" name="test AuthSlice should return the initial state" time="0.003">
+    </testcase>
+    <testcase classname="test AuthSlice should handle setAuth when authenticated" name="test AuthSlice should handle setAuth when authenticated" time="0.001">
+    </testcase>
+    <testcase classname="test AuthSlice should handle setAuth when not authenticated" name="test AuthSlice should handle setAuth when not authenticated" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="Highlight Component" errors="0" failures="0" skipped="0" timestamp="2024-05-11T11:32:58" time="0.941" tests="3">
+    <testcase classname="Highlight Component renders the original string when no highlight is provided" name="Highlight Component renders the original string when no highlight is provided" time="0.025">
+    </testcase>
+    <testcase classname="Highlight Component renders the highlighted string with the specified color" name="Highlight Component renders the highlighted string with the specified color" time="0.025">
+    </testcase>
+    <testcase classname="Highlight Component renders the original string with multiple highlighted occurrences" name="Highlight Component renders the original string with multiple highlighted occurrences" time="0.019">
+    </testcase>
+  </testsuite>
+</testsuites>

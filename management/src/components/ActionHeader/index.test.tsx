@@ -8,11 +8,11 @@ jest.mock('next/navigation', () => ({
 
 describe('Test Action Header Component', () => {
     it('snapshot rendering', () => {
-        const { asFragment } = render(<ActionHeader tableData={[]} />)
+        const { asFragment } = render(<ActionHeader tableData={[]} setOpenAction={null} />)
         expect(asFragment()).toMatchSnapshot()
     })
     it('renders a heading', () => {
-        render(<ActionHeader tableData={[]} />)
+        render(<ActionHeader tableData={[]} setOpenAction={null} />)
 
         // check render breadcrumbs
         const separatorCount = screen.getAllByText('/')
@@ -29,7 +29,7 @@ describe('Test Action Header Component', () => {
         expect(searchBox).toBeInTheDocument()
 
         // check render create button
-        const createButton = screen.getByRole('button', { name: 'Create' })
+        const createButton = screen.getByRole('button', { name: 'Add' })
         expect(createButton).toBeInTheDocument()
     })
 })

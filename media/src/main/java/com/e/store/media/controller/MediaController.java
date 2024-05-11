@@ -26,6 +26,7 @@ public class MediaController {
 
   /**
    * Upload multiple images to AWS S3 bucket and get image key, then send to client
+   *
    * @param files: image files to upload
    * @param caption: required caption for image => folder name on aws s3
    * @return List of image key

@@ -2,17 +2,16 @@ package com.e.store.product.controllers;
 
 import com.e.store.product.services.IProductGroupService;
 import com.e.store.product.viewmodel.req.ProductGroupCreateReqVm;
+import com.e.store.product.viewmodel.req.ProductGroupUpdateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
-import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,10 +36,9 @@ public class ProductGroupController {
     return this.iProductGroupService.createNewGroup(groupData);
   }
 
-  @PutMapping("{groupId}")
-  public ResponseEntity<ResVm> updateProductGroup(
-      @NotBlank @RequestParam String newName, @PathVariable String groupId) {
-    return this.iProductGroupService.updateProductGroup(newName, groupId);
+  @PutMapping()
+  public ResponseEntity<ResVm> updateProductGroup(@RequestBody ProductGroupUpdateReqVm data) {
+    return this.iProductGroupService.updateProductGroup(data);
   }
 
   @DeleteMapping("{groupId}")

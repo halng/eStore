@@ -37,7 +37,7 @@ const message = {
 const ProductGroups: React.FC = () => {
     const [data, setData] = useState<ProductGroupTableData[]>([])
     const [openDialogData, setOpenDialogData] = useState<DialogProps | null>(null)
-    const [ENABLED, setEnable] = useState<string>('')
+    const [enable, setEnable] = useState<string>('')
 
     // *************************************************************************************
 
@@ -77,7 +77,35 @@ const ProductGroups: React.FC = () => {
                 .catch((err) => {
                     toast.error(err.response.data.message)
                 })
+        } else if (openDialogData?.action === CRUD_ACTION.UPDATE) {
+            // prepare data to update product group
+            const updateProductGroup = {
+                id: openDialogData.id,
+                name: formJson.groupName,
+                description: formJson.groupDescription,
+                status: enable,
+            }
+
+            ProductGroupAPI.update(updateProductGroup)
+                .then((res: any) => {
+                    toast.success(res.data.message)
+                })
+                .catch((err) => {
+                    toast.error(err.response.data.message)
+                })
+        } else if (openDialogData?.action === CRUD_ACTION.DELETE) {
+            // prepare data to delete product group
+            const groupId = openDialogData.id
+            if (!groupId) return
+            ProductGroupAPI.deleteGroup(groupId)
+                .then((res: any) => {
+                    toast.success(res.data.message)
+                })
+                .catch((err) => {
+                    toast.error(err.response.data.message)
+                })
         }
+
         closeDialogHandler()
     }
 
@@ -163,14 +191,14 @@ const ProductGroups: React.FC = () => {
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={ENABLED === 'ENABLED' ? true : false}
+                                        checked={enable === 'ENABLED' ? true : false}
                                         onChange={() => {
-                                            setEnable(ENABLED === 'ENABLED' ? 'DISABLED' : 'ENABLED')
+                                            setEnable(enable === 'ENABLED' ? 'DISABLED' : 'ENABLED')
                                         }}
                                         inputProps={{ 'aria-label': 'controlled' }}
                                     />
                                 }
-                                label={ENABLED === 'ENABLED' ? 'Enable' : 'Disable'}
+                                label={enable === 'ENABLED' ? 'Enable' : 'Disable'}
                             />
                         )}
                     </DialogContent>
