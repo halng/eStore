@@ -12,7 +12,6 @@ const ProductGroups: React.FC = () => {
     }, [])
     return (
         <div>
-            {/* <h1>Product Group!</h1> */}
             <ActionHeader tableData={data} />
             <TableView tableData={data} tableHeader={PRODUCT_GROUP_TABLE_HEADER} />
         </div>

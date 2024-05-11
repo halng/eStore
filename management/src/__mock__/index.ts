@@ -7,4 +7,5 @@ export const mockProductGroupData: ProductGroupTableData[] = Array.from({ length
     description: `Description for Product ${index + 1}`,
     createdAt: new Date().toUTCString(),
     updatedAt: new Date().toUTCString(),
+    status: index % 5 === 0 ? 'active' : 'inactive',
 }))

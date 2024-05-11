@@ -14,7 +14,7 @@ export const PRODUCT_GROUP_TABLE_HEADER: ProductGroupTableHeader[] = [
     {
         id: 'no',
         label: 'No.',
-        minWidth: 100,
+        minWidth: 10,
         isDisplay: true,
     },
     {
@@ -27,4 +27,5 @@ export const PRODUCT_GROUP_TABLE_HEADER: ProductGroupTableHeader[] = [
     { id: 'description', label: 'Description', minWidth: 170, isDisplay: true },
     { id: 'createdAt', label: 'Created At', minWidth: 170, isDisplay: true },
     { id: 'updatedAt', label: 'Updated At', minWidth: 170, isDisplay: true },
+    { id: 'status', label: 'Status', minWidth: 70, isDisplay: true },
 ]

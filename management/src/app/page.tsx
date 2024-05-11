@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import 'bootstrap/dist/css/bootstrap.css'
 import { useAppDispatch, useAppSelector } from '@stores'
 import { setAuth } from '../stores/authSlice'
+import { redirect } from 'next/navigation'
 
 const schema = yup.object({
     username: yup.string().required('Username is required'),
@@ -46,9 +47,9 @@ const LogIn = () => {
                 toast.success(Message.LOGIN.SUCCESS)
 
                 if (res.data.role === 'SELLER') {
-                    window.location.replace('/partner')
+                    redirect('/partner')
                 } else if (res.data.role === 'ADMIN' || res.data.role === 'SUPER_ADMIN' || res.data.role === 'STAFF') {
-                    window.location.replace('/management')
+                    redirect('/management')
                 }
             })
             .catch((err) => {
@@ -163,9 +164,9 @@ const Home = () => {
     const authData = useAppSelector((state) => state.auth)
     if (authData.isAuth) {
         if (authData.role === 'SELLER') {
-            window.location.replace('/partner')
+            redirect('/partner')
         } else {
-            window.location.replace('/management')
+            redirect('/management')
         }
     } else {
         return <LogIn />

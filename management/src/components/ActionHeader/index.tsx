@@ -1,21 +1,22 @@
 'use client'
 
-import { Breadcrumbs, Typography, Link, Box, Button } from '@mui/material'
-import { usePathname } from 'next/navigation'
-import HomeIcon from '@mui/icons-material/Home'
+import { Box, Button } from '@mui/material'
 
 import * as React from 'react'
 import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import { ProductGroupTableData } from '@types'
+import AddIcon from '@mui/icons-material/Add'
+import CustomBreadcrumbs from '../Breadcrumbs'
 
 interface SearchBoxProps {
     initializeData: ProductGroupTableData[]
 }
+
 const SearchBox = ({ initializeData }: SearchBoxProps) => {
     return (
         <Autocomplete
-            sx={{ width: '40%' }}
+            sx={{ width: '40%', height: '3rem' }}
             freeSolo
             id='free-solo-2-demo'
             disableClearable
@@ -39,33 +40,9 @@ interface ActionHeaderProps {
 }
 
 const ActionHeader = ({ tableData }: ActionHeaderProps) => {
-    const pathname = usePathname()
-
     return (
         <Box sx={{ display: 'flex', alignItems: 'left', mb: 2, flexDirection: 'column', mt: 3 }}>
-            <Breadcrumbs aria-label='breadcrumb'>
-                {pathname.split('/').map((path, index) => {
-                    if (index === 0) {
-                        return (
-                            <Link underline='hover' color='inherit' key={path}>
-                                <HomeIcon />
-                            </Link>
-                        )
-                    } else
-                        return (
-                            <Link underline='hover' color='inherit' key={path}>
-                                <Typography
-                                    sx={{
-                                        textTransform: 'capitalize',
-                                    }}
-                                >
-                                    {path.replaceAll('-', ' ')}
-                                </Typography>
-                            </Link>
-                        )
-                })}
-            </Breadcrumbs>
-
+            <CustomBreadcrumbs />
             <Box
                 sx={{
                     display: 'flex',
@@ -76,8 +53,8 @@ const ActionHeader = ({ tableData }: ActionHeaderProps) => {
                 }}
             >
                 {<SearchBox initializeData={tableData} />}
-                <Button variant='contained' color='primary'>
-                    Create
+                <Button variant='contained' color='success' startIcon={<AddIcon />}>
+                    Add
                 </Button>
             </Box>
         </Box>
