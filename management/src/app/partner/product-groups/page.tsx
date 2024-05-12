@@ -75,7 +75,6 @@ const ProductGroups: React.FC = () => {
 
             ProductGroupAPI.create(newProductGroup)
                 .then((res: any) => {
-                    console.log(res)
                     toast.success(res.data.message)
                 })
                 .catch((err) => {

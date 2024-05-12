@@ -46,7 +46,6 @@ const LogIn = () => {
                 const authData = { id: accountId, email, role, username, photoUrl, isAuth: true }
                 dispatch(setAuth(authData))
                 toast.success(Message.LOGIN.SUCCESS)
-
                 if (res.data.role === 'SELLER') {
                     router.push('/partner')
                 } else if (res.data.role === 'ADMIN' || res.data.role === 'SUPER_ADMIN' || res.data.role === 'STAFF') {

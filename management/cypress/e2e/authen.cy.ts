@@ -32,12 +32,14 @@ describe('App Page Login Success And Navigate', () => {
     it('should navigate to partner page', () => {
         cy.intercept('POST', 'http://localhost:9090/api/v1/auth/login', {
             fixture: 'seller.json',
-        })
+        }).as('login')
 
         cy.get('input[name="username"]').type('seller')
         cy.get('input[name="password"]').type('seller')
         cy.get('button[type="submit"]').click()
 
+        cy.wait('@login').its('request.body').should('have.property', 'username', 'seller')
+        cy.wait(1000)
         cy.url().should('eq', 'http://localhost:3000/partner')
     })
 
