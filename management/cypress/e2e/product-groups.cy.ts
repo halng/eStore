@@ -120,9 +120,6 @@ describe('Product Groups Page', () => {
             status: 'ENABLED',
             updatedDate: new Date().toISOString(),
         })
-        cy.intercept('GET', 'http://localhost:9090/api/v1/product/group?page=1', mockProductGroupResponse).as(
-            'getProductGroups',
-        )
         cy.reload()
         cy.wait('@getProductGroups').its('response.statusCode').should('eq', 200)
         cy.get('tr').should('have.length.at.least', mockProductGroupResponse.items.length)
@@ -199,9 +196,6 @@ describe('Product Groups Page', () => {
 
         const deletedProductGroupIndex = mockProductGroupResponse.items.findIndex((item) => item.name === 'test 8')
         mockProductGroupResponse.items.splice(deletedProductGroupIndex, 1)
-        cy.intercept('GET', 'http://localhost:9090/api/v1/product/group?page=1', mockProductGroupResponse).as(
-            'getProductGroups',
-        )
         cy.reload()
         cy.wait('@getProductGroups').its('response.statusCode').should('eq', 200)
         cy.get('tr').should('not.contain', 'test 8')
