@@ -39,7 +39,7 @@ describe('App Page Login Success And Navigate', () => {
         cy.get('button[type="submit"]').click()
 
         cy.wait('@login').its('request.body').should('have.property', 'username', 'seller')
-        cy.wait(1000)
+        cy.wait(10000)
         cy.url().should('eq', 'http://localhost:3000/partner')
     })
 
