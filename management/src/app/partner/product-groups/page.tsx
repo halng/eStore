@@ -42,16 +42,19 @@ const ProductGroups: React.FC = () => {
     // *************************************************************************************
 
     useEffect(() => {
-        ProductGroupAPI.getAll(1).then((res) => {
-            console.log(res)
-            const _data = [...res.data.items]
-            const productGroup: ProductGroupTableData[] = _data.map((item: ProductGroupTableData, index) => {
-                item.updatedDate = calculateTimeAgo(item.updatedDate)
-                item.no = index + 1
-                return item
+        ProductGroupAPI.getAll(1)
+            .then((res) => {
+                const _data = [...res.data.items]
+                const productGroup: ProductGroupTableData[] = _data.map((item: ProductGroupTableData, index) => {
+                    item.updatedDate = calculateTimeAgo(item.updatedDate)
+                    item.no = index + 1
+                    return item
+                })
+                setData([...productGroup])
             })
-            setData([...productGroup])
-        })
+            .catch(() => {
+                toast.error("Cannot not get product group's data")
+            })
     }, [])
 
     const closeDialogHandler = () => {
@@ -72,6 +75,7 @@ const ProductGroups: React.FC = () => {
 
             ProductGroupAPI.create(newProductGroup)
                 .then((res: any) => {
+                    console.log(res)
                     toast.success(res.data.message)
                 })
                 .catch((err) => {
