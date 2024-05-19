@@ -1,5 +1,7 @@
 package com.e.store.product.controllers;
 
+import com.e.store.product.viewmodel.req.ProductGroupCreateReqVm;
+import com.e.store.product.viewmodel.req.ProductGroupUpdateReqVm;
 import com.e.store.product.viewmodel.res.CommonProductResVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
 import org.junit.jupiter.api.Assertions;
@@ -19,94 +21,65 @@ class ProductGroupControllerTest extends AbstractControllerTest {
 
   @Test
   void createNewGroup_whenDataInvalid() throws Exception {
+    ProductGroupCreateReqVm reqVm = new ProductGroupCreateReqVm("Group 1", "new description");
+
     MvcResult result =
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/api/v1/product/group")
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .param("groupName", "Group 1"))
+                    .content(this.mapToJson(reqVm)))
             .andReturn();
 
     Assertions.assertEquals(400, result.getResponse().getStatus());
     Assertions.assertEquals(
-        "{\"msg\":\"Group 1 already"
-            + " exists\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message: Group 1"
-            + " already exists\\n"
+        "{\"message\":\"Product Group Name: Group 1 already"
+            + " exists\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message: Product"
+            + " Group Name: Group 1 already exists\\n"
             + "Status Code: 400\"}",
         result.getResponse().getContentAsString());
   }
 
   @Test
   void createNewGroup_whenDataValid() throws Exception {
+    ProductGroupCreateReqVm reqVm = new ProductGroupCreateReqVm("new name", "new description");
+
     MvcResult result =
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/api/v1/product/group")
-                    .param("groupName", "Group 4")
+                    .content(this.mapToJson(reqVm))
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(MediaType.APPLICATION_JSON))
             .andReturn();
 
     Assertions.assertEquals(201, result.getResponse().getStatus());
     Assertions.assertEquals(
-        "{\"status\":\"CREATED\",\"message\":\"Create new group with name: Group 4"
-            + " successfully\",\"logMessage\":\"201 CREATED - Create new group with name: Group 4"
+        "{\"status\":\"CREATED\",\"message\":\"Create new group with name: new name"
+            + " successfully\",\"logMessage\":\"201 CREATED - Create new group with name: new name"
             + " successfully\"}",
         result.getResponse().getContentAsString());
   }
 
   @Test
   void updateGroupTest() throws Exception {
+    ProductGroupUpdateReqVm reqVm =
+        new ProductGroupUpdateReqVm("g1", "ENABLED", "new name", "new description");
     MvcResult result =
         mockMvc
             .perform(
-                MockMvcRequestBuilders.put("/api/v1/product/group/g1")
-                    .param("newName", "GGG1")
+                MockMvcRequestBuilders.put("/api/v1/product/group")
+                    .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .contentType(MediaType.APPLICATION_JSON))
+                    .content(this.mapToJson(reqVm)))
             .andReturn();
 
     Assertions.assertEquals(200, result.getResponse().getStatus());
     Assertions.assertEquals(
-        "{\"status\":\"OK\",\"message\":\"Update product group successfully!\",\"logMessage\":\"200"
-            + " OK - Update product group successfully!\"}",
-        result.getResponse().getContentAsString());
-  }
-
-  @Test
-  void disableEnableGroupTest() throws Exception {
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.patch("/api/v1/product/group/g1/enabled")
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .contentType(MediaType.APPLICATION_JSON))
-            .andReturn();
-
-    Assertions.assertEquals(200, result.getResponse().getStatus());
-    Assertions.assertEquals(
-        "{\"status\":\"OK\",\"message\":\"Enable product group successfully!\",\"logMessage\":\"200"
-            + " OK - Enable product group successfully!\"}",
-        result.getResponse().getContentAsString());
-  }
-
-  @Test
-  void disableEnableGroupTest_whenActionInvalid() throws Exception {
-    MvcResult result =
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders.patch("/api/v1/product/group/g1/enbled")
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .contentType(MediaType.APPLICATION_JSON))
-            .andReturn();
-
-    Assertions.assertEquals(400, result.getResponse().getStatus());
-    Assertions.assertEquals(
-        "{\"msg\":\"Cannot update group with status enbled. Action not"
-            + " valid\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message: Cannot"
-            + " update group with status enbled. Action not valid\\n"
-            + "Status Code: 400\"}",
+        "{\"status\":\"OK\",\"message\":\"Update product group name: new name"
+            + " successfully!\",\"logMessage\":\"200 OK - Update product group name: new name"
+            + " successfully!\"}",
         result.getResponse().getContentAsString());
   }
 
@@ -139,7 +112,7 @@ class ProductGroupControllerTest extends AbstractControllerTest {
 
     Assertions.assertEquals(400, result.getResponse().getStatus());
     Assertions.assertEquals(
-        "{\"msg\":\"Group Group 2 contain product. Please make sure this group empty before"
+        "{\"message\":\"Group Group 2 contain product. Please make sure this group empty before"
             + " delete\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message: Group"
             + " Group 2 contain product. Please make sure this group empty before delete\\n"
             + "Status Code: 400\"}",

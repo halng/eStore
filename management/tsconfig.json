@@ -23,9 +23,10 @@
             "@message": ["./src/constants/message"],
             "@constants": ["./src/constants"],
             "@components": ["./src/components"],
-            "@mock": ["./src/__mock__"]
+            "@mock": ["./src/__mock__"],
+            "@stores": ["./src/stores"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "./cypress.config.ts"]
 }

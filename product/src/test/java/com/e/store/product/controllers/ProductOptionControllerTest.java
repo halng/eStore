@@ -35,7 +35,7 @@ class ProductOptionControllerTest extends AbstractControllerTest {
 
     Assertions.assertEquals(400, result.getResponse().getStatus());
     Assertions.assertEquals(
-        "{\"msg\":\"Product Option with name option 1 already"
+        "{\"message\":\"Product Option with name option 1 already"
             + " exists!\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message:"
             + " Product Option with name option 1 already exists!\\n"
             + "Status Code: 400\"}",
@@ -111,7 +111,7 @@ class ProductOptionControllerTest extends AbstractControllerTest {
 
     Assertions.assertEquals(404, result.getResponse().getStatus());
     Assertions.assertEquals(
-        "{\"msg\":\"Option with id ooop1 not"
+        "{\"message\":\"Option with id ooop1 not"
             + " found\",\"statusCode\":404,\"reason\":\"\",\"logMessage\":\"Error Message: Option"
             + " with id ooop1 not found\\n"
             + "Status Code: 404\"}",
@@ -148,7 +148,7 @@ class ProductOptionControllerTest extends AbstractControllerTest {
 
     Assertions.assertEquals(400, result.getResponse().getStatus());
     Assertions.assertEquals(
-        "{\"msg\":\"This option still in use. Please try"
+        "{\"message\":\"This option still in use. Please try"
             + " again\",\"statusCode\":400,\"reason\":\"\",\"logMessage\":\"Error Message: This"
             + " option still in use. Please try again\\n"
             + "Status Code: 400\"}",
