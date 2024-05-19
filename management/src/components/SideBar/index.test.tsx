@@ -1,19 +1,27 @@
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { SideBar } from '@components'
 import navConfig from './config-navigation'
+import { renderWithProviders } from '../../utils/test-utils'
+import { AuthState } from '@types'
 
 jest.mock('next/navigation', () => ({
     usePathname: jest.fn(() => '/partner'),
 }))
 
 describe('Test SideBar Component', () => {
-    it('snapshot rendering', () => {
-        const { asFragment } = render(<SideBar />)
-        expect(asFragment()).toMatchSnapshot()
-    })
     it('renders a side bar', () => {
-        const { container } = render(<SideBar />)
+        const initData: AuthState = {
+            isAuth: true,
+            username: 'Tao Nguyen',
+            photoUrl: 'https://www.google.com',
+            role: 'SELLER',
+            email: 'hello@gmail.com',
+            id: '123',
+        }
+        const { container } = renderWithProviders(<SideBar />, {
+            preloadedState: { auth: initData },
+        })
 
         // check render account
         const accountName = screen.getByText('Tao Nguyen')

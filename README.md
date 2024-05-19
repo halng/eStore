@@ -21,9 +21,7 @@
 |Search| Java | 80% | Spring Boot & Elastic Search | search service integrate with Elastic search|
 |Inventory | Go | 80% | Gin | Inventory Service |
 |Ui Api| Typescript | 0 | Typescript base | api for ui, package to work with backend|
-|Ui Auth| Typescript | 0 | ReactJs | auth service for ui|
-|Ui Home| Typescript | 0 | ReactJs | home base|
-|Ui Product| Typescript | 0 | ReactJs | handle ui for product| 
+|management| Typescript | [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=tanhao111_eStore_management&metric=coverage)](https://sonarcloud.io/summary/new_code?id=tanhao111_eStore_management) | NextJs | manager system |
 |Fake-data| Rust | 0 | | Crawl data and insert into db|
 
 ## CI Status

@@ -1,7 +1,7 @@
 
-INSERT INTO product_group (id, create_by, create_date, last_update, last_update_by, name, status) VALUES ('g1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Group 1', 'ENABLED');
-INSERT INTO product_group (id, create_by, create_date, last_update, last_update_by, name, status) VALUES ('g2', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Group 2', 'DISABLED');
-INSERT INTO product_group (id, create_by, create_date, last_update, last_update_by, name, status) VALUES	('g3', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Group 3', 'ENABLED');
+INSERT INTO product_group (id, create_by, create_date, last_update, last_update_by, name, status, description) VALUES ('g1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Group 1', 'ENABLED', 'DESC 1');
+INSERT INTO product_group (id, create_by, create_date, last_update, last_update_by, name, status, description) VALUES ('g2', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Group 2', 'DISABLED', 'DESC 1');
+INSERT INTO product_group (id, create_by, create_date, last_update, last_update_by, name, status, description) VALUES ('g3', 'SYSTEM', NOW(), NOW(), 'SYSTEM', 'Group 3', 'ENABLED', 'DESC 1');
 
 INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id,  name, price, quantity, is_sales, short_description, slug, thumbnail_url, group_id) VALUES ('p1', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '',  'Product 1', 22.22, 3, true, '', 'product-1', 'thumb-1', 'g1');
 INSERT INTO product (id, create_by, create_date, last_update, last_update_by, blog_post_id,  name, price, quantity, is_sales, short_description, slug, thumbnail_url, group_id) VALUES	('p2', 'SYSTEM', NOW(), NOW(), 'SYSTEM', '',  'Product 2', 22.22, 3, true, '', 'product-2', 'thumb-2', 'g2');

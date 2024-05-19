@@ -3,6 +3,9 @@ import { Inter } from 'next/font/google'
 import { ToastContainer } from 'react-toastify'
 import './globals.css'
 import 'react-toastify/dist/ReactToastify.css'
+import dynamic from 'next/dynamic'
+
+const StoreProvider = dynamic(() => import('./StoreProvider'), { ssr: false })
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,8 +22,10 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body className={inter.className}>
-                {children}
-                <ToastContainer />
+                <StoreProvider>
+                    {children}
+                    <ToastContainer />
+                </StoreProvider>
             </body>
         </html>
     )
