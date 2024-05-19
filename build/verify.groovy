@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'agent'
+    }
     tools { 
       maven 'maven' 
       nodejs "nodejs"
@@ -17,7 +19,7 @@ pipeline {
                 script {
                     def folders = ['product', 'auth', 'api', 'email', 'search']
                     for (def folder in folders) {
-                        echo "Verifying ${folder}..."
+                        echo "\n\n\nVerifying ${folder}...\n\n\n"
                         sh "mvn clean -f ${folder}"
                         sh "mvn verify -f ${folder}"
                     }
@@ -27,11 +29,12 @@ pipeline {
         stage('Verify - Frontend Components') {
             steps {
                 script {
-                    def folders = ['managements']
+                    def folders = ['management']
                     for (def folder in folders) {
-                        echo "Verifying ${folder}..."
+                        echo "\n\n\nVerifying ${folder}...\n\n\n"
                         sh "npm install --prefix ${folder}"
-                        sh "npm run lint && npm run format --prefix ${folder}"
+                        sh "npm run lint  --prefix ${folder} && npm run format --prefix ${folder}"
+                        sh "npm run build --prefix ${folder}"
                     }
                 }
             }
