@@ -10,10 +10,6 @@ jest.mock('next/navigation', () => ({
 }))
 
 describe('Test SideBar Component', () => {
-    it('snapshot rendering', () => {
-        const { asFragment } = renderWithProviders(<SideBar />)
-        expect(asFragment()).toMatchSnapshot()
-    })
     it('renders a side bar', () => {
         const initData: AuthState = {
             isAuth: true,

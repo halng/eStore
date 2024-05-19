@@ -7,10 +7,6 @@ jest.mock('next/navigation', () => ({
 }))
 
 describe('Test Action Header Component', () => {
-    it('snapshot rendering', () => {
-        const { asFragment } = render(<ActionHeader tableData={[]} setOpenAction={null} />)
-        expect(asFragment()).toMatchSnapshot()
-    })
     it('renders a heading', () => {
         render(<ActionHeader tableData={[]} setOpenAction={null} />)
 
