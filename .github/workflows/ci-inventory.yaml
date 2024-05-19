@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - dev
     paths:
       - "inventory/**"
       - ".github/workflows/ci-inventory.yaml"

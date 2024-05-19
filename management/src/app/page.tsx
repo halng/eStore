@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import 'bootstrap/dist/css/bootstrap.css'
 import { useAppDispatch, useAppSelector } from '@stores'
 import { setAuth } from '../stores/authSlice'
+import { useRouter } from 'next/navigation'
 
 const schema = yup.object({
     username: yup.string().required('Username is required'),
@@ -23,6 +24,7 @@ const schema = yup.object({
 const LogIn = () => {
     const [isRemember, setIsRemember] = useState(false)
     const [status, setStatus] = useState<LoadingStatus>(LoadingStatus.NOPE)
+    const router = useRouter()
     const dispatch = useAppDispatch()
     const {
         register,
@@ -44,11 +46,10 @@ const LogIn = () => {
                 const authData = { id: accountId, email, role, username, photoUrl, isAuth: true }
                 dispatch(setAuth(authData))
                 toast.success(Message.LOGIN.SUCCESS)
-
                 if (res.data.role === 'SELLER') {
-                    window.location.replace('/partner')
+                    router.push('/partner')
                 } else if (res.data.role === 'ADMIN' || res.data.role === 'SUPER_ADMIN' || res.data.role === 'STAFF') {
-                    window.location.replace('/management')
+                    router.push('/management')
                 }
             })
             .catch((err) => {
@@ -161,11 +162,12 @@ const LogIn = () => {
 
 const Home = () => {
     const authData = useAppSelector((state) => state.auth)
+    const router = useRouter()
     if (authData.isAuth) {
         if (authData.role === 'SELLER') {
-            window.location.replace('/partner')
+            router.push('/partner')
         } else {
-            window.location.replace('/management')
+            router.push('/management')
         }
     } else {
         return <LogIn />

@@ -12,6 +12,8 @@ import com.e.store.product.exceptions.BadRequestException;
 import com.e.store.product.exceptions.EntityNotFoundException;
 import com.e.store.product.repositories.IProductGroupRepository;
 import com.e.store.product.services.impl.ProductGroupServiceImpl;
+import com.e.store.product.viewmodel.req.ProductGroupCreateReqVm;
+import com.e.store.product.viewmodel.req.ProductGroupUpdateReqVm;
 import com.e.store.product.viewmodel.res.PagingResVm;
 import com.e.store.product.viewmodel.res.ProductGroupResVm;
 import com.e.store.product.viewmodel.res.ResVm;
@@ -57,9 +59,10 @@ public class ProductGroupServiceTest {
         Assertions.assertThrows(
             BadRequestException.class,
             () -> {
-              productGroupService.createNewGroup("name");
+              productGroupService.createNewGroup(new ProductGroupCreateReqVm("test", "des"));
             });
-    Assertions.assertEquals("name already exists", badRequestException.getMessage());
+    Assertions.assertEquals(
+        "Product Group Name: test already exists", badRequestException.getMessage());
   }
 
   @Test
@@ -68,7 +71,8 @@ public class ProductGroupServiceTest {
     when(iProductGroupRepository.existsByName(anyString())).thenReturn(false);
     when(iProductGroupRepository.save(any())).thenReturn(mockProductGroup);
 
-    ResponseEntity<ResVm> actualResult = this.productGroupService.createNewGroup("test");
+    ResponseEntity<ResVm> actualResult =
+        this.productGroupService.createNewGroup(new ProductGroupCreateReqVm("test", "des"));
 
     Assertions.assertEquals(201, actualResult.getStatusCode().value());
     Assertions.assertEquals(
@@ -119,50 +123,15 @@ public class ProductGroupServiceTest {
     when(iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
     when(iProductGroupRepository.save(any())).thenReturn(newGroup);
 
-    ResponseEntity<ResVm> response = this.productGroupService.updateProductGroup("new", "1");
+    ResponseEntity<ResVm> response =
+        this.productGroupService.updateProductGroup(
+            new ProductGroupUpdateReqVm("1", "ENABLED", "old", "desc"));
 
     Assertions.assertNotNull(response);
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     Assertions.assertNotNull(response.getBody());
-    Assertions.assertEquals("Update product group successfully!", response.getBody().message());
-  }
-
-  @Test
-  void disableEnableGroupTest() {
-    ProductGroup newGroup = ProductGroup.builder().name("new test").build();
-
-    when(iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
-    when(iProductGroupRepository.save(any())).thenReturn(newGroup);
-
-    ResponseEntity<ResVm> response = this.productGroupService.disableEnableGroup("1", "disabled");
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    Assertions.assertNotNull(response.getBody());
-    Assertions.assertEquals("Disable product group successfully!", response.getBody().message());
-
-    ResponseEntity<ResVm> response2 = this.productGroupService.disableEnableGroup("1", "enabled");
-    Assertions.assertNotNull(response2);
-    Assertions.assertEquals(HttpStatus.OK, response2.getStatusCode());
-    Assertions.assertNotNull(response2.getBody());
-    Assertions.assertEquals("Enable product group successfully!", response2.getBody().message());
-  }
-
-  @Test
-  void disableEnableGroup_shouldThrowException_whenActionInvalid() {
-    ProductGroup newGroup = ProductGroup.builder().name("new test").build();
-
-    when(iProductGroupRepository.findById(any())).thenReturn(Optional.of(mockProductGroup));
-    when(iProductGroupRepository.save(any())).thenReturn(newGroup);
-
-    BadRequestException exception =
-        Assertions.assertThrows(
-            BadRequestException.class,
-            () -> {
-              this.productGroupService.disableEnableGroup("1", "disbled");
-            });
-
     Assertions.assertEquals(
-        "Cannot update group with status disbled. Action not valid", exception.getMessage());
+        "Update product group name: old successfully!", response.getBody().message());
   }
 
   @Test

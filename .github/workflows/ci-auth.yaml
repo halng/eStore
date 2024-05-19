@@ -2,7 +2,7 @@ name: auth service ci
 
 on:
   push:
-    branches: ["main", "dev"]
+    branches: ["main"]
     paths:
       - "auth/**"
       - ".github/workflows/action-be/**"

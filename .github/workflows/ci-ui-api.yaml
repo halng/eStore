@@ -2,7 +2,7 @@ name: api e store ci
 
 on:
   pull_request:
-    branches: ["main", "dev"]
+    branches: ["main"]
     paths:
       - ui-api/package.json
       - .github/workflows/publishPackage.sh

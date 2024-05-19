@@ -28,7 +28,10 @@ export default function Nav() {
                 bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
             }}
         >
-            <Avatar src={account.photoUrl} alt='photo' />
+            <Avatar
+                src='https://e-store-product-thumbnail.s3.ap-southeast-1.amazonaws.com/Wallpaper.jpg?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaDmFwLXNvdXRoZWFzdC0xIkcwRQIgLyNKUxrGXAPej4s7yHWVk%2FSn9Z56PXAt6ooxUE89hWQCIQDF2plXG1hYEPPoKq58rDOUqjSXhcc1DZ11WeCocxI2KiqJAwg8EAAaDDU5MDE4Mzc2NDcxMCIMj9EKwtj430ebHKERKuYCCdVbev1LJ%2BssATf3cJ4aNV6HtG4KfAhrnoEcgl%2FdvNsaRd2zNfH6rZHY2jI7BRX4%2Bn6xl9sS4yjnbatDinbl13KBQvtREJmiREySw8LxvHmLZvK74UhVlzYaDxtX234PzCKAGnFXb7gDrCMvz6Kq0e%2FfNyMQcy48pjXugMCQUnuwXcfYi6FrAwqE48JdMtCjFxHo57K5AOLZ14vEvmbGcc0iMTV1y3vBbVrFsAxrD%2FZND8RkVrpijB3TxW1LtiVbCUkKXSE9zh4S54uWQUW54%2B%2FRziWZdNYUSfWgxFTzNX6m6IHkySTb0jValEHO%2FSjY%2BnA%2FwQYD7wl4eBXIFFEKp4IZ8q0MQvFAXvvU01kXdFyezTzufjFbH0XFUZEfEb8QCZJD9miN4vqPzSQvR6zw%2FlkVlxCoItxSrllbzuMHAozRD7W2ZTMm03Sfoljryn0%2B1R1XrxVLrWmjD056Xb4YT0oTrC4ygzDUwPuxBjqzAvAVl4l2zgl0TkddAuunUfEbl7yx%2B7SZqJDJRYgVNShVUAXgTBDHs395H9pln2y%2F%2BtddZXACttSBABMZRy9LQlZfOD0t3JnFlPUo%2FYKI7TRjpoEoce%2FgeRCW0T%2BvpUfhEIrXJhUbtd7XB238bk8aBRBZGsexSBe%2BhilfHUsa4hqR5OOZkShucI7eNrDAMChfl8zoQt65y%2FZYhYOieI6lIOBmySLaXv7cB89q4lS%2F0x3s9pbeCfnwkK6frXUJgfrs%2F5rblod8ri6rTWI5z9hvAMseUweSateKPc%2Fc0WAdcDqyCYGWdSOchS%2Bs8UqjN0fIhHb%2FRD%2F0C1EMIlR65Hlt9Hi88p8%2B2c%2FjdFPMERdIvXDBWUiMu8x5kaXObCzpgoIEdeehvUagNx2md1BWxbHBOPqgvvc%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240511T032135Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=ASIAYS2NRSLTN64XRDU5%2F20240511%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Signature=a9d227a09bfe7f4ccca7e5c2d040b0160d204713ac959f23fe6bfc8dc2f8babb'
+                alt='photo'
+            />
 
             <Box sx={{ ml: 2 }}>
                 <Typography variant='subtitle2'>{account.username}</Typography>
