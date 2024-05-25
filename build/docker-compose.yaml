@@ -10,8 +10,7 @@ services:
       - 80:80
     command: /bin/bash -c "envsubst < /tmp/nginx.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
     depends_on:
-      - backend
-      - ui
+      - jenkins
     networks:
       - jenkins
 
@@ -23,6 +22,8 @@ services:
       - 8080:8080
       - 50000:50000
     container_name: jenkins
+    depends_on:
+      - agent
     volumes:
       - /home/ubuntu/jenkins_compose/jenkins_configuration:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
@@ -37,7 +38,7 @@ services:
     ports:
       - 50022:22
     environment:
-      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCr0KQcs6ecxntRBVH4P5f8FB/OA7HpCRH/j9HkR3i1LO4ZDIIx89JeH4Tv4N94sywzycyRxJtLKTPdK2vKCOi+bX/Ysft2IeAJIWSScPqjPhDE5etwXErWHSZ1WFOQH9uAqPzzx9vSifMWs9u0f8bgIpUfG69R072t7Gqmr1UXlppmqGcNfBgJjLQQo+4XVAkOfcYqEmBtSwHlC7a0BNXACZcyz4eN8VIm1fysy/BpUDJCkLmZCkuQo/j/rFmwUeXL0/GMxmeR4yPRyP/l61c01uqoiVe8NmYWAZIIuG3N+on1p4JyeK0rIq5oF9rfKVkmS8TB42nJNPy899lfeFEAntJX0Rjr8sSWjpVtMXCrWBoFtE4zHBvtaQUO/UqbX/nnVnTPVcD6D1G6Ygx8N2tDt/Hf4dAT/B7XRgBJbyqHIOxKsbad7PeMR/NBHQ86pt5Zl+OqwShizzMPIh62O4JXIY7j9VQMHsXuoAuUd0jpDn/iH45PB+ZUU8aY792Hw18= harold@harold
+      - JENKINS_AGENT_SSH_PUBKEY=${SSH_PUBLIC_KEY}
     networks:
       - jenkins
 
