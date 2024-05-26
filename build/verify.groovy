@@ -34,6 +34,10 @@ pipeline {
                         echo "\n\n\nVerifying ${folder}...\n\n\n"
                         sh "npm install --prefix ${folder}"
                         sh "npm run lint  --prefix ${folder} && npm run format --prefix ${folder}"
+                        echo "Running tests..."
+                        sh "npm run test:coverage --prefix ${folder}"
+                        sh "npm run e2e:headless --prefix ${folder}"
+                        echo "Building..."
                         sh "npm run build --prefix ${folder}"
                     }
                 }
