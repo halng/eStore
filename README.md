@@ -26,6 +26,4 @@
 
 ## CI Status
 
-This use Github action for CI and CD. and also use Aws for deployment
-
-https://www.tailwindawesome.com/resources/flowbite-admin-dashboard/demo
+This uses Github action for CI and CD and also use Jenkins. and also uses Aws for deployment
