@@ -2,8 +2,7 @@ name: Auto Create PR
 
 on:
   schedule:
-    # - cron: '5 7 * * 5'  # Run every friday morning at 7:05
-    - cron: '*/15 * * * *'
+    - cron: '5 7 * * 5'  # Run every friday morning at 7:05
 
 jobs:
   auto-create-pr:
@@ -19,17 +18,14 @@ jobs:
         run: echo "::set-output name=date::$(date +'%d.%m.%Y')"
       - name: Switch to dev branch
         run: git fetch && git checkout dev
-      - name: Update version
-        run: |
-          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" BUILD
-          git add .
-          git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
-          git push origin dev
-      - name: Create PR
+      - name: Update version & create PR
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git fetch -a
-          gh pr create --base main --head dev --title "${{ steps.set_date.outputs.date }}" --body "Release ${{ steps.set_date.outputs.date }}"
+          sed -i "s/VERSION=.*/VERSION=${{ steps.set_date.outputs.date }}/" README.md
+          git add .
+          git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
+          git push origin dev
+          gh pr create --base main --head dev --title "${{ steps.set_date.outputs.date }}" --body "Release ${{ steps.set_date.outputs.date }}"          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
