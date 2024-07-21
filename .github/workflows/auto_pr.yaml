@@ -20,7 +20,7 @@ jobs:
         run: git fetch && git checkout dev
       - name: Update version
         run: |
-          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" BUILD
+          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" ./BUILD
           git add .
           git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
           git push origin dev
