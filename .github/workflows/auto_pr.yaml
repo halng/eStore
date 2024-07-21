@@ -2,7 +2,8 @@ name: Auto Create PR
 
 on:
   schedule:
-    - cron: '5 7 * * 5'  # Run every friday morning at 7:05
+    # - cron: '5 7 * * 5'  # Run every friday morning at 7:05
+    - cron: '*/15 * * * *'
 
 jobs:
   auto-create-pr:
@@ -15,7 +16,14 @@ jobs:
       - name: Set current date
         id: set_date
         run: echo "::set-output name=date::$(date +'%d.%m.%Y')"
-
+      - name: Switch to dev branch
+        run: git checkout dev
+      - name: Update version
+        run: |
+          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" BUILD
+          git add version
+          git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
+          git push origin dev
       - name: Create PR
         run: |
           git config user.name "GitHub Actions"
