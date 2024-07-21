@@ -17,11 +17,11 @@ jobs:
         id: set_date
         run: echo "::set-output name=date::$(date +'%d.%m.%Y')"
       - name: Switch to dev branch
-        run: git checkout dev
+        run: git fetch && git checkout dev
       - name: Update version
         run: |
           sed -i "s/.*/${{ steps.set_date.outputs.date }}/" BUILD
-          git add version
+          git add .
           git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
           git push origin dev
       - name: Create PR
