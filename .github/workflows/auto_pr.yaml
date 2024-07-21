@@ -24,7 +24,7 @@ jobs:
       - name: Update version
         run: |
           ls -la
-          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" BUILD
+          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" VERSION
           git add .
           git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
           git push origin dev
