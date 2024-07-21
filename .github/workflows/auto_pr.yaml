@@ -21,18 +21,15 @@ jobs:
         run: echo "::set-output name=date::$(date +'%d.%m.%Y')"
       - name: Switch to dev branch
         run: git fetch && git checkout dev
-      - name: Update version
+      - name: Update version & create PR
         run: |
           ls -la
-          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" VERSION
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" VERSION.txt
           git add .
           git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
           git push origin dev
-      - name: Create PR
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git fetch -a
-          gh pr create --base main --head dev --title "${{ steps.set_date.outputs.date }}" --body "Release ${{ steps.set_date.outputs.date }}"
+          gh pr create --base main --head dev --title "${{ steps.set_date.outputs.date }}" --body "Release ${{ steps.set_date.outputs.date }}"          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
