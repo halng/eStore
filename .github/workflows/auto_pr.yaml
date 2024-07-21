@@ -11,8 +11,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Set current date
         id: set_date
         run: echo "::set-output name=date::$(date +'%d.%m.%Y')"
@@ -20,7 +21,7 @@ jobs:
         run: git fetch && git checkout dev
       - name: Update version
         run: |
-          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" ./BUILD
+          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" BUILD
           git add .
           git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
           git push origin dev
