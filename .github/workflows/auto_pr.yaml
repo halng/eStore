@@ -1,9 +1,11 @@
 name: Auto Create PR
 
 on:
-  schedule:
-    # - cron: '5 7 * * 5'  # Run every friday morning at 7:05
-    - cron: '*/15 * * * *'
+  # schedule:
+  #   # - cron: '5 7 * * 5'  # Run every friday morning at 7:05
+  #   - cron: '*/15 * * * *'
+  pull_request:
+    branches: ["main", "dev"] 
 
 jobs:
   auto-create-pr:
@@ -21,6 +23,7 @@ jobs:
         run: git fetch && git checkout dev
       - name: Update version
         run: |
+          ls -la
           sed -i "s/.*/${{ steps.set_date.outputs.date }}/" BUILD
           git add .
           git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
