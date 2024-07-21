@@ -1,11 +1,8 @@
 name: Auto Create PR
 
 on:
-  # schedule:
-  #   # - cron: '5 7 * * 5'  # Run every friday morning at 7:05
-  #   - cron: '*/15 * * * *'
-  pull_request:
-    branches: ["main", "dev"] 
+  schedule:
+    - cron: '5 7 * * 5'  # Run every friday morning at 7:05
 
 jobs:
   auto-create-pr:
@@ -15,7 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
       - name: Set current date
         id: set_date
