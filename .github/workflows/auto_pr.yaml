@@ -24,10 +24,9 @@ jobs:
         run: git fetch && git checkout dev
       - name: Update version & create PR
         run: |
-          ls -la
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          sed -i "s/.*/${{ steps.set_date.outputs.date }}/" VERSION.txt
+          sed -i "s/VERSION=.*/VERSION=${{ steps.set_date.outputs.date }}/" README.md
           git add .
           git commit -m "Update version to ${{ steps.set_date.outputs.date }}"
           git push origin dev
